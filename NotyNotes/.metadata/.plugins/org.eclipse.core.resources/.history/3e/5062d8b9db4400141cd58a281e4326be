@@ -1,0 +1,21 @@
+package com.apatil.notynotes.data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+//This class hides the functionality to add, update and remove note item from shared reference storage
+public class NotesDataSource {
+	
+	//This method returns a list of note items
+	public List<NoteItem> findAll(){
+		
+		//Using ArrayList to maintain the order in which the notes were added to the list
+		List<NoteItem> noteList = new ArrayList<NoteItem>();
+		//Getting a note object
+		NoteItem note = NoteItem.getNew();
+		noteList.add(note);
+		return noteList;
+	}
+
+}

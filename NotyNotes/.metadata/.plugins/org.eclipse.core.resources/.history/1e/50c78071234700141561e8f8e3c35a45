@@ -1,0 +1,14 @@
+/**
+ * 
+ */
+package com.apatil.notynotes;
+
+import android.app.Activity;
+
+/**
+ * @author USX28289
+ *
+ */
+public class NoteEditorActivity extends Activity {
+
+}

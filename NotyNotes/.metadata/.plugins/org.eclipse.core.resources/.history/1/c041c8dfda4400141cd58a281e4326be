@@ -1,0 +1,5 @@
+package com.apatil.notynotes.data;
+
+public class NotesDataSource {
+
+}

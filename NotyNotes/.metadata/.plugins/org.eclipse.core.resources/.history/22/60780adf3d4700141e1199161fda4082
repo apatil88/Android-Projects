@@ -1,0 +1,28 @@
+/**
+ * 
+ */
+package com.apatil.notynotes;
+
+import com.apatil.notynotes.data.NoteItem;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+/**
+ * @author A.Patil
+ *
+ */
+public class NoteEditorActivity extends Activity {
+	
+	NoteItem note;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_note_editor);
+		
+		//Get a reference to the intent from the first activity
+		Intent intent = this.getIntent();
+	}
+
+}

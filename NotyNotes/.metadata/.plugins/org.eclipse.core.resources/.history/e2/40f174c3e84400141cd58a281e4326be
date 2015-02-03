@@ -1,0 +1,69 @@
+package com.apatil.notynotes.data;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+
+//This class hides the functionality to add, update and remove note item from shared reference storage
+//Hides all the implementation details of the shared preferences
+public class NotesDataSource {
+	
+	private static final String PREFKEY = "notes";
+	private SharedPreferences notePrefs;
+	
+	//Shared preference is instantiated as the NotesDataSource class is instantiated.
+	//Context is a superclass of Activity. It indicates how we can connect this java class to the higher level application.
+	public NotesDataSource(Context context){
+		notePrefs = context.getSharedPreferences(PREFKEY, Context.MODE_PRIVATE); //PREFKEY is name of preferences collection
+	}
+	
+	//This method returns a list of note items
+	public List<NoteItem> findAll(){
+		
+		//Retrieve data from SharedPreferences
+		Map<String, ?> notesMap  = notePrefs.getAll();
+		
+		SortedSet<String> keys = new TreeSet<String>(notesMap.keySet());
+		 //keySet returns keys of all notes in any order. TreeSet sorts the keys. Default sort order is from oldest to newest based on date-time values
+		
+		//Using ArrayList to maintain the order in which the notes were added to the list
+		List<NoteItem> noteList = new ArrayList<NoteItem>();
+		
+		//Retrieve note from SharedPreferences and put it in a note list
+		for (String key : keys) {
+			NoteItem note = new NoteItem();
+			note.setKey(key);
+			note.setText((String) notesMap.get(key));
+			noteList.add(note);
+		}
+		
+//		//Getting a note object
+//		NoteItem note = NoteItem.getNew();
+//		noteList.add(note);
+		return noteList;
+	}
+	
+	public boolean update(NoteItem note){
+		
+		SharedPreferences.Editor editor = notePrefs.edit();  //Gives an Editor object that can modify data in the current Shared Preference object
+		editor.putString(note.getKey(), note.getText()); //puts the note in the SharedPreference object
+		editor.commit();
+		return true;
+	}
+	
+	public boolean remove(NoteItem note){
+		if(notePrefs.contains(note.getKey())){
+			SharedPreferences.Editor editor = notePrefs.edit();
+			editor.remove(note.getKey());
+			editor.commit();	
+		}
+		return true;
+	}
+
+}

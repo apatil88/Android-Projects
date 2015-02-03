@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extract constant &apos;EDITOR_ACTIVITY_REQUEST&apos; from expression &apos;1001&apos;&#x0D;&#x0A;- Original project: &apos;NotyNotes&apos;&#x0D;&#x0A;- Constant name: &apos;EDITOR_ACTIVITY_REQUEST&apos;&#x0D;&#x0A;- Constant expression: &apos;1001&apos;&#x0D;&#x0A;- Declared visibility: &apos;private&apos;" description="Extract constant &apos;EDITOR_ACTIVITY_REQUEST&apos;" flags="786432" id="org.eclipse.jdt.ui.extract.constant" input="/src&lt;com.apatil.notynotes{MainActivity.java" name="EDITOR_ACTIVITY_REQUEST" qualify="false" replace="false" selection="3606 4" stamp="1411931755566" version="1.0" visibility="2"/>
+</session>

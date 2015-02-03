@@ -1,0 +1,40 @@
+/**
+ * 
+ */
+package com.apatil.notynotes;
+
+import com.apatil.notynotes.data.NoteItem;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.EditText;
+
+/**
+ * @author A.Patil
+ * This class receives the values from the MainActivity, stores them persistently and display the text so that user can add, retrieve or delete the note.
+ */
+public class NoteEditorActivity extends Activity {
+	
+	private NoteItem note;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_note_editor);
+		
+		//Get a reference to the intent from the first activity
+		Intent intent = this.getIntent();
+		
+		note = new NoteItem();
+		//Reconstruct the Editor object as the EditorActivity starts up
+		
+		note.setKey(intent.getStringExtra("key"));
+		note.setText(intent.getStringExtra("text"));
+		
+		//Get a reference to EditText control defined in the layout to display the text
+		EditText et = (EditText) findViewById(R.id.noteText);
+		et.setText(note.getText());
+	}
+
+}
