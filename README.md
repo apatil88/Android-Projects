@@ -1,6 +1,8 @@
 # Android-Projects
 This repository list the Android projects I have worked on or I am currently working on.
 
+#ButtonClickCount
+This simple Android app records and displays the number of times a button has been clicked.
 
 #NotyNotes
 This Android app allows you to create, edit and delete notes.
