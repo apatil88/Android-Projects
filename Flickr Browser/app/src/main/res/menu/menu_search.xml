@@ -1,8 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:flickr="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    xmlns:flickr="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
@@ -10,9 +8,10 @@
         flickr:showAsAction="never" />
 
     <item
-        android:id="@+id/menu_search"
-        android:title="@string/action_search"
+        android:id="@+id/search_view"
         android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/search_menu"
         android:orderInCategory="1"
+        flickr:actionViewClass="android.support.v7.widget.SearchView"
         flickr:showAsAction="always"/>
 </menu>

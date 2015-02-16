@@ -1,12 +1,16 @@
 package com.amrutpatil.flickr_browser;
 
+import java.io.Serializable;
+
 /**
  * Created by Amrut on 2/8/15.
  *
  * Class to store data that is parsed from the JSON raw data.
+ * Serializable interface allows you to pass objects between activities
  */
-public class Photo {
+public class Photo implements Serializable {
 
+    private static final long serialVersionUUID = 1L; //version number of the object
     private String mTitle;
     private String mAuthor;
     private String mAuthorId;
@@ -24,27 +28,31 @@ public class Photo {
 
     }
 
-    public String getmTitle() {
+    public static long getSerialVersionUUID() {
+        return serialVersionUUID;
+    }
+
+    public String getTitle() {
         return mTitle;
     }
 
-    public String getmAuthor() {
+    public String getAuthor() {
         return mAuthor;
     }
 
-    public String getmAuthorId() {
+    public String getAuthorId() {
         return mAuthorId;
     }
 
-    public String getmLink() {
+    public String getLink() {
         return mLink;
     }
 
-    public String getmTags() {
+    public String getTags() {
         return mTags;
     }
 
-    public String getmImage() {
+    public String getImage() {
         return mImage;
     }
 

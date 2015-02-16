@@ -48,14 +48,25 @@ public class FlickrRecyclerViewAdapter extends RecyclerView.Adapter<FlickrImageV
         //position gives the index of the photo element and title on the View that is being drawn. We use this index to get that particular photo from the Photos ArrayList
         Photo photoItem = mPhotosList.get(position);
 
-        Log.d(LOG_TAG,"Processing: "+photoItem.getmTitle() + "-->" + Integer.toString(position));
+        Log.d(LOG_TAG,"Processing: "+photoItem.getTitle() + "-->" + Integer.toString(position));
 
         //Draw the thumbnail
-        Picasso.with(mContext).load(photoItem.getmImage())    //load the photo
+        Picasso.with(mContext).load(photoItem.getImage())    //load the photo
                 .error(R.drawable.placeholder)               //if there is an error, it will display the placeholder.png image
                 .placeholder(R.drawable.placeholder)         //set the placeholder image
                 .into(flickrImageViewHolder.thumbnail);      //Adapter places the thumbnail in FlickrImageViewHolder
 
-        flickrImageViewHolder.title.setText(photoItem.getmTitle());  //Set the photo title
+        flickrImageViewHolder.title.setText(photoItem.getTitle());  //Set the photo title
+    }
+
+    //Method to notify the Adapter when the data in the View changes
+    public void loadNewData(List<Photo> newPhotos){
+        mPhotosList = newPhotos;
+        notifyDataSetChanged();  //resynchronize the Adapter when data in the View changes.
+    }
+
+    public Photo getPhoto(int position){
+        return (null != mPhotosList ? mPhotosList.get(position) : null);  //return the Photo object from the list of photos.
+
     }
 }

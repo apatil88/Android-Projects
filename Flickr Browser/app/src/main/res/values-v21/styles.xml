@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <!-- By default, Android looks for styles.xml in values directory.
+    If you want to overwrite changes in values directory for v21(Lollipop), you need to define them here-->
+<resources>
+    <style name="Theme.Flickr" parent="Theme.Base">
+        <item name="android:navigationBarColor">@color/flickrSecondaryBackgroundColor</item>
+    </style>
+</resources>

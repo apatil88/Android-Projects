@@ -1,8 +1,33 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+       
     </style>
 
+    <style name="Theme.Base" parent="AppTheme">
+        <item name="colorPrimary">@color/flickrPrimaryBackgroundColor</item>
+        <item name="colorPrimaryDark">@color/flickrSecondaryBackgroundColor</item>
+        <item name="colorAccent">@color/flickrColorBackgroundAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@color/flickrBackgroundColor</item>
+    </style>
+
+    <style name="Theme.Flickr" parent="Theme.Base">
+
+    </style>
+
+    <style name="ActionBarThemeOverlay" parent="">
+        <item name="android:textColorPrimary">@color/flickrPrimaryTextColor</item>
+        <item name="colorControlHighlight">@color/flickrBackgroundColor</item>
+        <item name="android:actionMenuTextColor">@color/flickrPrimaryTextColor</item>
+        <item name="android:textColorSecondary">@color/flickrPrimaryTextColor</item>
+        <item name="android:background">@color/flickrPrimaryBackgroundColor</item>
+    </style>
+
+    <style name="ActionBar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/flickrPrimaryTextColor</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

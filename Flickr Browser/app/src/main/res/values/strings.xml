@@ -2,7 +2,13 @@
 <resources>
 
     <string name="app_name">Flickr-Browser</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+    <string name="title_activity_search">Search Activity</string>
+    <string name="search_menu">Search</string>
+    <string name="searchable_label">Search Photos</string>
+    <string name="searchable_hint">Enter photo tags</string>
+    <string name="title_activity_view_photo_details">Photo Details</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

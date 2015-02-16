@@ -57,7 +57,7 @@ public class GetFlickrJsonData extends GetRawData {
 
     }
 
-    public List<Photo> getMPhotos() {
+    public List<Photo> getPhotos() {
         return mPhotos;
     }
 
@@ -92,12 +92,14 @@ public class GetFlickrJsonData extends GetRawData {
                 String title = jsonPhoto.getString(FLICKR_TITLE);
                 String author = jsonPhoto.getString(FLICKR_AUTHOR);
                 String author_id = jsonPhoto.getString(FLICKR_AUTHOR_ID);
-                String link = jsonPhoto.getString(FLICKR_LINK);
+                //String link = jsonPhoto.getString(FLICKR_LINK);
                 String tags = jsonPhoto.getString(FLICKR_TAGS);
 
                 //Extracting the photoURL from the media since media is a JSON object by itself
                 JSONObject jsonMedia = jsonPhoto.getJSONObject(FLICKR_MEDIA);
                 String photoUrl = jsonMedia.getString(FLICKR_PHOTO_URL);
+
+                String link = photoUrl.replace("_m.", "_b.");
 
                 //Create a photo object with the extracted photo information
                 Photo photoObject = new Photo(title,author,author_id,link,tags, photoUrl);
