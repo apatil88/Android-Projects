@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Created by Amrut on 3/5/15.
- * This class ensures cursor operations are in the background and do not stop the present UI thread from executing.
+ * This class ensures cursor operations are done in the background and do not stop the present UI thread from executing.
  * Retrieving the records from the database happens in the background.
  */
 public class FriendsListLoader extends AsyncTaskLoader<List<Friend>> {
