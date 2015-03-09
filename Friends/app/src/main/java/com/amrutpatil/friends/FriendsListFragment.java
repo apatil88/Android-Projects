@@ -2,7 +2,6 @@ package com.amrutpatil.friends;
 
 import android.content.ContentResolver;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
