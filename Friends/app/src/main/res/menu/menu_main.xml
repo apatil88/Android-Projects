@@ -2,8 +2,33 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".MainActivity">
-    <item android:id="@+id/action_settings"
-          android:title="@string/action_settings"
-          android:orderInCategory="100"
-          app:showAsAction="never"/>
+
+
+    <!-- Search -->
+    <item
+        android:icon="@android:drawable/ic_menu_search"
+        android:id="@+id/searchRecord"
+        android:showAsAction="always"
+        android:orderInCategory="10"
+        android:title="@string/main_search_title"
+        tools:ignore="AppCompatResource"/>
+
+    <!-- Add a record-->
+    <item
+        android:icon="@android:drawable/ic_menu_add"
+        android:id="@+id/addRecord"
+        android:showAsAction="always"
+        android:orderInCategory="100"
+        android:title="@string/main_add_title"
+        tools:ignore="AppCompatResource"/>
+
+    <!-- Delete Database -->
+    <item
+        android:id="@+id/deleteDatabase"
+        android:showAsAction="never"
+        android:orderInCategory="50"
+        android:title="@string/main_deleteDatabase_title"
+        tools:ignore="AppCompatResource"/>
+
+
 </menu>

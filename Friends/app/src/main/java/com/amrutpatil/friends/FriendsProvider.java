@@ -152,7 +152,7 @@ public class FriendsProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
 
         //Delete the database if ID is not passed
-        if(uri.equals(FriendsContract.BASE_CONTENT_URI)){
+        if(uri.equals(FriendsContract.URI_TABLES)){
             deleteDatabase();
             return 0;
         }

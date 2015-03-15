@@ -1,6 +1,6 @@
 package com.amrutpatil.friends;
 
-import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -76,7 +76,7 @@ public class FriendsCustomAdapter extends ArrayAdapter<Friend> {
                 FriendsDialog friendDialog = new FriendsDialog();
                 Bundle args = new Bundle();
                 args.putString(FriendsDialog.DIALOG_TYPE, FriendsDialog.DELETE_RECORD);
-                args.putString(FriendsContract.FriendsColumns.FRIENDS_ID, String.valueOf(_id));
+                args.putInt(FriendsContract.FriendsColumns.FRIENDS_ID, _id);
                 args.putString(FriendsContract.FriendsColumns.FRIENDS_NAME, name);
                 friendDialog.setArguments(args);
                 friendDialog.show(sFragmentManager, "delete-record");  //TAG to reference the fragment
