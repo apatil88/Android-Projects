@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Sunshine</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!--Menu label to fetch updated weather info from the service -->
+    <string name="action_refresh" translatable="false">Refresh</string>
+</resources>
