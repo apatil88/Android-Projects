@@ -5,4 +5,5 @@
 
     <!--Menu label to fetch updated weather info from the service -->
     <string name="action_refresh" translatable="false">Refresh</string>
+    <string name="title_activity_detail">DetailActivity</string>
 </resources>

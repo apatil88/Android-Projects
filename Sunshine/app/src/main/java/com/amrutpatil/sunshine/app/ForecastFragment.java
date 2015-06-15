@@ -1,5 +1,6 @@
 package com.amrutpatil.sunshine.app;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -76,7 +78,6 @@ public class ForecastFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container);
         String[] forecastArray = {
                 "Today - Sunny - 88/63",
                 "Tomorrow - Foggy - 70/43",
@@ -98,9 +99,21 @@ public class ForecastFragment extends Fragment {
                         //Forecast data
                         weekForecast);
 
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         //Get reference to the ListView and attach this Adapter to the ListView
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String forecast = mForecastAdapter.getItem(position);
+                //Toast.makeText(getActivity(), forecast, Toast.LENGTH_SHORT).show();
+
+                Intent detailActivityIntent = new Intent(getActivity(), DetailActivity.class)  //Explicit Intent
+                        .putExtra(Intent.EXTRA_TEXT, forecast);
+                startActivity(detailActivityIntent);
+            }
+        });
         return rootView;
     }
 
@@ -201,7 +214,7 @@ public class ForecastFragment extends Fragment {
             }
 
             for (String s : resultStrs) {
-                Log.v(LOG_TAG, "Forecast entry: " + s);
+               // Log.v(LOG_TAG, "Forecast entry: " + s);
             }
             return resultStrs;
 
@@ -239,7 +252,7 @@ public class ForecastFragment extends Fragment {
 
 
                 URL url = new URL(buildUri.toString());
-                Log.v(LOG_TAG, "Built URI : " + buildUri.toString());
+                //Log.v(LOG_TAG, "Built URI : " + buildUri.toString());
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -268,7 +281,7 @@ public class ForecastFragment extends Fragment {
                     return null;
                 }
                 forecastJsonStr = buffer.toString();
-                Log.v(LOG_TAG, "Forecast string :" + forecastJsonStr);
+                //Log.v(LOG_TAG, "Forecast string :" + forecastJsonStr);
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
