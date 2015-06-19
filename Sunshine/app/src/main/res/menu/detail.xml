@@ -5,5 +5,10 @@
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"
           android:orderInCategory="100"
-          app:showAsAction="never"/>
+          app:showAsAction="never"
+          />
+      <item
+          android:id="@+id/menu_item_share"
+          android:title="Share"
+          android:actionProviderClass="android.widget.ShareActionProvider" />
 </menu>
