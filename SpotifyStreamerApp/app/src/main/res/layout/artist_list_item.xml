@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content">
+
+    <!-- ArtistInfo Thumbnail-->
+    <ImageView
+        android:id="@+id/artistThumbnail"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        android:layout_weight="0.1"
+        android:src="@drawable/spotify_1"/>
+
+    <!-- ArtistInfo Name-->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.75"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/artistName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:singleLine="true"
+            android:text="@string/artist_name"
+            android:textSize="15sp"/>
+    </LinearLayout>
+</LinearLayout>
