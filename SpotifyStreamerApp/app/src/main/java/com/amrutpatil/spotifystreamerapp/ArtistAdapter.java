@@ -50,7 +50,10 @@ public class ArtistAdapter extends ArrayAdapter<ArtistInfo> {
             imgUri = Uri.parse("android.resource://com.amrutpatil.com/drawable/spotify_1").toString();
         }
 
-        Picasso.with(context).load(imgUri).into(imgThumbnail);
+        Picasso.with(context).load(imgUri)        //load the thumbnail
+                .error(R.drawable.spotify_1)      //if no thumnail is present, display the spotify_1.png image as a placeholder
+                .placeholder(R.drawable.spotify_1)  //set the placeholder image
+                .into(imgThumbnail);
 
         /*convertView.setOnClickListener(new View.OnClickListener() {
             @Override
