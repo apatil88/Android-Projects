@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.amrutpatil.spotifystreamerapp"
-        minSdkVersion 21
+        minSdkVersion 11
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -21,7 +21,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile(name:'spotify-web-api-android-0.1.0', ext:'aar');
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile(name:'spotify-web-api-android-0.1.0', ext:'aar')
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.retrofit:retrofit:1.9.0'  // Uses this to create RESTful Requests
     compile 'com.squareup.okhttp:okhttp:2.2.0'  // Uses this to create HTTP connections

@@ -6,13 +6,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
+public class TopTracksActivity extends AppCompatActivity {
 
-public class MainActivity extends AppCompatActivity {
+    private static final String LOG_TAG = TopTracksActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_top_tracks);
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
         if (findViewById(R.id.fragment_container) != null) {
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Create a new Fragment to be placed in the activity layout
-            MainActivityFragment firstFragment = new MainActivityFragment();
+            TopTracksActivityFragment firstFragment = new TopTracksActivityFragment();
 
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment_container as arguments
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Add the fragment_container to the 'fragment_container' FrameLayout
             getFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
+            //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
         }
     }
 
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_top_tracks, menu);
         return true;
     }
 

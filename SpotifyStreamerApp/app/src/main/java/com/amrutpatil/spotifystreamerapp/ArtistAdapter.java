@@ -1,7 +1,10 @@
 package com.amrutpatil.spotifystreamerapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +58,7 @@ public class ArtistAdapter extends ArrayAdapter<ArtistInfo> {
                 .placeholder(R.drawable.spotify_1)  //set the placeholder image
                 .into(imgThumbnail);
 
-        /*convertView.setOnClickListener(new View.OnClickListener() {
+        convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(LOG_TAG, "Clicked");
@@ -65,7 +68,7 @@ public class ArtistAdapter extends ArrayAdapter<ArtistInfo> {
                     context.startActivity(intent);
                 }
             }
-        });*/
+        });
 
         return convertView;
     }

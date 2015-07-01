@@ -28,7 +28,7 @@ import retrofit.client.Response;
 
 
 /**
- * A placeholder fragment containing a simple view.
+ * A placeholder fragment_container containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
 
@@ -113,7 +113,7 @@ public class MainActivityFragment extends Fragment {
                                     loader.setVisibility(View.GONE);
                                     // In case we don't find a match in the Spotify API
                                     if (artistsPager.artists.total == 0) {
-                                        Toast.makeText(getActivity(), getString(R.string.no_results_found), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), getString(R.string.no_results_found), Toast.LENGTH_LONG).show();
                                     } else {
                                         for (Artist a : artistsPager.artists.items) {
                                             String thumbnail = "";
@@ -134,7 +134,7 @@ public class MainActivityFragment extends Fragment {
                                 @Override
                                 public void run() {
                                     loader.setVisibility(View.GONE);
-                                    Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             });
                         }
