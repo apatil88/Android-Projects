@@ -12,6 +12,7 @@ This Android app allows you to create, edit and delete notes.
 
 #SpotifyStreamerApp
 This music streaming Android app allows you to search songs by artist name and displays top 10 tracks of the given artist. This app utilizes two key Android libraries:
+
 Picasso - A powerful library that will handle image loading and caching.
 
 Spotify-Web-Api-Wrapper - A Java wrapper for the Spotify Web API that provides java methods that map directly to Web API endpoints. In other words, this wrapper handles making the HTTP request to a desired API endpoint, and deserializes the JSON response.
