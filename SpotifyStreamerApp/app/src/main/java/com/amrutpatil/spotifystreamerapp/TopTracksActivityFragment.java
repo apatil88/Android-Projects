@@ -55,6 +55,8 @@ public class TopTracksActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Get artist id
+        artistId = getActivity().getIntent().getStringExtra(ARTIST_ID);
         return inflater.inflate(R.layout.fragment_top_tracks, container, false);
     }
 

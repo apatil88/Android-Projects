@@ -32,8 +32,6 @@ import retrofit.client.Response;
  */
 public class MainActivityFragment extends Fragment {
 
-    // Log Tag
-    private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
     // Saved instance key
     private static final String SAVED_KEY = "ARTIST_KEY";
     // Saved instance list
@@ -89,9 +87,7 @@ public class MainActivityFragment extends Fragment {
                         Toast.makeText(getActivity(), getString(R.string.device_offline), Toast.LENGTH_SHORT).show();
                         return false;
                     }
-
                     loader.setVisibility(View.VISIBLE);
-
                     // Get search term
                     String searchTerm = v.getEditableText().toString();
 
@@ -144,7 +140,6 @@ public class MainActivityFragment extends Fragment {
                 return false;
             }
         });
-
         return rootView;
     }
 

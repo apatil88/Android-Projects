@@ -7,7 +7,7 @@
     <!-- album thumbnail -->
     <ImageView
         android:id="@+id/row_album_iv_thumbnail"
-        android:layout_width="50dp"
+        android:layout_width="80dp"
         android:layout_height="100dp"
         android:src="@drawable/spotify_1"/>
 
@@ -27,7 +27,8 @@
             android:lines="1"
             android:singleLine="true"
             android:text="@string/track_name"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textColor="#000000"/>
         <TextView
             android:id="@+id/row_track_tv_album"
             android:layout_width="fill_parent"
@@ -36,7 +37,7 @@
             android:singleLine="true"
             android:text="@string/track_album"
             android:textSize="16sp"
-            android:textColor="#999999"/>
+            android:textColor="#000000"/>
     </LinearLayout>
 
 </LinearLayout>
