@@ -50,7 +50,7 @@ public class ArtistAdapter extends ArrayAdapter<ArtistInfo> {
         if (!artist.getThumbNailUrl().isEmpty()) {
             imgUri = artist.getThumbNailUrl();
         } else {
-            imgUri = Uri.parse("android.resource://com.amrutpatil.com/drawable/spotify_1").toString();
+            imgUri = Uri.parse("android.resource://com.amrutpatil.spotifystreamerapp" +"/"+ R.drawable.spotify_1).toString();
         }
 
         Picasso.with(context).load(imgUri)        //load the thumbnail

@@ -17,11 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-/**
- * Adapter to display a top track in the list view.
- */
 public class TrackAdapter extends ArrayAdapter<TrackInfo> {
-    private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
+    private static final String LOG_TAG = TrackAdapter.class.getSimpleName();
 
     private Context context;
 
@@ -52,7 +49,7 @@ public class TrackAdapter extends ArrayAdapter<TrackInfo> {
         if (!track.getThumbnail().isEmpty()) {
             thumbnailUri = track.getThumbnail();
         } else {
-            thumbnailUri = Uri.parse("android.resource://me.habel.spotifystreamer/drawable/logo").toString();
+            thumbnailUri = Uri.parse("android.resource://com.amrutpatil.spotifystreamerapp" +"/"+ R.drawable.spotify_1).toString();
         }
 
         Picasso.with(context).load(thumbnailUri)        //load the thumbnail

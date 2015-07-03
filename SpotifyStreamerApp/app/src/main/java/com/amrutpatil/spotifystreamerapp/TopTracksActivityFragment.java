@@ -28,15 +28,10 @@ import retrofit.client.Response;
  */
 public class TopTracksActivityFragment extends Fragment {
 
-    // Log Tag
     private static final String LOG_TAG = TopTracksActivityFragment.class.getSimpleName();
-    // Saved instance key
-    private static final String SAVED_KEY = "TRACK_KEY";
-    // Saved instance list
-    private static final String SAVED_LIST = "TRACK_LIST";
-    // List of tracks
+    private static final String SAVED_INSTANCE_KEY = "TRACK_KEY";
+    private static final String SAVED_INSTANCE_LIST = "TRACK_LIST";
     private ArrayList<TrackInfo> tracksList;
-    // Track adapter
     private TrackAdapter trackAdapter;
 
     private String artistId;
@@ -47,15 +42,14 @@ public class TopTracksActivityFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(SAVED_KEY, artistId);
-        outState.putParcelableArrayList(SAVED_LIST, tracksList);
+        outState.putString(SAVED_INSTANCE_KEY, artistId);
+        outState.putParcelableArrayList(SAVED_INSTANCE_LIST, tracksList);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Get artist id
         artistId = getActivity().getIntent().getStringExtra(ARTIST_ID);
         return inflater.inflate(R.layout.fragment_top_tracks, container, false);
     }
@@ -73,9 +67,8 @@ public class TopTracksActivityFragment extends Fragment {
 
         final ProgressBar loader = (ProgressBar) getActivity().findViewById(R.id.top_pb_loader);
 
-        if (savedInstanceState == null || !savedInstanceState.containsKey(SAVED_KEY)) {
+        if (savedInstanceState == null || !savedInstanceState.containsKey(SAVED_INSTANCE_KEY)) {
 
-            // Instantiate the Spotify API
             SpotifyApi spotifyApi = new SpotifyApi();
             SpotifyService spotifyService = spotifyApi.getService();
 
@@ -121,7 +114,7 @@ public class TopTracksActivityFragment extends Fragment {
                 }
             });
         } else {
-            tracksList = savedInstanceState.getParcelableArrayList(SAVED_LIST);
+            tracksList = savedInstanceState.getParcelableArrayList(SAVED_INSTANCE_LIST);
             trackAdapter.clear();
             trackAdapter.addAll(tracksList);
             loader.setVisibility(View.GONE);

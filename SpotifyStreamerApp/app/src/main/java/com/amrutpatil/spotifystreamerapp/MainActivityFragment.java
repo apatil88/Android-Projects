@@ -32,13 +32,10 @@ import retrofit.client.Response;
  */
 public class MainActivityFragment extends Fragment {
 
-    // Saved instance key
-    private static final String SAVED_KEY = "ARTIST_KEY";
-    // Saved instance list
-    private static final String SAVED_LIST = "ARTIST_LIST";
-    // List of artists
+    private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
+    private static final String SAVED_INSTANCE_KEY = "ARTIST_KEY";
+    private static final String SAVED_INSTANCE_LIST = "ARTIST_LIST";
     private ArrayList<ArtistInfo> artistsList;
-    // ArtistInfo adapter
     private ArtistAdapter artistAdapter;
 
     public MainActivityFragment() {
@@ -47,39 +44,33 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         EditText searchBox = (EditText) getActivity().findViewById(R.id.main_artist_search);
-        outState.putString(SAVED_KEY, searchBox.getEditableText().toString());
-        outState.putParcelableArrayList(SAVED_LIST, artistsList);
+        outState.putString(SAVED_INSTANCE_KEY, searchBox.getEditableText().toString());
+        outState.putParcelableArrayList(SAVED_INSTANCE_LIST, artistsList);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflated view
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        // Progress bar
         final ProgressBar loader = (ProgressBar) rootView.findViewById(R.id.main_pb_loader);
 
-        // Artists Search box
-        EditText searchBox = (EditText) rootView.findViewById(R.id.main_artist_search);
+        //Search box to search artist
+        EditText searchView = (EditText) rootView.findViewById(R.id.main_artist_search);
         // Artists list view
         final ListView artistsListView = (ListView) rootView.findViewById(R.id.main_artists_list);
 
-        if (savedInstanceState == null || !savedInstanceState.containsKey(SAVED_KEY)) {
+        if (savedInstanceState == null || !savedInstanceState.containsKey(SAVED_INSTANCE_KEY)) {
             artistsList = new ArrayList<ArtistInfo>();
         } else {
-            searchBox.setText(savedInstanceState.getString(SAVED_KEY));
-            artistsList = savedInstanceState.getParcelableArrayList(SAVED_LIST);
+            searchView.setText(savedInstanceState.getString(SAVED_INSTANCE_KEY));
+            artistsList = savedInstanceState.getParcelableArrayList(SAVED_INSTANCE_LIST);
         }
 
-        // Assign artist adapter
         artistAdapter = new ArtistAdapter(getActivity(), R.layout.artist_list_item, R.id.artistName, artistsList);
-        // Set artist adapter to artists list view
         artistsListView.setAdapter(artistAdapter);
 
-        // Event listener
-        searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        searchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -88,28 +79,27 @@ public class MainActivityFragment extends Fragment {
                         return false;
                     }
                     loader.setVisibility(View.VISIBLE);
-                    // Get search term
+                    // Get search text
                     String searchTerm = v.getEditableText().toString();
 
                     // Instantiate the Spotify API
                     SpotifyApi spotifyApi = new SpotifyApi();
                     SpotifyService spotifyService = spotifyApi.getService();
+
                     // Search for the artist
                     spotifyService.searchArtists(searchTerm, new Callback<ArtistsPager>() {
                         @Override
                         public void success(final ArtistsPager artistsPager, Response response) {
-                            // Callbacks don't run on the UI thread, so this call is necessary
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    // Clear the adapter
                                     artistsList.clear();
                                     artistAdapter.clear();
-                                    // Hide progress bar
-                                    loader.setVisibility(View.GONE);
-                                    // In case we don't find a match in the Spotify API
+                                    loader.setVisibility(View.GONE);   // Hide progress bar
+
+                                    // If no match is found in the Spotify API
                                     if (artistsPager.artists.total == 0) {
-                                        Toast.makeText(getActivity(), getString(R.string.no_results_found), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(), getString(R.string.no_results_found), Toast.LENGTH_SHORT).show();
                                     } else {
                                         for (Artist a : artistsPager.artists.items) {
                                             String thumbnail = "";
@@ -130,7 +120,7 @@ public class MainActivityFragment extends Fragment {
                                 @Override
                                 public void run() {
                                     loader.setVisibility(View.GONE);
-                                    Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -143,6 +133,7 @@ public class MainActivityFragment extends Fragment {
         return rootView;
     }
 
+    //Connectivity Manager: http://developer.android.com/reference/android/net/ConnectivityManager.html
     private boolean isDeviceOffline() {
         boolean isDeviceOffline = true;
         try {

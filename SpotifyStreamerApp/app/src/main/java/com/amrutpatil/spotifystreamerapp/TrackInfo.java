@@ -5,10 +5,12 @@ import android.os.Parcelable;
 
 /**
  * Created by Amrut on 6/30/15.
+ *
+ * Parcelable Interface: http://developer.android.com/reference/android/os/Parcelable.html
+ *
+ * Parcelable Example and how is it different from Serialization: http://www.3pillarglobal.com/insights/parcelable-vs-java-serialization-in-android-app-development
  */
-/**
- * Track Entity.
- */
+
 public class TrackInfo implements Parcelable {
     private String name;
     private String album;
@@ -32,23 +34,17 @@ public class TrackInfo implements Parcelable {
         return album;
     }
 
-    public void setAlbum(String album) {
-        this.album = album;
-    }
-
     public String getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
 
     @Override
     public int describeContents() {
         return 0;
     }
 
+    //Convert Java object to Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.name);
@@ -60,10 +56,10 @@ public class TrackInfo implements Parcelable {
     private TrackInfo(Parcel in) {
         this.name = in.readString();
         this.album = in.readString();
-
         this.thumbnail = in.readString();
     }
 
+    //De-serialize the Java object
     public static final Parcelable.Creator<TrackInfo> CREATOR = new Parcelable.Creator<TrackInfo>() {
         public TrackInfo createFromParcel(Parcel in) {
             return new TrackInfo(in);
