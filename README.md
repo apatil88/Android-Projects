@@ -18,7 +18,7 @@ Picasso - A powerful library that will handle image loading and caching.
 Spotify-Web-Api-Wrapper - A Java wrapper for the Spotify Web API that provides java methods that map directly to Web API endpoints. In other words, this wrapper handles making the HTTP request to a desired API endpoint, and deserializes the JSON response.
 
 #Top10Downloader
-This Android app displays top 10 songs on the Apple iTunes Store.
+This Android app displays top 10 songs from the Apple iTunes Store.
 
 #YouTube Player
 This Android app allows you to play YouTube videos and playlists on your phone. The app uses the YouTube Android Player API provided by Google.
