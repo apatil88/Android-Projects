@@ -36,10 +36,10 @@ public class TrackAdapter extends ArrayAdapter<TrackInfo> {
             convertView = layoutInflater.inflate(R.layout.top_tracks_list_item, parent, false);
         }
 
-        TextView trackName = (TextView) convertView.findViewById(R.id.row_track_tv_name);
+        TextView trackName = (TextView) convertView.findViewById(R.id.row_track_name);
         trackName.setText(track.getName());
 
-        TextView trackAlbum = (TextView) convertView.findViewById(R.id.row_track_tv_album);
+        TextView trackAlbum = (TextView) convertView.findViewById(R.id.row_track_album);
         trackAlbum.setText(track.getAlbum());
 
         ImageView albumThumbnail = (ImageView) convertView.findViewById(R.id.row_album_iv_thumbnail);

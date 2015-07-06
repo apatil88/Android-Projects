@@ -148,7 +148,7 @@
     <color name="md_teal_A400">#1de9b6</color>
     <color name="md_teal_A700">#00bfa5</color>
 
-    <!-- green -->
+    <!-- blue -->
     <color name="md_green_50">#d0f8ce</color>
     <color name="md_green_100">#a3e9a4</color>
     <color name="md_green_200">#72d572</color>
@@ -164,7 +164,7 @@
     <color name="md_green_A400">#14e715</color>
     <color name="md_green_A700">#12c700</color>
 
-    <!--light green-->
+    <!--light blue-->
     <color name="md_light_green_50">#f1f8e9</color>
     <color name="md_light_green_100">#dcedc8</color>
     <color name="md_light_green_200">#c5e1a5</color>

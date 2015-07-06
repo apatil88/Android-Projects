@@ -53,7 +53,7 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        final ProgressBar loader = (ProgressBar) rootView.findViewById(R.id.main_pb_loader);
+        final ProgressBar loader = (ProgressBar) rootView.findViewById(R.id.main_loader);
 
         //Search box to search artist
         EditText searchView = (EditText) rootView.findViewById(R.id.main_artist_search);

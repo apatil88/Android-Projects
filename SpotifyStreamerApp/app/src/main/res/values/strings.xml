@@ -10,9 +10,7 @@
     <string name="device_offline" translatable="false">Device is offline!</string>
     <string name="title_activity_top_tracks">Top 10 Tracks</string>
 
-    <!-- track name -->
     <string name="track_name" translatable="false">Track</string>
-    <!-- album name -->
     <string name="track_album" translatable="false">Album</string>
 
 

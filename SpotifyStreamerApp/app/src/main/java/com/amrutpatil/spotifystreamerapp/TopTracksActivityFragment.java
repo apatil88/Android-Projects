@@ -62,10 +62,10 @@ public class TopTracksActivityFragment extends Fragment {
 
         tracksList = new ArrayList<TrackInfo>();
 
-        trackAdapter = new TrackAdapter(getActivity(), R.layout.top_tracks_list_item, R.id.row_track_tv_name, tracksList);
+        trackAdapter = new TrackAdapter(getActivity(), R.layout.top_tracks_list_item, R.id.row_track_name, tracksList);
         tracksListView.setAdapter(trackAdapter);
 
-        final ProgressBar loader = (ProgressBar) getActivity().findViewById(R.id.top_pb_loader);
+        final ProgressBar loader = (ProgressBar) getActivity().findViewById(R.id.top_loader);
 
         if (savedInstanceState == null || !savedInstanceState.containsKey(SAVED_INSTANCE_KEY)) {
 
