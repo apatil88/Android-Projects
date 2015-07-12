@@ -85,8 +85,6 @@ public class MovieImageAdapter extends BaseAdapter{
 
         final MovieInfo movieInfo = getItem(position);
 
-        String image_url = "http://image.tmdb.org/t/p/w185" + movieInfo.getMovieThumbnail();
-
         viewHolder = (ViewHolder) convertView.getTag();
 
         viewHolder.titleView.setText(movieInfo.getMovieTitle());
