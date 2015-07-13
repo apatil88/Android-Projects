@@ -18,6 +18,11 @@ public class MovieInfo implements Parcelable {
     private String moviePlotSynopsis;
     private int movieUserRating;
     private String movieReleaseDate;
+    private String image2;
+
+    public String getImage2() {
+        return image2;
+    }
 
     public MovieInfo(){
 

@@ -6,8 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import org.json.JSONArray;
@@ -54,6 +58,67 @@ public class MainActivityFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+
+        MenuItem action_sort_by_popularity = menu.findItem(R.id.action_sort_by_popularity);
+        MenuItem action_sort_by_rating = menu.findItem(R.id.action_sort_by_rating);
+        MenuItem action_sort_by_favorite = menu.findItem(R.id.action_sort_by_favorite);
+
+        if (mSortBy.contentEquals(POPULARITY_DESC)) {
+            if (!action_sort_by_popularity.isChecked()) {
+                action_sort_by_popularity.setChecked(true);
+            }
+        } else if (mSortBy.contentEquals(RATING_DESC)) {
+            if (!action_sort_by_rating.isChecked()) {
+                action_sort_by_rating.setChecked(true);
+            }
+        } else if (mSortBy.contentEquals(FAVORITE)) {
+            if (!action_sort_by_popularity.isChecked()) {
+                action_sort_by_favorite.setChecked(true);
+            }
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_sort_by_popularity:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                } else {
+                    item.setChecked(true);
+                }
+                mSortBy = POPULARITY_DESC;
+                updateMovies(mSortBy);
+                return true;
+            case R.id.action_sort_by_rating:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                } else {
+                    item.setChecked(true);
+                }
+                mSortBy = RATING_DESC;
+                updateMovies(mSortBy);
+                return true;
+            case R.id.action_sort_by_favorite:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                } else {
+                    item.setChecked(true);
+                }
+                mSortBy = FAVORITE;
+                updateMovies(mSortBy);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -63,12 +128,46 @@ public class MainActivityFragment extends Fragment {
         mMovieImageAdapter = new MovieImageAdapter(getActivity(), new ArrayList<MovieInfo>());
 
         mGridView.setAdapter(mMovieImageAdapter);
+
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MovieInfo movie = mMovieImageAdapter.getItem(position);
+                ((Callback) getActivity()).onItemSelected(movie);
+            }
+        });
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(SORT_SETTING_KEY)) {
+                mSortBy = savedInstanceState.getString(SORT_SETTING_KEY);
+            }
+
+            if (savedInstanceState.containsKey(MOVIES_KEY)) {
+                mMovieInfos = savedInstanceState.getParcelableArrayList(MOVIES_KEY);
+                mMovieImageAdapter.setData(mMovieInfos);
+            } else {
+                updateMovies(mSortBy);
+            }
+        } else {
+            updateMovies(mSortBy);
+        }
         return rootView;
     }
 
     private void updateMovies(String sortBy){
         FetchMoviesTask fetchMoviesTask = new FetchMoviesTask();
         fetchMoviesTask.execute(sortBy);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (!mSortBy.contentEquals(POPULARITY_DESC)) {
+            outState.putString(SORT_SETTING_KEY, mSortBy);
+        }
+        if (mMovieInfos != null) {
+            outState.putParcelableArrayList(MOVIES_KEY, mMovieInfos);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     @Override
