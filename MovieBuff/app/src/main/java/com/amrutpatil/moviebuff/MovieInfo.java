@@ -20,10 +20,6 @@ public class MovieInfo implements Parcelable {
     private String movieReleaseDate;
     private String image2;
 
-    public String getImage2() {
-        return image2;
-    }
-
     public MovieInfo(){
 
     }
@@ -32,9 +28,11 @@ public class MovieInfo implements Parcelable {
         this.movieId = movie.getInt("id");
         this.movieTitle = movie.getString("original_title");
         this.movieThumbnail = movie.getString("poster_path");
+        this.image2 = movie.getString("backdrop_path");
         this.moviePlotSynopsis = movie.getString("overview");
         this.movieUserRating = movie.getInt("vote_average");
         this.movieReleaseDate = movie.getString("release_date");
+
     }
 
     public int getMovieId() {
@@ -59,6 +57,10 @@ public class MovieInfo implements Parcelable {
 
     public void setMovieThumbnail(String movieThumbnail) {
         this.movieThumbnail = movieThumbnail;
+    }
+
+    public String getImage2() {
+        return image2;
     }
 
     public String getMoviePlotSynopsis() {
@@ -98,6 +100,7 @@ public class MovieInfo implements Parcelable {
         dest.writeString(moviePlotSynopsis);
         dest.writeInt(movieUserRating);
         dest.writeString(movieReleaseDate);
+        dest.writeString(image2);
     }
 
     public static final Parcelable.Creator<MovieInfo> CREATOR = new Parcelable.Creator<MovieInfo>(){
@@ -117,5 +120,6 @@ public class MovieInfo implements Parcelable {
         moviePlotSynopsis = in.readString();
         movieUserRating = in.readInt();
         movieReleaseDate = in.readString();
+        image2 = in.readString();
     }
 }

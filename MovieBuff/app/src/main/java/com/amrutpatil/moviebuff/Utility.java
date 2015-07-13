@@ -5,6 +5,6 @@ package com.amrutpatil.moviebuff;
  */
 public class Utility {
     public static String buildImageUrl(int width, String fileName) {
-        return "http://image.tmdb.org/t/p/w" + Integer.toString(width) + fileName;
+        return "http://image.tmdb.org/t/p/" + Integer.toString(width) + fileName;
     }
 }
