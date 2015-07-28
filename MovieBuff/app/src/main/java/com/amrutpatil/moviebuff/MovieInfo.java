@@ -1,5 +1,6 @@
 package com.amrutpatil.moviebuff;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -33,6 +34,16 @@ public class MovieInfo implements Parcelable {
         this.movieUserRating = movie.getInt("vote_average");
         this.movieReleaseDate = movie.getString("release_date");
 
+    }
+
+    public MovieInfo(Cursor cursor) {
+        this.movieId = cursor.getInt(MainActivityFragment.COL_MOVIE_ID);
+        this.movieTitle = cursor.getString(MainActivityFragment.COL_TITLE);
+        this.movieThumbnail = cursor.getString(MainActivityFragment.COL_IMAGE);
+        this.image2 = cursor.getString(MainActivityFragment.COL_IMAGE2);
+        this.moviePlotSynopsis = cursor.getString(MainActivityFragment.COL_OVERVIEW);
+        this.movieUserRating = cursor.getInt(MainActivityFragment.COL_RATING);
+        this.movieReleaseDate = cursor.getString(MainActivityFragment.COL_DATE);
     }
 
     public int getMovieId() {

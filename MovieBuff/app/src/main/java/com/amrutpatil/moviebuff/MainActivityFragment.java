@@ -1,5 +1,7 @@
 package com.amrutpatil.moviebuff;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -48,8 +50,38 @@ public class MainActivityFragment extends Fragment {
 
     private ArrayList<MovieInfo> mMovieInfos = null;
 
+    private static final String[] MOVIE_COLUMNS = {
+            MovieContract.MovieEntry._ID,
+            MovieContract.MovieEntry.COLUMN_MOVIE_ID,
+            MovieContract.MovieEntry.COLUMN_TITLE,
+            MovieContract.MovieEntry.COLUMN_IMAGE,
+            MovieContract.MovieEntry.COLUMN_IMAGE2,
+            MovieContract.MovieEntry.COLUMN_OVERVIEW,
+            MovieContract.MovieEntry.COLUMN_RATING,
+            MovieContract.MovieEntry.COLUMN_DATE
+    };
+
+    public static final int COL_ID = 0;
+    public static final int COL_MOVIE_ID = 1;
+    public static final int COL_TITLE = 2;
+    public static final int COL_IMAGE = 3;
+    public static final int COL_IMAGE2 = 4;
+    public static final int COL_OVERVIEW = 5;
+    public static final int COL_RATING = 6;
+    public static final int COL_DATE = 7;
+
     public MainActivityFragment() {
     }
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        void onItemSelected(MovieInfo movie);
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -155,8 +187,11 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void updateMovies(String sortBy){
-        FetchMoviesTask fetchMoviesTask = new FetchMoviesTask();
-        fetchMoviesTask.execute(sortBy);
+        if (!sortBy.contentEquals(FAVORITE)) {
+            new FetchMoviesTask().execute(sortBy);
+        } else {
+            new FetchFavoriteMoviesTask(getActivity()).execute();
+        }
     }
 
     @Override
@@ -169,18 +204,6 @@ public class MainActivityFragment extends Fragment {
         }
         super.onSaveInstanceState(outState);
     }
-
-    @Override
-    public void onStart(){
-        super.onStart();
-        updateMovies(POPULARITY_DESC);
-    }
-
-    public interface Callback{
-        void onItemSelected(MovieInfo movieInfo);
-    }
-
-
 
     public class FetchMoviesTask extends AsyncTask<String, Void, List<MovieInfo>>{
 
@@ -285,6 +308,50 @@ public class MainActivityFragment extends Fragment {
                 }
                 mMovieInfos = new ArrayList<>();
                 mMovieInfos.addAll(movieInfos);
+            }
+        }
+    }
+
+    public class FetchFavoriteMoviesTask extends AsyncTask<Void, Void, List<MovieInfo>> {
+
+        private Context mContext;
+
+        public FetchFavoriteMoviesTask(Context context) {
+            mContext = context;
+        }
+
+        private List<MovieInfo> getFavoriteMoviesDataFromCursor(Cursor cursor) {
+            List<MovieInfo> results = new ArrayList<>();
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    MovieInfo movie = new MovieInfo(cursor);
+                    results.add(movie);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+            return results;
+        }
+
+        @Override
+        protected List<MovieInfo> doInBackground(Void... params) {
+            Cursor cursor = mContext.getContentResolver().query(
+                    MovieContract.MovieEntry.CONTENT_URI,
+                    MOVIE_COLUMNS,
+                    null,
+                    null,
+                    null
+            );
+            return getFavoriteMoviesDataFromCursor(cursor);
+        }
+
+        @Override
+        protected void onPostExecute(List<MovieInfo> movies) {
+            if (movies != null) {
+                if (mMovieImageAdapter != null) {
+                    mMovieImageAdapter.setData(movies);
+                }
+                mMovieInfos = new ArrayList<>();
+                mMovieInfos.addAll(movies);
             }
         }
     }

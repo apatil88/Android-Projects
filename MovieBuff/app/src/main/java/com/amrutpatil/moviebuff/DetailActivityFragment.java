@@ -1,16 +1,21 @@
 package com.amrutpatil.moviebuff;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -162,6 +167,120 @@ public class DetailActivityFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (mMovie != null) {
+            inflater.inflate(R.menu.menu_detail, menu);
+
+            final MenuItem action_favorite = menu.findItem(R.id.action_favorite);
+            MenuItem action_share = menu.findItem(R.id.action_share);
+
+            /*action_favorite.setIcon(Utility.isFavorited(getActivity(), mMovie.getMovieId()) == 1 ?
+                    R.drawable.abc_btn_rating_star_on_mtrl_alpha :
+                    R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+*/
+            new AsyncTask<Void, Void, Integer>() {
+                @Override
+                protected Integer doInBackground(Void... params) {
+                    return Utility.isFavorited(getActivity(), mMovie.getMovieId());
+                }
+
+                @Override
+                protected void onPostExecute(Integer isFavorited) {
+                    action_favorite.setIcon(isFavorited == 1 ?
+                            R.drawable.abc_btn_rating_star_on_mtrl_alpha :
+                            R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                }
+            }.execute();
+
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(action_share);
+
+            if (mTrailer != null) {
+                mShareActionProvider.setShareIntent(createShareMovieIntent());
+            }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_favorite:
+                if (mMovie != null) {
+                    // check if movie is in favorites or not
+                    new AsyncTask<Void, Void, Integer>() {
+
+                        @Override
+                        protected Integer doInBackground(Void... params) {
+                            return Utility.isFavorited(getActivity(), mMovie.getMovieId());
+                        }
+
+                        @Override
+                        protected void onPostExecute(Integer isFavorited) {
+                            // if it is in favorites
+                            if (isFavorited == 1) {
+                                // delete from favorites
+                                new AsyncTask<Void, Void, Integer>() {
+                                    @Override
+                                    protected Integer doInBackground(Void... params) {
+                                        return getActivity().getContentResolver().delete(
+                                                MovieContract.MovieEntry.CONTENT_URI,
+                                                MovieContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
+                                                new String[]{Integer.toString(mMovie.getMovieId())}
+                                        );
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(Integer rowsDeleted) {
+                                        item.setIcon(R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                                        if (mToast != null) {
+                                            mToast.cancel();
+                                        }
+                                        mToast = Toast.makeText(getActivity(), getString(R.string.removed_from_favorites), Toast.LENGTH_SHORT);
+                                        mToast.show();
+                                    }
+                                }.execute();
+                            }
+                            // if it is not in favorites
+                            else {
+                                // add to favorites
+                                new AsyncTask<Void, Void, Uri>() {
+                                    @Override
+                                    protected Uri doInBackground(Void... params) {
+                                        ContentValues values = new ContentValues();
+
+                                        values.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, mMovie.getMovieId());
+                                        values.put(MovieContract.MovieEntry.COLUMN_TITLE, mMovie.getMovieTitle());
+                                        values.put(MovieContract.MovieEntry.COLUMN_IMAGE, mMovie.getMovieThumbnail());
+                                        values.put(MovieContract.MovieEntry.COLUMN_IMAGE2, mMovie.getImage2());
+                                        values.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, mMovie.getMoviePlotSynopsis());
+                                        values.put(MovieContract.MovieEntry.COLUMN_RATING, mMovie.getMovieUserRating());
+                                        values.put(MovieContract.MovieEntry.COLUMN_DATE, mMovie.getMovieReleaseDate());
+
+                                        return getActivity().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI,
+                                                values);
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(Uri returnUri) {
+                                        item.setIcon(R.drawable.abc_btn_rating_star_on_mtrl_alpha);
+                                        if (mToast != null) {
+                                            mToast.cancel();
+                                        }
+                                        mToast = Toast.makeText(getActivity(), getString(R.string.added_to_favorites), Toast.LENGTH_SHORT);
+                                        mToast.show();
+                                    }
+                                }.execute();
+                            }
+                        }
+                    }.execute();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
