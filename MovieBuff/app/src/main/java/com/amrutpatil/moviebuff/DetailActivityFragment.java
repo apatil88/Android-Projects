@@ -141,8 +141,8 @@ public class DetailActivityFragment extends Fragment {
 
         if (mMovie != null) {
 
-            String image_url = "http://image.tmdb.org/t/p/w185" + mMovie.getMovieThumbnail();
-
+            //String image_url = "http://image.tmdb.org/t/p/w185" + mMovie.getMovieThumbnail();
+            String image_url = Utility.buildImageUrl(342, mMovie.getImage2());
             Picasso.with(mContext).load(image_url)
                     .error(R.drawable.photo)
                     .placeholder(R.drawable.photo)

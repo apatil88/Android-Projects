@@ -16,5 +16,5 @@
     <string name="action_sort_by_favorite">Favorites</string>
     <string name="action_share">Share</string>
     <string name="gridview">GridView</string>
-    <string name="api_key">bd320ece9bb2877c14b2f5304f012749</string>
+    <string name="api_key"></string>
 </resources>
