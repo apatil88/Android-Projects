@@ -52,8 +52,8 @@ public class FlickrRecyclerViewAdapter extends RecyclerView.Adapter<FlickrImageV
 
         //Draw the thumbnail
         Picasso.with(mContext).load(photoItem.getImage())    //load the photo
-                .error(R.drawable.placeholder)               //if there is an error, it will display the placeholder.png image
-                .placeholder(R.drawable.placeholder)         //set the placeholder image
+                .error(R.drawable.placeholder1)               //if there is an error, it will display the placeholder.png image
+                .placeholder(R.drawable.placeholder1)         //set the placeholder image
                 .into(flickrImageViewHolder.thumbnail);      //Adapter places the thumbnail in FlickrImageViewHolder
 
         flickrImageViewHolder.title.setText(photoItem.getTitle());  //Set the photo title
