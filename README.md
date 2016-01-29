@@ -8,7 +8,7 @@ This simple Android app records and displays the number of times a button has be
 This simple Android app makes use of ContentProvider to retrieve and display contacts stored on your device.
 
 #MovieBuff
-This Android App allows you to view information about current popular and highly rated movies. This app also allows you to mark a movie as a favorite, view reviews, and view trailers about a selected movie. This app utilizes Picasso, a powerful library that handles image loading and caching.
+This Android App allows you to view information about current popular and highly rated movies. This app also allows you to mark a movie as a favorite, view reviews, and view trailers about a selected movie. This app utilizes Picasso, a powerful library that handles image loading and caching. Currently available on Google Play Store and Amazon App Store.
 
 #NotyNotes
 This Android app allows you to create, edit and delete notes.
