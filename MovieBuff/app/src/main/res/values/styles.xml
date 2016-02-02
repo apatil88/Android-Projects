@@ -1,8 +1,13 @@
 <resources>
 
+    <color name="ColorPrimary">#2196F3</color>
+    <color name="ColorPrimaryDark">#1976D2</color>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
     </style>
 
 </resources>

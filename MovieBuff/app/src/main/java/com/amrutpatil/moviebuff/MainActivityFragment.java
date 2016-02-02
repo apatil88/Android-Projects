@@ -45,6 +45,7 @@ public class MainActivityFragment extends Fragment {
     private static final String RATING_DESC = "vote_average.desc";
     private static final String FAVORITE = "favorite";
     private static final String MOVIES_KEY = "movies";
+    private static final String REVENUE = "revenue.desc";
 
     private String mSortBy = POPULARITY_DESC;
 
@@ -96,6 +97,7 @@ public class MainActivityFragment extends Fragment {
         MenuItem action_sort_by_popularity = menu.findItem(R.id.action_sort_by_popularity);
         MenuItem action_sort_by_rating = menu.findItem(R.id.action_sort_by_rating);
         MenuItem action_sort_by_favorite = menu.findItem(R.id.action_sort_by_favorite);
+        MenuItem action_sort_by_revenue = menu.findItem(R.id.action_sort_by_revenue);
 
         if (mSortBy.contentEquals(POPULARITY_DESC)) {
             if (!action_sort_by_popularity.isChecked()) {
@@ -108,6 +110,10 @@ public class MainActivityFragment extends Fragment {
         } else if (mSortBy.contentEquals(FAVORITE)) {
             if (!action_sort_by_popularity.isChecked()) {
                 action_sort_by_favorite.setChecked(true);
+            }
+        } else if (mSortBy.contentEquals(REVENUE)) {
+            if (!action_sort_by_revenue.isChecked()) {
+                action_sort_by_revenue.setChecked(true);
             }
         }
     }
@@ -144,6 +150,14 @@ public class MainActivityFragment extends Fragment {
                 mSortBy = FAVORITE;
                 updateMovies(mSortBy);
                 return true;
+            case R.id.action_sort_by_revenue:
+                if(item.isChecked()){
+                    item.setChecked(false);
+                } else {
+                    item.setChecked(true);
+                }
+                mSortBy = REVENUE;
+                updateMovies(mSortBy);
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -355,4 +369,5 @@ public class MainActivityFragment extends Fragment {
             }
         }
     }
+
 }

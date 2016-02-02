@@ -141,11 +141,10 @@ public class DetailActivityFragment extends Fragment {
 
         if (mMovie != null) {
 
-            //String image_url = "http://image.tmdb.org/t/p/w185" + mMovie.getMovieThumbnail();
             String image_url = Utility.buildImageUrl(342, mMovie.getImage2());
             Picasso.with(mContext).load(image_url)
-                    .error(R.drawable.photo)
-                    .placeholder(R.drawable.photo)
+                    .error(R.drawable.film)
+                    .placeholder(R.drawable.film)
                     .into(mImageView);
 
 
@@ -177,10 +176,6 @@ public class DetailActivityFragment extends Fragment {
             final MenuItem action_favorite = menu.findItem(R.id.action_favorite);
             MenuItem action_share = menu.findItem(R.id.action_share);
 
-            /*action_favorite.setIcon(Utility.isFavorited(getActivity(), mMovie.getMovieId()) == 1 ?
-                    R.drawable.abc_btn_rating_star_on_mtrl_alpha :
-                    R.drawable.abc_btn_rating_star_off_mtrl_alpha);
-*/
             new AsyncTask<Void, Void, Integer>() {
                 @Override
                 protected Integer doInBackground(Void... params) {

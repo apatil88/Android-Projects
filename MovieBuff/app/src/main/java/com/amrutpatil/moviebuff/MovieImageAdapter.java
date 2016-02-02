@@ -94,12 +94,12 @@ public class MovieImageAdapter extends BaseAdapter{
         if(!movieInfo.getMovieThumbnail().isEmpty()){
             imageUri = "http://image.tmdb.org/t/p/w185" + movieInfo.getMovieThumbnail();
         }else {
-            imageUri = Uri.parse("android.resource://com.amrutpatil.moviebuff" +"/"+ R.drawable.photo).toString();
+            imageUri = Uri.parse("android.resource://com.amrutpatil.moviebuff" +"/"+ R.drawable.film).toString();
         }
 
         Picasso.with(mContext).load(imageUri)
-                .error(R.drawable.photo)
-                .placeholder(R.drawable.photo)
+                .error(R.drawable.film)
+                .placeholder(R.drawable.film)
                 .into(viewHolder.imageView);
 
         return convertView;
