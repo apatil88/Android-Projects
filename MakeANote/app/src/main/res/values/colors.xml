@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <color name="notesPrimaryBackgroundColor">#009688</color>
+    <color name="notesSecondaryBackgroundColor">#004D40</color>
+    <color name="notesColorBackgroundAccent">#FF9922</color>
+    <color name="notesBackgroundColor">#FAFAFA</color>
+    <color name="notesPrimaryTextColor">#FAFAFA</color>
+    <color name="notesBody">#FAFAFA</color>
+    <color name="notesCardBody">#EBEBEB</color>
+    <color name="notesSecondaryTextColor">#656565</color>
+    <color name="notesDropBoxSeparator">#C1C1C1</color>
+    <color name="notesSelectionTickColor">#455EDE</color>
+    <color name="notesImageBackground">#C1C1C1</color>
+</resources>
+

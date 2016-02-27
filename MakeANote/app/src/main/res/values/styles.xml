@@ -1,0 +1,31 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
+
+    <style name="Theme.Base" parent="AppTheme">
+        <item name="colorPrimary">@color/notesPrimaryBackgroundColor</item>
+        <item name="colorPrimaryDark">@color/notesSecondaryBackgroundColor</item>
+        <item name="colorAccent">@color/notesColorBackgroundAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/notesBackgroundColor</item>
+    </style>
+
+    <style name="Theme.MakeANote" parent="Theme.Base"/>
+
+    <style name="ActionBarThemeOverlay" parent="">
+        <item name="android:textColorPrimary">@color/notesPrimaryTextColor</item>
+        <item name="colorControlHighlight">@color/notesBackgroundColor</item>
+        <item name="android:actionMenuTextColor">@color/notesPrimaryTextColor</item>
+        <item name="android:textColorSecondary">@color/notesPrimaryTextColor</item>
+        <item name="android:background">@color/notesPrimaryBackgroundColor</item>
+    </style>
+
+    <style name="ActionBar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/notesPrimaryTextColor</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+</resources>

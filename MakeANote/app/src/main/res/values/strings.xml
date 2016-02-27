@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" translatable="false">Make A Note</string>
+    <string name="app_name_1" translatable="false">Make A Note</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close </string>
+    <string name="title_activity_make_note">Make Note</string>
+    <string name="title">Title</string>
+    <string name="NO_TIME">No Time</string>
+    <string name="NO_DATE">No Date</string>
+    <string name="trash">Trash</string>
+    <string name="archives">Archives</string>
+    <string name="helpandfeedback"><![CDATA[Help & FeedBack]]></string>
+    <string name="reminders">Reminders</string>
+    <string name="notes">Notes</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_archive">Archive</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, tempus ante arcu autem, wisi porta lectus sed feugiat, pede nullam nec commodo non tincidunt dui. Dictumst ante ultricies integer, duis nec, perspiciatis autem molestie ullamcorper magna sit nec, egestas tincidunt non ac tincidunt. Interdum maecenas aliquet id lacus, aenean ut mattis, consequat fusce turpis bibendum. Suspendisse semper sit.</string>
+    <string name="title_activity_google_drive_uploader">Send to Drive</string>
+    <string name="action_device">Store in device</string>
+    <string name="action_google_drive" translatable="false">Google Drive</string>
+    <string name="action_dropbox" translatable="false">Dropbox</string>
+    <string name="list_item">New item</string>
+    <string name="description">Description</string>
+    <string name="action_gallery">Choose from Gallery</string>
+    <string name="action_camera">Capture image</string>
+    <string name="settings">Drive Location Preference</string>
+    <string name="title_activity_list_files">List Files</string>
+    <string name="title_activity_base_demo">BaseDemo</string>
+    <string name="title_activity_create_file">CreateFile</string>
+    <string name="title_activity_online_photo_selection">Photo Selection</string>
+    <string name="title_activity_selection_drop_box" translatable="false">DropBox</string>
+    <string name="select">Select</string>
+    <string name="log_out">Log out</string>
+    <string name="save_location">Select</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_empty">Empty Trash</string>
+    <string name="new_directory">Create</string>
+    <string name="folder_name">Folder Name</string>
+    <string name="is_default">Currently selected default</string>
+
+</resources>
