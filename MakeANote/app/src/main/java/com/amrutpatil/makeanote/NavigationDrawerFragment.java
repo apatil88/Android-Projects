@@ -37,8 +37,7 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
-
-    //Inflate the Navigation Drawer Layout in the Fragement
+    //Inflate the Navigation Drawer Layout in the Fragment
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

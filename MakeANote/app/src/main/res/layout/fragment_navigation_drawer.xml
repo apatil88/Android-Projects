@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
@@ -7,6 +8,7 @@
              android:layout_marginRight="56dp"
              android:layout_marginEnd="56dp"
              tools:context="com.amrutpatil.makeanote.NavigationDrawerFragment">
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -24,4 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent" />
     </LinearLayout>
+
 </FrameLayout>
+
