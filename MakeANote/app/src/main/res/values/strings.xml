@@ -41,4 +41,7 @@
     <string name="folder_name">Folder Name</string>
     <string name="is_default">Currently selected default</string>
 
+    <!-- to be deleted later -->
+    <string name="hello_world">DELETE THIS</string>
+    <string name="action_settings">DELETE THIS</string>
 </resources>

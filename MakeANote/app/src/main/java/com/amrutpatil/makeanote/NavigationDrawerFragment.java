@@ -30,9 +30,9 @@ public class NavigationDrawerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         //Check if the Drawer has been created before
         mUserLearnedDrawer = Boolean.valueOf(AppSharedPreferences.hasUserLearned(getActivity(),
-                AppConstant.KEY_USER_LEARNED_DRAWER, AppConstant.FALSE ));
+                AppConstant.KEY_USER_LEARNED_DRAWER, AppConstant.FALSE));
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             mFromSavedInstanceState = true;
         }
     }
@@ -42,28 +42,51 @@ public class NavigationDrawerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(android.R.layout.fragment_navigation_drawer, container, false);
+        return inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
     }
 
-    public void setUp(int fragmentId, DrawerLayout drawerLayout, final Toolbar toolbar){
+    public void setUp(int fragmentId, DrawerLayout drawerLayout, final Toolbar toolbar) {
         View containerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
         mDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout,
-                toolbar, R.string.drawer_open, R.string.drawer_close){
+                toolbar, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                super.onDrawerSlide(drawerView, slideOffset);
+                if (slideOffset < 0.6) {
+                    toolbar.setAlpha(1 - slideOffset / 2);
+                }
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
+                //If the Navigation Drawer has not been drawn before
+                if (!mUserLearnedDrawer) {
+                    mUserLearnedDrawer = true;
+                    AppSharedPreferences.hasUserLearned(getActivity(), AppConstant.KEY_USER_LEARNED_DRAWER, AppConstant.TRUE);
+                }
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
+                AppSharedPreferences.hasUserLearned(getActivity(), AppConstant.KEY_USER_LEARNED_DRAWER, AppConstant.TRUE);
             }
         };
+
+        //If the Navigation Drawer is not shown on screen or if we switched our orientation
+        if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
+            mDrawerLayout.openDrawer(containerView);
+        }
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerToggle.syncState();   //resync the state
+            }
+        });
+
+    }
+
+    public void closeDrawer() {
+        mDrawerLayout.closeDrawers();
     }
 }
