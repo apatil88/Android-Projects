@@ -7,9 +7,10 @@ This simple Android app records and displays the number of times a button has be
 #ContactResolver
 This simple Android app makes use of ContentProvider to retrieve and display contacts stored on your device.
 
-#Make A Note
+#MakeANote
 Simple note taking app that allows you to take notes, store and retrieve them in an organized
 manner.
+
 Key Features:
   Store notes on Google Drive or Dropbox
   Using your phone’s camera, click and store photos with your note.
