@@ -7,6 +7,17 @@ This simple Android app records and displays the number of times a button has be
 #ContactResolver
 This simple Android app makes use of ContentProvider to retrieve and display contacts stored on your device.
 
+#Make A Note
+Simple note taking app that allows you to take notes, store and retrieve them in an organized
+manner.
+Key Features:
+ Store notes on Google Drive or Dropbox
+ Using your phone’s camera, click and store photos with your note.
+
+Capstone_Stage1
+ Set reminders on your note so that you can get your tasks done at the right time.
+ Compatible with phones and tablets.
+
 #MovieBuff
 This Android App allows you to view information about current popular and highly rated movies. This app also allows you to mark a movie as a favorite, view reviews, and view trailers about a selected movie. This app utilizes Picasso, a powerful library that handles image loading and caching. Currently available on Google Play Store and Amazon App Store.
 
