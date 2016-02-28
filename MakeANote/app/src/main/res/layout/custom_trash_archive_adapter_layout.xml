@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                    android:id="@+id/card_view_recycle"
+                                    android:layout_gravity="top"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:layout_marginRight="5dp"
+                                    card_view:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:baselineAligned="false"
+        android:id="@+id/linear_layout_card_view"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:paddingTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_gravity="top"
+            android:orientation="vertical"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/title_note_custom_home"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textSize="@dimen/home_title"
+                android:textColor="@color/notesSecondaryTextColor"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/home_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/description_note_custom_home"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/home_description"
+                android:alpha=".87"
+                android:textColor="@color/notesSecondaryTextColor"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/id_note_custom_home"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/date_time_note_custom_home"
+                android:alpha=".87"
+                android:textColor="@color/notesSecondaryTextColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
