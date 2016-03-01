@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
 
 /**
  * Created by Amrut on 2/29/16.
- * Description: Class to create, update, delete contents in Notes, Archives and Trash Tables
+ * Description: Class to create, update, delete contents in Notes, Archives and Trash Tables.
  */
 public class AppDatabase extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "makeanote.db";
@@ -16,7 +16,7 @@ public class AppDatabase extends SQLiteOpenHelper{
     interface Tables {
         String NOTES = "notes";
         String ARCHIVES ="archives";
-        String DELETED = "deleted";
+        String TRASH = "trash";
     }
 
     public AppDatabase(Context context) {
@@ -46,11 +46,11 @@ public class AppDatabase extends SQLiteOpenHelper{
                 + ArchivesContract.ArchivesColumns.ARCHIVES_TYPE + " TEXT NOT NULL,"
                 + ArchivesContract.ArchivesColumns.ARCHIVES_DATE_TIME+ " TEXT NOT NULL)");
 
-        db.execSQL("CREATE TABLE " + Tables.DELETED + " ("
+        db.execSQL("CREATE TABLE " + Tables.TRASH + " ("
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + TrashContract.DeletedColumns.DELETED_TITLE + " TEXT NOT NULL,"
-                + TrashContract.DeletedColumns.DELETED_DESCRIPTION + " TEXT NOT NULL,"
-                + TrashContract.DeletedColumns.DELETED_DATE_TIME+ " TEXT NOT NULL)");
+                + TrashContract.TrashColumns.TRASH_TITLE + " TEXT NOT NULL,"
+                + TrashContract.TrashColumns.TRASH_DESCRIPTION + " TEXT NOT NULL,"
+                + TrashContract.TrashColumns.TRASH_DATE_TIME+ " TEXT NOT NULL)");
     }
 
     @Override
@@ -63,7 +63,7 @@ public class AppDatabase extends SQLiteOpenHelper{
         if(version != DATABASE_VERSION) {
             db.execSQL("DROP TABLE IF EXISTS " + Tables.NOTES);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.ARCHIVES);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.DELETED);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.TRASH);
             onCreate(db);
         }
     }
@@ -73,7 +73,7 @@ public class AppDatabase extends SQLiteOpenHelper{
     }
 
     public void emptyTrash(){
-        getWritableDatabase().delete(Tables.DELETED, null,null);
+        getWritableDatabase().delete(Tables.TRASH, null,null);
     }
 
 }

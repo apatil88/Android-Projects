@@ -6,17 +6,18 @@ import android.provider.BaseColumns;
 
 /**
  * Created by Amrut on 2/29/16.
+ * Description: Contract for Notes.
  */
 public class NotesContract {
     interface NotesColumns{
-        String NOTE_ID = "_ID";
-        String NOTE_TITLE = "notes_title";
-        String NOTE_DESCRIPTION = "notes_description";
-        String NOTE_DATE = "notes_date";
-        String NOTE_TIME = "notes_time";
-        String NOTE_IMAGE = "notes_image";
-        String NOTE_TYPE = "notes_type";
-        String NOTE_IMAGE_STORAGE_SELECTION = "notes_image_storage_selection";
+        String NOTES_ID = "_ID";
+        String NOTES_TITLE = "notes_title";
+        String NOTES_DESCRIPTION = "notes_description";
+        String NOTES_DATE = "notes_date";
+        String NOTES_TIME = "notes_time";
+        String NOTES_IMAGE = "notes_image";
+        String NOTES_TYPE = "notes_type";
+        String NOTES_IMAGE_STORAGE_SELECTION = "notes_image_storage_selection";
     }
 
     public static final String CONTENT_AUTHORITY = "com.amrutpatil.makeanote.provider";

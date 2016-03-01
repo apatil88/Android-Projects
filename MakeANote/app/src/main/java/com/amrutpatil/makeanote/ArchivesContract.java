@@ -5,6 +5,7 @@ import android.provider.BaseColumns;
 
 /**
  * Created by Amrut on 2/29/16.
+ * Description: Contract for Archives.
  */
 public class ArchivesContract {
     interface ArchivesColumns {
@@ -25,10 +26,12 @@ public class ArchivesContract {
         public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + CONTENT_AUTHORITY + ".archives";
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + CONTENT_AUTHORITY + ".archives";
 
+        //Method which enables content provider to return an individual archived note
         public static Uri buildArchiveUri(String archiveId) {
             return URI_TABLE.buildUpon().appendEncodedPath(archiveId).build();
         }
 
+        //Method to extract the archived note id
         public static String getArchiveId(Uri uri) {
             return uri.getPathSegments().get(1);
         }
