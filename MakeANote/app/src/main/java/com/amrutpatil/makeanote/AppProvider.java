@@ -105,8 +105,8 @@ public class AppProvider extends ContentProvider {
 
             case NOTES_ID:
                 queryBuilder.setTables(AppDatabase.Tables.NOTES);
-                String note_id = NotesContract.Notes.getNoteId(uri);
-                queryBuilder.appendWhere(BaseColumns._ID + " = "+ note_id);
+                String noteId = NotesContract.Notes.getNoteId(uri);
+                queryBuilder.appendWhere(BaseColumns._ID + " = "+ noteId);
                 break;
 
             case ARCHIVES:
@@ -115,8 +115,8 @@ public class AppProvider extends ContentProvider {
 
             case ARCHIVES_ID:
                 queryBuilder.setTables(AppDatabase.Tables.ARCHIVES);
-                String archive_id = ArchivesContract.Archives.getArchiveId(uri);
-                queryBuilder.appendWhere(BaseColumns._ID + " = " + archive_id);
+                String archiveId = ArchivesContract.Archives.getArchiveId(uri);
+                queryBuilder.appendWhere(BaseColumns._ID + " = " + archiveId);
                 break;
 
             case TRASH:
@@ -125,8 +125,8 @@ public class AppProvider extends ContentProvider {
 
             case TRASH_ID:
                 queryBuilder.setTables(AppDatabase.Tables.TRASH);
-                String trash_id = TrashContract.Trash.getTrashId(uri);
-                queryBuilder.appendWhere(BaseColumns._ID + " = " + trash_id);
+                String trashId = TrashContract.Trash.getTrashId(uri);
+                queryBuilder.appendWhere(BaseColumns._ID + " = " + trashId);
                 break;
 
             default:
