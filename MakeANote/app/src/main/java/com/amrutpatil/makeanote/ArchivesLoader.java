@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * Created by Amrut on 3/3/16.
+ * Description: Class to get Archive notes from database via Content Provider
  */
 public class ArchivesLoader extends AsyncTaskLoader<List<Archive>> {
     private List<Archive> mArchives;
