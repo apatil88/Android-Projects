@@ -3,9 +3,12 @@ package com.amrutpatil.makeanote;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,7 +17,7 @@ import java.util.List;
 
 /**
  * Created by Amrut on 3/7/16.
- * Description: Class to create our own LinearLayout for notes containing list of items.
+ * Description: Class to create our own LinearLayout for notes containing list of items and displaying them in the RecyclerView.
  */
 public class NoteCustomList extends LinearLayout {
 
@@ -81,4 +84,69 @@ public class NoteCustomList extends LinearLayout {
         }
 
     }
+
+    //Editing notes with list of items
+    public void setUpForEditMode(String listEntries) {
+        setOrientation(VERTICAL);
+        mTextBoxes = new ArrayList<>();
+        String[] listEntryTokens = listEntries.split("%");
+        boolean isStrikeOut = false;
+        String listItem = "";
+
+        for (String entryDetails : listEntryTokens) {
+            mListItem = new LinearLayout(mContext);
+            mListItem.setOrientation(HORIZONTAL);
+            String[] listEntry = entryDetails.split("\\$");
+            for (int i = 0; i < listEntry.length; i++) {
+                if (i % 2 == 0)
+                    listItem = listEntry[i];
+                else
+                    isStrikeOut = Boolean.valueOf(listEntry[i]);
+            }
+
+            final CheckBox checkBox = new CheckBox(mContext);
+            checkBox.setChecked(isStrikeOut);
+
+            final ImageView deleteImageView = new ImageView(mContext);
+            deleteImageView.setImageResource(android.R.drawable.ic_menu_delete);
+
+            final EditText textBox = new EditText(mContext);
+            textBox.setText(listItem);
+            textBox.setBackgroundColor(Color.TRANSPARENT);
+
+            if (isStrikeOut) {
+                textBox.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            }
+
+            mListItem.addView(deleteImageView);
+            mListItem.addView(checkBox);
+            mListItem.addView(textBox);
+            mTextBoxes.add(textBox);
+            addView(mListItem);
+
+            deleteImageView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinearLayout layout = (LinearLayout) v.getParent();
+                    mTextBoxes.remove(mTextBoxes.indexOf(layout.getChildAt(2)));
+                    layout.removeAllViews();
+                }
+            });
+
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                    if (isChecked) {
+                        textBox.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                    } else {
+                        textBox.setPaintFlags(checkBox.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                    }
+                }
+            });
+        }
+    }
+
+    
+
 }
