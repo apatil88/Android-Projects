@@ -2,8 +2,10 @@ package com.amrutpatil.makeanote;
 
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,7 +34,7 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
 
     private DropboxAPI<AndroidAuthSession> mDropboxAPI;
 
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,4 +95,67 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
         }));
     }
 
+    @Override
+    public Loader<List<Note>> onCreateLoader(int id, Bundle args) {
+        mContentResolver = getContentResolver();
+        return new NotesLoader(NotesActivity.this, BaseActivity.mType, mContentResolver);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Note>> loader, List<Note> data) {
+        this.mNotes = data;
+        //Retrieve the image from local storage/Google Drive/Dropbox in a separate thread
+        Thread[] threads = new Thread[mNotes.size()];
+        int threadCounter = 0;
+
+        for(final Note aNote : mNotes){
+            //If the note is coming from Google Drive
+            if(AppConstant.GOOGLE_DRIVE_SELECTION == aNote.getStorageSelection()){
+                GDUT.init(this);
+                //Check if Google Drive is accessible and if the user account has been logged in successfully
+                if(checkPlayServices() && checkUserAccount()){
+                    GDActions.init(this, GDUT.AM.getActiveEmil());
+                    GDActions.connect(true);
+                }
+
+                threads[threadCounter] = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        do{
+                            //Get the image file
+                            ArrayList<GDActions.GF> gfs = GDActions.search(AppSharedPreferences.getGoogleDriveResourceId(getApplicationContext()),
+                                    aNote.getImagePath(), GDUT.MIME_JPEG);
+
+                            if(gfs.size() > 0){
+                                //Retrieve the file, convert it into Bitmap to display on the screen
+                                byte[] imageBytes = GDActions.read(gfs.get(0).id, 0);
+
+                                //Process the entire byte array and convert it into an image
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                                aNote.setBitmap(bitmap);
+                                mIsImageNotFound = false;
+                                mNotesAdapter.setData(mNotes);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //Tell the Adapter that a graphic image has been obtained
+                                        mNotesAdapter.notifyImageObtained();
+                                    }
+                                });
+                            } else{
+                                aNote.setBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_loading));
+                                mIsImageNotFound = true;
+                                try{
+                                    Thread.sleep(500);
+                                } catch (InterruptedException e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        }while(mIsImageNotFound);
+                    }
+                });
+            }
+        }
+
+    }
 }
