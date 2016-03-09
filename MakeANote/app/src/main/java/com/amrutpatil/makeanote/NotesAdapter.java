@@ -20,8 +20,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
     private List<Note> mNotes = Collections.emptyList();
     private Context mContext;
 
-    public NotesAdapter(LayoutInflater inflater, List<Note> notes, Context context) {
-        mInflater = inflater;
+    public NotesAdapter(List<Note> notes, Context context) {
         mNotes = notes;
         mContext = context;
     }
