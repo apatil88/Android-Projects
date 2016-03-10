@@ -25,6 +25,7 @@ import com.dropbox.client2.exception.DropboxException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -339,11 +340,16 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
 
     //Method to check if Google Play Services is online
     private boolean checkPlayServices(){
-        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
+        //int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if( status != ConnectionResult.SUCCESS){
-            if(GooglePlayServicesUtil.isUserRecoverableError(status)){
+            /*if(GooglePlayServicesUtil.isUserRecoverableError(status)){
                 errorDialog(status, AppConstant.REQ_RECOVER);
-            }else{
+            }*/
+            if(GoogleApiAvailability.getInstance().isUserResolvableError(status)){
+                errorDialog(status, AppConstant.REQ_RECOVER);
+            }
+            else{
                 finish();
             }
             return false;
