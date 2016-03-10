@@ -428,4 +428,15 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
         cr.insert(uri, contentValues);
         delete(view, position);
     }
+
+    private void delete(View view, int position){
+        ContentResolver cr = this.getContentResolver();
+        //Get the ID of the note that is to be deleted
+        String _ID = ((TextView) view.findViewById(R.id.id_note_custom_home)).getText().toString();
+        Uri uri = NotesContract.Notes.buildNoteUri(_ID);
+        cr.delete(uri, null, null);
+        mNotesAdapter.delete(position);
+        changeNoItemTag();
+
+    }
 }
