@@ -2,12 +2,14 @@ package com.amrutpatil.makeanote;
 
 import android.accounts.Account;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -17,6 +19,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dropbox.client2.DropboxAPI;
@@ -26,7 +30,6 @@ import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.File;
@@ -374,5 +377,55 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    private void moveToTrash(){
+        ContentValues contentValues = new ContentValues();
+        TextView title = (TextView) findViewById(R.id.title_note_custom_home);
+        TextView description = (TextView) findViewById(R.id.description_note_custom_home);
+        TextView dateTime = (TextView) findViewById(R.id.date_time_note_custom_home);
+
+        contentValues.put(TrashContract.TrashColumns.TRASH_TITLE, title.getText().toString());
+        contentValues.put(TrashContract.TrashColumns.TRASH_DESCRIPTION, description.getText().toString());
+        contentValues.put(TrashContract.TrashColumns.TRASH_DATE_TIME, dateTime.getText().toString());
+
+        ContentResolver cr = this.getContentResolver();
+        Uri uri = TrashContract.URI_TABLE;
+        cr.insert(uri, contentValues);
+    }
+
+    private void moveToArchive(View view, int position){
+        ContentValues contentValues = new ContentValues();
+        TextView title = (TextView) findViewById(R.id.title_note_custom_home);
+        TextView description = (TextView) findViewById(R.id.description_note_custom_home);
+        TextView dateTime = (TextView) findViewById(R.id.date_time_note_custom_home);
+
+        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.home_list);
+        int isList = linearLayout.getVisibility();
+        String listDescription = "";
+        if(isList == View.VISIBLE){
+            //If a note contains list of items
+            NoteCustomList noteCustomList = (NoteCustomList) linearLayout.getChildAt(0);
+            for(int i = 0 ; i < noteCustomList.getChildCount(); i++){
+                LinearLayout first = (LinearLayout) linearLayout.getChildAt(i);
+                CheckBox checkBox = (CheckBox) first.getChildAt(0);
+                TextView textView = (TextView) first.getChildAt(1);
+                listDescription = description + textView.toString() + checkBox.isChecked() + "%";
+            }
+            contentValues.put(ArchivesContract.ArchivesColumns.ARCHIVES_TYPE, AppConstant.LIST);
+        } else{
+            listDescription = description.getText().toString();
+            contentValues.put(ArchivesContract.ArchivesColumns.ARCHIVES_TYPE, AppConstant.NORMAL);
+        }
+
+        contentValues.put(ArchivesContract.ArchivesColumns.ARCHIVES_DESCRIPTION, listDescription);
+        contentValues.put(ArchivesContract.ArchivesColumns.ARCHIVES_TITLE, title.getText().toString());
+        contentValues.put(ArchivesContract.ArchivesColumns.ARCHIVES_DATE_TIME, dateTime.getText().toString());
+        contentValues.put(ArchivesContract.ArchivesColumns.ARCHIVES_CATEGORY, mTitle);
+
+        ContentResolver cr = this.getContentResolver();
+        Uri uri = ArchivesContract.URI_TABLE;
+        cr.insert(uri, contentValues);
+        delete(view, position);
     }
 }
