@@ -1,6 +1,9 @@
 package com.amrutpatil.makeanote;
 
+import android.accounts.Account;
 import android.content.ContentResolver;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -19,6 +22,10 @@ import android.widget.TextView;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.common.AccountPicker;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.File;
@@ -269,4 +276,97 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
         }
     }
 
+    @Override
+    public void onLoaderReset(Loader<List<Note>> loader) {
+        mNotesAdapter.setData(null);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if(!mIsInAuth){
+            try{
+                mIsInAuth = true;
+                if(connectionResult.hasResolution()){
+                    connectionResult.startResolutionForResult(this, AppConstant.REQ_AUTH);
+                }
+            } catch (IntentSender.SendIntentException e){
+                e.printStackTrace();
+                finish();
+            }
+        } else{
+            finish();
+        }
+
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    //Method to check for valid primary Google account on the device
+    private boolean checkUserAccount(){
+        String email = GDUT.AM.getActiveEmil();
+        Account account = GDUT.AM.getPrimaryAccnt(true);
+        if(email == null){
+            if(account == null){
+                //If no account is found, pop up an account picker
+                account = GDUT.AM.getPrimaryAccnt(false);
+                String[] allowableAccountType = {GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE};
+                Intent accountIntent = AccountPicker.newChooseAccountIntent(account, null, allowableAccountType, true,
+                        null, null, null, null);
+                startActivityForResult(accountIntent, AppConstant.REQ_ACCPICK);
+                return false;
+            } else{
+                GDUT.AM.setEmil(account.name);
+            }
+            return true;
+        }
+        account = GDUT.AM.getActiveAccnt();
+        if(account == null) {
+            String[] allowableAccountType = {GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE};
+            Intent accountIntent = AccountPicker.newChooseAccountIntent(account, null, allowableAccountType, true,
+                    null, null, null, null);
+            startActivityForResult(accountIntent, AppConstant.REQ_ACCPICK);
+        }
+        return true;
+    }
+
+    //Method to check if Google Play Services is online
+    private boolean checkPlayServices(){
+        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if( status != ConnectionResult.SUCCESS){
+            if(GooglePlayServicesUtil.isUserRecoverableError(status)){
+                errorDialog(status, AppConstant.REQ_RECOVER);
+            }else{
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    //Method to display error if connection to Google Play Services fails
+    private void errorDialog(int errorCode, int requestCode){
+        Bundle args = new Bundle();
+        args.putInt(AppConstant.DIALOG_ERROR, errorCode);
+        args.putInt(AppConstant.REQUEST_CODE, requestCode);
+        ErrorDialogFragment errorDialogFragment = new ErrorDialogFragment();
+        errorDialogFragment.setArguments(args);
+        errorDialogFragment.show(getFragmentManager(), AppConstant.DIALOG_ERROR);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }
