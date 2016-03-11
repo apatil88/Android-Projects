@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app = "http://schemas.android.com/apk/res-auto"
+              xmlns:tools = "http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:background="@color/notesCardBody"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <include
+        android:id = "@+id/app_bar"
+        layout="@layout/toolbar">
+
+    </include>
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:foregroundGravity="center"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:text=""
+            android:layout_width="match_parent"
+            android:textSize="@dimen/home_title"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/notesSecondaryTextColor"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+        <fragment
+            android:id="@+id/fragment_navigation_drawer"
+            android:name="com.amrutpatil.makeanote.NavigationDrawerFragment"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:layout="@layout/fragment_navigation_drawer"
+            tools:layout="@layout/fragment_navigation_drawer"/>
+
+    </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>
