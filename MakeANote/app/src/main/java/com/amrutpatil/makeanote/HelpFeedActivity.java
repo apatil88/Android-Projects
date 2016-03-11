@@ -1,7 +1,13 @@
 package com.amrutpatil.makeanote;
 
-/**
- * Created by Amrut on 2/27/16.
- */
-public class HelpFeedActivity {
+import android.os.Bundle;
+
+public class HelpFeedActivity extends BaseActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.help_feedback_layout);
+        mToolBar = activateToolbar();
+        setUpNavigationDrawer();
+    }
 }
