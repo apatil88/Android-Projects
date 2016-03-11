@@ -8,10 +8,12 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,5 +108,29 @@ public class TrashActivity extends BaseActivity implements LoaderManager.LoaderC
     @Override
     public void onLoaderReset(Loader<List<Trash>> loader) {
         mTrashAdapter.setData(null);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_trash_empty, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //Clear the Trash table
+        if(item.getItemId() == R.id.action_empty_trash){
+            new AppDatabase(getApplicationContext()).emptyTrash();
+            mTrashAdapter.setData(new ArrayList<Trash>());
+            mTrashAdapter.notifyDataSetChanged();
+            showToast(AppConstant.EMPTY_TRASH);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showToast(String msg) {
+        Toast error = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
+        error.show();
     }
 }
