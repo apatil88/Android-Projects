@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+    android:background="@color/notesCardBody"
+    tools:context="com.amrutpatil.makeanote.DropboxPickerActivity">
+
+    <RelativeLayout
+        android:id="@+id/relative_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/menu_padding"
+        android:background="@color/notesPrimaryBackgroundColor">
+
+        <ImageView
+            android:id="@+id/back_navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"
+            android:padding="@dimen/abc_control_padding_material"
+            android:layout_marginRight="@dimen/menu_padding"
+            android:layout_marginEnd="@dimen/menu_padding"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"/>
+
+        <TextView
+            android:id="@+id/path_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/small_menu_label"
+            android:textColor="@color/notesPrimaryTextColor"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/back_navigation"
+            android:layout_toEndOf="@id/back_navigation"/>
+
+        <TextView
+            android:id="@+id/log_out_dropbox_label"
+            android:textColor="@color/notesPrimaryTextColor"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="@dimen/small_menu_label"
+            android:text="@string/log_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/selection_directory"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@id/log_out_dropbox_label"
+            android:layout_toStartOf="@id/log_out_dropbox_label"
+            android:layout_marginEnd="@dimen/card_view_margin"
+            android:layout_marginRight="@dimen/card_view_margin"
+            android:src="@android:drawable/ic_menu_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/new_directory"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@id/selection_directory"
+            android:layout_toStartOf="@id/selection_directory"
+            android:layout_marginEnd="@dimen/card_view_margin"
+            android:layout_marginRight="@dimen/card_view_margin"
+            android:src="@drawable/ic_add_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/new_directory_edit_text"
+            android:textColorHint="@color/notesPrimaryTextColor"
+            android:layout_toLeftOf="@id/new_directory"
+            android:layout_toStartOf="@id/new_directory"
+            android:layout_marginEnd="@dimen/card_view_margin"
+            android:layout_marginRight="@dimen/card_view_margin"
+            android:textColor="@color/notesPrimaryTextColor"
+            android:visibility="gone"
+            android:background="@null"
+            android:layout_centerInParent="true"
+            android:hint="@string/folder_name"
+            android:textSize="@dimen/small_menu_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_dropbox_directories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/card_view_margin"
+        android:layout_below="@+id/relative_top_bar" />
+
+</RelativeLayout>
