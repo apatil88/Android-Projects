@@ -5,7 +5,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 /**
  * Created by Amrut on 3/7/16.
@@ -20,7 +20,7 @@ public class ErrorDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         int errorCode = getArguments().getInt(AppConstant.DIALOG_ERROR);
-        return GooglePlayServicesUtil.getErrorDialog(errorCode, getActivity(), errorCode);
+        return GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), errorCode, 0);
     }
 
     @Override
