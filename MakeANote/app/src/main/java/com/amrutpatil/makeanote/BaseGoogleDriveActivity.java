@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -73,5 +74,9 @@ public abstract class BaseGoogleDriveActivity extends Activity
 
     public GoogleApiClient getGoogleApiClient(){
         return mGoogleApiClient;
+    }
+
+    protected void showMessage(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 }
