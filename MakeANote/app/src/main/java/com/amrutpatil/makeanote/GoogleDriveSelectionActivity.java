@@ -51,7 +51,6 @@ public class GoogleDriveSelectionActivity extends BaseGoogleDriveActivity {
                     startActivity(new Intent(GoogleDriveSelectionActivity.this, GoogleDriveDirectoryNameGetterActivity.class));
                     return;
                 }
-                break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
                 break;
