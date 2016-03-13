@@ -52,7 +52,6 @@ public class DropboxDirectoryListenerAsync extends AsyncTask<Void, Long, Boolean
             }
 
         } catch (DropboxUnlinkedException e){  //If we do not connect to Dropbox
-            //Error here
             mErrorMessage = "Authentication Dropbox error";
         } catch (DropboxPartialFileException e){  //If the file was not downloaded completely
             mErrorMessage = "Download cancelled";
