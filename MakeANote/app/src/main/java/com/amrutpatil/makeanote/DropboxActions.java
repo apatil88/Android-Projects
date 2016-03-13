@@ -53,7 +53,7 @@ public class DropboxActions {
     }
 
     //Method to clear the keys
-    public static void clearKeys(Context context, String accessKey, String accessSecret){
+    public static void clearKeys(Context context){
         SharedPreferences prefs = context.getSharedPreferences(AppConstant.ACCOUNT_PREFS_NAME, 0);
         SharedPreferences.Editor edit = prefs.edit();
         edit.clear();
