@@ -27,6 +27,13 @@ public class DropboxDirectoryListenerAsync extends AsyncTask<Void, Long, Boolean
     private String mCurrentDirectory;
     private OnLoadFinished mListener;
 
+    public DropboxDirectoryListenerAsync(Context context, DropboxAPI<?> api, String currentDirectory, OnLoadFinished listener) {
+        mContext = context;
+        mApi = api;
+        mListener = listener;
+        mCurrentDirectory = currentDirectory;
+    }
+
     @Override
     protected Boolean doInBackground(Void... params) {
         try{
