@@ -25,7 +25,7 @@ public class DropboxPickerActivity extends BaseActivity
         implements DropboxDirectoryListenerAsync.OnLoadFinished,
                    DropboxDirectoryCreatorAsyncTask.OnDirectoryCreateFinished
 {
-    private DropboxAPI<?> mApi;
+    private DropboxAPI<AndroidAuthSession> mApi;
     private boolean mAfterAuth = false;
     private DropboxAdapter mDropboxAdapter;
     private Stack<String>  mDirectoryStack = new Stack<>();
@@ -160,7 +160,8 @@ public class DropboxPickerActivity extends BaseActivity
 
     private void authenticate(){
         AndroidAuthSession session = DropboxActions.buildSession(getApplicationContext());
-        mApi = new DropboxAPI<AndroidAuthSession>(session).getSession().startOAuth2Authentication(DropboxPickerActivity.this);
+        mApi = new DropboxAPI<AndroidAuthSession>(session);
+        mApi.getSession().startOAuth2Authentication(DropboxPickerActivity.this);
         mAfterAuth = true;
         AppSharedPreferences.setPersonalNotesPreference(getApplicationContext(), AppConstant.DROP_BOX_SELECTION);
     }
@@ -168,18 +169,18 @@ public class DropboxPickerActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if(mAfterAuth){
+        if(mAfterAuth) {
             AndroidAuthSession session = mApi.getSession();
-            if(session.authenticationSuccessful()){
-                try{
+            if(session.authenticationSuccessful()) {
+                try {
                     session.finishAuthentication();
                     DropboxActions.storeAuth(session, getApplicationContext());
                     AppSharedPreferences.isDropBoxAuthenticated(getApplicationContext(), true);
                     initProgressDialog();
-                    new DropboxDirectoryListenerAsync(getApplicationContext(), mApi,
-                            getCurrentPath(), DropboxPickerActivity.this).execute();
-                }catch (IllegalStateException e){
-                    showToast("Could not authenticate with Dropbox" + e.getLocalizedMessage());
+                    new DropboxDirectoryListenerAsync(getApplicationContext(),
+                            mApi, getCurrentPath(), DropboxPickerActivity.this).execute();
+                } catch (IllegalStateException e) {
+                    showToast("Could not authenticate with dropbox " + e.getLocalizedMessage());
                 }
             }
         }
