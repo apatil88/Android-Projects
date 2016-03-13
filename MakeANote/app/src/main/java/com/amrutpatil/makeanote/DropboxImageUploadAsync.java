@@ -58,11 +58,10 @@ public class DropboxImageUploadAsync extends AsyncTask<Void, Long, Boolean> {
                 return true;
             }
 
-
         }catch (DropboxUnlinkedException e){  //If we do not connect to Dropbox
             mErrorMessage = "Authentication Dropbox error";
         } catch (DropboxPartialFileException e){  //If the file was not uploaded completely
-            mErrorMessage = "Download cancelled";
+            mErrorMessage = "Upload cancelled";
         } catch (DropboxServerException e){  //If there is some problem at the server end
             mErrorMessage = "Network error, try again";
         } catch (DropboxFileSizeException e){
