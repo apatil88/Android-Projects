@@ -1,5 +1,6 @@
 package com.amrutpatil.makeanote;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,6 +8,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -223,5 +227,77 @@ public class NoteDetailActivity extends BaseActivity
                 mNoteCustomList.addNewCheckbox();
             }
         });
+    }
+
+    private void intializeComponents(int choice){
+        if(choice == LIST){
+            CardView cardView = (CardView) findViewById(R.id.card_view);
+            cardView.setVisibility(View.GONE);
+            cardView = (CardView) findViewById(R.id.card_view_list);
+            cardView.setVisibility(View.VISIBLE);
+            mIsList = true;
+        } else if (choice == NORMAL){
+            CardView cardView = (CardView) findViewById(R.id.card_view_list);
+            cardView.setVisibility(View.GONE);
+            mIsList = false;
+        }
+
+        mStorageSelection = (ImageView) findViewById(R.id.image_storage);
+        if(AppSharedPreferences.getUploadPreference(getApplicationContext()) == AppConstant.GOOGLE_DRIVE_SELECTION ){
+            mStorageSelection.setBackgroundResource(R.drawable.ic_google_drive);
+        } else if(AppSharedPreferences.getUploadPreference(getApplicationContext()) == AppConstant.DROP_BOX_SELECTION){
+            mStorageSelection.setBackgroundResource(R.drawable.ic_dropbox);
+        } else {
+            mStorageSelection.setBackgroundResource(R.drawable.ic_local);
+        }
+        mNoteCustomList = new NoteCustomList(this);
+        mNoteCustomList.setUp();
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.check_list_layout);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.addView(mNoteCustomList);
+
+        mStorageSelection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(NoteDetailActivity.this, v);
+                final MenuInflater menuInflater = popupMenu.getMenuInflater();
+                menuInflater.inflate(R.menu.actions_image_selection, popupMenu.getMenu());
+                popupMenu.show();
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        if (menuItem.getItemId() == R.id.action_device) {
+                            updateStorageSelection(null, R.drawable.ic_local, AppConstant.DEVICE_SELECTION);
+                        } else if (menuItem.getItemId() == R.id.action_google_drive) {
+                            if (!AppSharedPreferences.isGoogleDriveAuthenticated(getApplicationContext())) {
+                                startActivity(new Intent(NoteDetailActivity.this, GoogleDriveSelectionActivity.class));
+                                finish();
+                            } else if (menuItem.getItemId() == R.id.action_dropbox) {
+                                AppSharedPreferences.setPersonalNotesPreference(getApplicationContext(), AppConstant.DROP_BOX_SELECTION);
+                                if (!AppSharedPreferences.isDropBoxAuthenticated(getApplicationContext())) {
+                                    startActivity(new Intent(NoteDetailActivity.this, DropboxPickerActivity.class));
+                                    finish();
+                                }
+                            } else {
+                                updateStorageSelection(null, R.drawable.ic_google_drive, AppConstant.GOOGLE_DRIVE_SELECTION);
+                            }
+                        } else {
+                            updateStorageSelection(null, R.drawable.ic_dropbox, AppConstant.DROP_BOX_SELECTION);
+                        }
+
+                        if(mBundle != null){
+                            mCameraFileName = mBundle.getString("mCameraFileName");
+                        }
+                        AndroidAuthSession authSession = DropboxActions.buildSession(getApplicationContext());
+                        mApi = new DropboxAPI<AndroidAuthSession>(authSession);
+
+                        return false;
+                    }
+                });
+            }
+        });
+
+
     }
 }
