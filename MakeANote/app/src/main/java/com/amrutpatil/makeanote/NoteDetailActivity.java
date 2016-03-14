@@ -10,6 +10,7 @@ import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dropbox.client2.DropboxAPI;
@@ -196,4 +197,31 @@ public class NoteDetailActivity extends BaseActivity
         }
     }
 
+    private void updateStorageSelection(Bitmap bitmap, int storageSelectionResource, int selection){
+        if(bitmap != null){
+            mNoteImage.setImageBitmap(bitmap);
+        }
+        mStorageSelection.setBackgroundResource(storageSelectionResource);
+        AppSharedPreferences.setPersonalNotesPreference(getApplicationContext(), selection);
+
+    }
+
+    private void setUpList(String description){
+        mDescription = description;
+        if(!mIsNotificationMode){
+            mNoteCustomList.setUpForEditMode(description);
+        } else{
+            LinearLayout newItemLayout = (LinearLayout) findViewById(R.id.add_check_list_layout);
+            newItemLayout.setVisibility(View.GONE);
+            mNoteCustomList.setUpForListNotification(description);
+        }
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.add_check_list_layout);
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNoteCustomList.addNewCheckbox();
+            }
+        });
+    }
 }
