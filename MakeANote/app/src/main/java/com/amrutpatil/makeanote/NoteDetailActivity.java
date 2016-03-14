@@ -1,6 +1,8 @@
 package com.amrutpatil.makeanote;
 
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -144,6 +146,53 @@ public class NoteDetailActivity extends BaseActivity
                     }
                 } while (cursor.moveToNext());
             }
+        }
+    }
+
+    //This method is called when the user taps the reminder notification to display the contents of the note.
+    //Grab the data from the note object instead of the content provider.
+    private void setValues(Note note){
+        getSupportActionBar().setTitle(AppConstant.REMINDERS);
+        String title = note.getTitle();
+        String description = note.getDescription();
+        String date = note.getDate();
+        String time = note.getTime();
+        String image = note.getImagePath();
+        if(note.getType().equals(AppConstant.LIST)){
+            mIsList = true;
+        }
+        mTitleEditText.setText(title);
+        if(mIsList){
+            intializeComponents(LIST);
+            CardView cardView = (CardView) findViewById(R.id.card_view);
+            cardView.setVisibility(View.GONE);
+            setUpList(description);
+        } else{
+            mDescriptionEditText.setText(description);
+        }
+        sTimeTextView.setText(time);
+        sDateTextView.setText(date);
+        mImagePath = image;
+        int storageLocation = note.getStorageSelection();
+
+        switch (storageLocation) {
+            case AppConstant.GOOGLE_DRIVE_SELECTION:
+                updateStorageSelection(null, R.drawable.ic_google_drive, AppConstant.GOOGLE_DRIVE_SELECTION);
+                break;
+
+            case AppConstant.DEVICE_SELECTION:
+            case AppConstant.NONE_SELECTION:
+                if(!mImagePath.equals(AppConstant.NO_IMAGE)) {
+                    updateStorageSelection(null, R.drawable.ic_local, AppConstant.DEVICE_SELECTION);
+                }
+                break;
+
+            case AppConstant.DROP_BOX_SELECTION:
+                updateStorageSelection(BitmapFactory.decodeFile(mImagePath), R.drawable.ic_dropbox, AppConstant.DROP_BOX_SELECTION);
+                break;
+
+            default:
+                break;
         }
     }
 
