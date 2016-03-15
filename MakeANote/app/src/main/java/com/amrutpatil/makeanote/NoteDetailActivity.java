@@ -1,6 +1,9 @@
 package com.amrutpatil.makeanote;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -23,6 +26,7 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.File;
+import java.util.Calendar;
 
 /**
  * Description: Class to create and edit notes. This class also sets reminders and storage location.
@@ -332,5 +336,34 @@ public class NoteDetailActivity extends BaseActivity
                 mNoteCustomList.addNewCheckbox();
             }
         });
+    }
+
+    private Calendar getTargetTime(){
+        Calendar calNow = Calendar.getInstance();
+        Calendar calSet = (Calendar) calNow.clone();
+        calSet.set(Calendar.MONTH, sMonth);
+        calSet.set(Calendar.YEAR, sYear);
+        calSet.set(Calendar.DAY_OF_MONTH, sDay);
+        calSet.set(Calendar.HOUR, sHour);
+        calSet.set(Calendar.MINUTE, sMinute);
+        calSet.set(Calendar.SECOND, sSecond);
+        calSet.set(Calendar.MILLISECOND, 0);
+
+        if(calSet.compareTo(calNow) <= 0){
+            calSet.add(Calendar.DATE, 1);
+        }
+        return calSet;
+    }
+
+    private void setAlarm(Calendar targetCal, Note note){
+        Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.putExtra(AppConstant.REMINDER, note.convertToString());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getApplicationContext(), note.getId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC, targetCal.getTimeInMillis(), pendingIntent);
+
     }
 }
