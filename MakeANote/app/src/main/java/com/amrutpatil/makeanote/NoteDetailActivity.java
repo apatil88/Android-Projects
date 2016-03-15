@@ -520,4 +520,55 @@ public class NoteDetailActivity extends BaseActivity
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(intent, TAKE_GALLERY_CODE);
     }
+
+    protected void saveNote(){
+        if(mIsEditing){
+            switch (AppSharedPreferences.getUploadPreference(getApplicationContext())){
+                case AppConstant.DROP_BOX_SELECTION:
+                    if(!mImagePath.equals(AppConstant.NO_IMAGE)){
+                        editForSaveInDropbox();
+                    } else{
+                        editForSaveInDevice();
+                    }
+                    break;
+                case AppConstant.GOOGLE_DRIVE_SELECTION:
+                    if(!mImagePath.equals(AppConstant.NO_IMAGE) && mIsImageSet){
+                        editForSaveInGoogleDrive();
+                    } else{
+                        editForSaveInDevice();
+                    }
+                    break;
+
+                case AppConstant.DEVICE_SELECTION:
+                case AppConstant.NONE_SELECTION:
+                    editForSaveInDevice();
+                    break;
+            }
+        } else if (mTitleEditText.getText().toString().length() > 0 && !mGoingToCameraOrGallery){
+            switch (AppSharedPreferences.getUploadPreference(getApplicationContext())){
+                case AppConstant.DROP_BOX_SELECTION:
+                    if(!mImagePath.equals(AppConstant.NO_IMAGE)){
+                        saveInDropbox();
+                    } else{
+                        saveInDevice();
+                    }
+                    break;
+
+                case AppConstant.GOOGLE_DRIVE_SELECTION:
+                    if(!mImagePath.equals(AppConstant.NO_IMAGE)){
+                        saveInGoogleDrive();
+                    } else{
+                        saveInDevice();
+                    }
+                    break;
+
+                case AppConstant.DEVICE_SELECTION:
+                case AppConstant.NONE_SELECTION:
+                    saveInDevice();
+                    break;
+            }
+        }
+        startActivity(new Intent(NoteDetailActivity.this, NotesActivity.class));
+        finish();
+    }
 }
