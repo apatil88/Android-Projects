@@ -3,6 +3,7 @@ package com.amrutpatil.makeanote;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -364,6 +366,85 @@ public class NoteDetailActivity extends BaseActivity
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC, targetCal.getTimeInMillis(), pendingIntent);
+    }
 
+    private void saveInDropbox(){
+        AndroidAuthSession session = DropboxActions.buildSession(getApplicationContext());
+        mApi = new DropboxAPI<AndroidAuthSession>(session);
+        session = mApi.getSession();
+        if(session.authenticationSuccessful()){
+            try{
+                session.finishAuthentication();
+                DropboxActions.storeAuth(session, getApplicationContext());
+            } catch (IllegalStateException e){
+                showToast(AppConstant.AUTH_ERROR_DROPBOX + e.getLocalizedMessage());
+            }
+
+        }
+
+        DropboxImageUploadAsync upload = new DropboxImageUploadAsync(this, mApi, mDropBoxFile,
+                AppConstant.NOTE_PREFIX + GDUT.time2Titl(null) + AppConstant.JPG);  //Provide a unique name to the file so that the user does not have to come up with one
+        upload.execute();
+
+        ContentValues values = createContentValues(AppConstant.NOTE_PREFIX + GDUT.time2Titl(null), AppConstant.DROP_BOX_SELECTION);
+        createAlarm(values, insertNote(values));
+    }
+
+    private void saveInGoogleDrive(){
+        GDUT.init(this);
+        if(checkPlayServices() && checkUserAccount()){
+            GDActions.init(this, GDUT.AM.getActiveEmil());
+            GDActions.connect(true);
+        }
+
+        if(mBundle != null){
+            sTmpFlNm = mBundle.getString(AppConstant.TMP_FILE_NAME);
+        }
+        final String resourceId = AppConstant.NOTE_PREFIX + GDUT.time2Titl(null) + AppConstant.JPG;
+        //Create the file on Google Drive
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+               try{
+                   Thread.sleep(1000);
+                   File tmpFile = new File(mImagePath);
+                   GDActions.create(AppSharedPreferences.getGoogleDriveResourceId(getApplicationContext()),
+                           resourceId, GDUT.MIME_JPEG, GDUT.file2Bytes(tmpFile));
+               }catch (InterruptedException e){
+                   e.printStackTrace();
+                   //Add more error handling here
+               }
+            }
+        }).start();
+
+        ContentValues values = createContentValues(AppConstant.NOTE_PREFIX + GDUT.time2Titl(null) +
+                AppConstant.JPG, AppConstant.GOOGLE_DRIVE_SELECTION, true);
+        createAlarm(values, insertNote(values));
+    }
+
+    private void saveInDevice(){
+        ContentValues values = createContentValues(AppConstant.NOTE_PREFIX, AppConstant.DEVICE_SELECTION, true);
+        int id = insertNote(values);
+        mId  = id + "";
+        createAlarm(values, id);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(AppConstant.TMP_FILE_NAME, sTmpFlNm);
+        outState.putString("mCameraFileName", mCameraFileName);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(NoteDetailActivity.this, NotesActivity.class));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detail_note, menu);
+        return true;
     }
 }
