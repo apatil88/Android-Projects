@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -28,7 +29,10 @@ import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Calendar;
 
@@ -571,4 +575,62 @@ public class NoteDetailActivity extends BaseActivity
         startActivity(new Intent(NoteDetailActivity.this, NotesActivity.class));
         finish();
     }
+
+    private void editForSaveInDropbox(){
+        if(AppSharedPreferences.isDropBoxAuthenticated(getApplicationContext())) {
+            AndroidAuthSession session = DropboxActions.buildSession(getApplicationContext());
+            mApi = new DropboxAPI<AndroidAuthSession>(session);
+            session = mApi.getSession();
+
+            if (session.authenticationSuccessful()) {
+                try {
+                    session.finishAuthentication();
+                    DropboxActions.storeAuth(session, getApplicationContext());
+                } catch (IllegalStateException e) {
+                    showToast(AppConstant.AUTH_ERROR_DROPBOX + e.getLocalizedMessage());
+                }
+            }
+        }
+            ContentValues values = new createContentValues("", AppConstant.DROP_BOX_SELECTION, false);
+            if(mIsImageSet){
+                String filename = AppConstant.NOTE_PREFIX + GDUT.time2Titl(null) + AppConstant.JPG;
+                values.put(NotesContract.NotesColumns.NOTES_IMAGE, filename);
+                mDropBoxFile = new File(getApplicationContext().getCacheDir(), filename);
+                try{
+                    mDropBoxFile.createNewFile();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                Bitmap newImage =((BitmapDrawable) mNoteImage.getDrawable()).getBitmap();
+                newImage.compress(Bitmap.CompressFormat.PNG, 0, bos);
+                byte[] bitmapData = bos.toByteArray();
+                try{
+                    FileOutputStream fos = new FileOutputStream(filename);
+                    fos.write(bitmapData);
+                    fos.flush();
+                    fos.close();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+                DropboxImageUploadAsync uploadAsync = new DropboxImageUploadAsync(this, mApi, mDropBoxFile, filename);
+                uploadAsync.execute();
+            }
+            updateNote(values);
+            createNoteAlarm(values, (int) System.currentTimeMillis());
+    }
+    
+    private void editForSaveInDevice(){
+        ContentValues values = createContentValues(mImagePath, AppConstant.DEVICE_SELECTION, false);
+        updateNote(values);
+        createNoteAlarm(values, Integer.parseInt(mId));
+    }
+
+    private void callCamera(){
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+    }
+
+
+
 }
