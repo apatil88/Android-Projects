@@ -1,8 +1,8 @@
 package com.amrutpatil.makeanote;
 
 import android.app.AlarmManager;
-import android.app.DatePickerDialog;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.provider.MediaStore;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
@@ -28,6 +29,7 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.File;
+import java.net.URI;
 import java.util.Calendar;
 
 /**
@@ -446,5 +448,76 @@ public class NoteDetailActivity extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detail_note, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_camera:
+                mGoingToCameraOrGallery = true;
+                callCamera();
+                break;
+
+            case R.id.action_gallery:
+                mGoingToCameraOrGallery = true;
+                callGallery();
+                break;
+
+            case android.R.id.home:
+                if(!mIsNotificationMode){
+                    saveNote();
+                }else{
+                    if(!sTimeTextView.getText().equals(AppConstant.NO_TIME)){
+                        actAsReminder();
+                    }else{
+                        actAsNote();
+                    }
+                    moveToArchive(mIsList);
+                    mType = ARCHIVES;
+                    mTitle = AppConstant.ARCHIVES;
+                    startActivity(new Intent(NoteDetailActivity.this, ArchivesActivity.class));
+                    finish();
+                }
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void removeFromReminder(Note reminder){
+        ContentResolver contentResolver = getContentResolver();
+        Uri uri = Uri.parse(NotesContract.BASE_CONTENT_URI + "/notes" + reminder.getId());
+        contentResolver.delete(uri, null, null);
+
+    }
+
+    private void moveToArchive(boolean isList){
+        String type;
+        ContentValues values = new ContentValues();
+        TextView title = (TextView) findViewById(R.id.make_note_title);
+        TextView description = (TextView) findViewById(R.id.make_note_detail);
+        TextView dateTime = (TextView) findViewById(R.id.time_textview_make_note);
+
+        values.put(ArchivesContract.ArchivesColumns.ARCHIVES_TITLE, title.getText().toString());
+        values.put(ArchivesContract.ArchivesColumns.ARCHIVES_DATE_TIME, dateTime.getText().toString());
+        if(isList){
+            type = AppConstant.LIST;
+            values.put(ArchivesContract.ArchivesColumns.ARCHIVES_DESCRIPTION, mDescription);
+        } else{
+            type = AppConstant.NORMAL;
+            values.put(ArchivesContract.ArchivesColumns.ARCHIVES_DESCRIPTION, description.getText().toString());
+        }
+        values.put(ArchivesContract.ArchivesColumns.ARCHIVES_TYPE, type);
+        values.put(ArchivesContract.ArchivesColumns.ARCHIVES_CATEGORY, AppConstant.REMINDERS);
+
+        ContentResolver contentResolver = getContentResolver();
+        Uri uri = Uri.parse(ArchivesContract.BASE_CONTENT_URI + "/archives");
+        contentResolver.insert(uri, values);
+
+    }
+
+    private void callGallery(){
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(intent, TAKE_GALLERY_CODE);
     }
 }
