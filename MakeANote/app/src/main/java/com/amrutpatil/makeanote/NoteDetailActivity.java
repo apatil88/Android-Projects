@@ -1,5 +1,6 @@
 package com.amrutpatil.makeanote;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -286,7 +287,7 @@ public class NoteDetailActivity extends BaseActivity
                             updateStorageSelection(null, R.drawable.ic_dropbox, AppConstant.DROP_BOX_SELECTION);
                         }
 
-                        if(mBundle != null){
+                        if (mBundle != null) {
                             mCameraFileName = mBundle.getString("mCameraFileName");
                         }
                         AndroidAuthSession authSession = DropboxActions.buildSession(getApplicationContext());
@@ -298,6 +299,38 @@ public class NoteDetailActivity extends BaseActivity
             }
         });
 
+        mTitleEditText = (EditText) findViewById(R.id.make_note_title);
+        mNoteImage = (ImageView) findViewById(R.id.image_make_note);
+        mDescriptionEditText = (EditText) findViewById(R.id.make_note_detail);
+        sDateTextView = (TextView) findViewById(R.id.date_textview_make_note);
+        sTimeTextView = (TextView) findViewById(R.id.time_textview_make_note);
 
+        ImageView datePickerImageView = (ImageView) findViewById(R.id.date_picker_button);
+        ImageView dateTimeDeleteImageView = (ImageView) findViewById(R.id.delete_make_note);
+
+        dateTimeDeleteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sDateTextView.setText("");
+                sTimeTextView.setText(AppConstant.NO_TIME);
+
+            }
+        });
+
+        datePickerImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppDatePickerDialog datePickerdialog = new AppDatePickerDialog();
+                datePickerdialog.show(getSupportFragmentManager(), AppConstant.DATE_PICKER);
+            }
+        });
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.check_list_layout);
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNoteCustomList.addNewCheckbox();
+            }
+        });
     }
 }
