@@ -129,7 +129,7 @@ public class DropboxPickerActivity extends BaseActivity
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
-                TextView textView = (TextView) findViewById(R.id.dropbox_directory_name);
+                TextView textView = (TextView) view.findViewById(R.id.dropbox_directory_name);
                 String currentDirectory = textView.getText().toString();
                 mDirectoryStack.push(currentDirectory);
                 new DropboxDirectoryListenerAsync(getApplicationContext(), mApi,
