@@ -15,7 +15,7 @@ import com.google.android.gms.drive.Metadata;
  */
 public class GoogleDriveDirectoryNameGetterActivity extends BaseGoogleDriveActivity {
 
-    private final ResultCallback<DriveResource.MetadataResult> mMetadataCallback=
+    private final ResultCallback<DriveResource.MetadataResult> mMetadataCallback =
             new ResultCallback<DriveResource.MetadataResult>() {
         @Override
         public void onResult(DriveResource.MetadataResult metadataResult) {
@@ -31,7 +31,8 @@ public class GoogleDriveDirectoryNameGetterActivity extends BaseGoogleDriveActiv
         }
     };
 
-    private final ResultCallback<DriveApi.DriveIdResult> mIdCallback = new ResultCallback<DriveApi.DriveIdResult>() {
+    private final ResultCallback<DriveApi.DriveIdResult> mIdCallback =
+            new ResultCallback<DriveApi.DriveIdResult>() {
         @Override
         public void onResult(DriveApi.DriveIdResult driveIdResult) {
             if(!driveIdResult.getStatus().isSuccess()){
@@ -52,8 +53,12 @@ public class GoogleDriveDirectoryNameGetterActivity extends BaseGoogleDriveActiv
             AppSharedPreferences.setPersonalNotesPreference(getApplicationContext(), AppConstant.GOOGLE_DRIVE_SELECTION);
             AppSharedPreferences.isGoogleDriveAuthenticated(getApplicationContext(), true);
             showMessage("Image location set in Google Drive");
-        }catch(IllegalStateException e){
+        } catch(IllegalStateException e){
             //this can happen when a newly created directory is selected and Google Drive has not synced with it yet
+            showMessage("An error occured while selecting this folder. Sync issue? Please try again");
+            startActivity(new Intent(GoogleDriveDirectoryNameGetterActivity.this, GoogleDriveSelectionActivity.class));
+            finish();
+        } catch (IllegalArgumentException e){
             showMessage("An error occured while selecting this folder. Sync issue? Please try again");
             startActivity(new Intent(GoogleDriveDirectoryNameGetterActivity.this, GoogleDriveSelectionActivity.class));
             finish();
