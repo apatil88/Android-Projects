@@ -69,23 +69,28 @@ public class NotesLoader extends AsyncTaskLoader<List<Note>>{
                                     note.setBitmap(imagePath);
                                 } else{
                                     //Is a Google Drive or Dropbox image
-                                    note.setBitmap(AppConstant.NO_IMAGE);
+                                    note.setImagePath(imagePath);
                                 }
+                            } else{
+                                note.setImagePath(AppConstant.NO_IMAGE);
                             }
                             entries.add(note);
                         }
                     } else if (mType == BaseActivity.REMINDERS){
-                        if(time.equals(AppConstant.NO_TIME)){
+                        if(!time.equals(AppConstant.NO_TIME)){
                             Note note = new Note(title, description, date, time, type, _id, imageSelection);
                             if(!imagePath.equals(AppConstant.NO_IMAGE)){
                                 if(imageSelection == AppConstant.DEVICE_SELECTION){
                                     note.setBitmap(imagePath);
                                 }else{
                                     //Is a Google Drive or Dropbox
+                                    note.setImagePath(imagePath);
                                 }
+                            } else{
+                                note.setImagePath(AppConstant.NO_IMAGE);
                             }
+                            entries.add(note);
                         }
-
                     } else{
                         throw new IllegalArgumentException("Invalid type :  " + mType);
                     }
