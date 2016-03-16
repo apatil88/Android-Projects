@@ -4,7 +4,10 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,16 +21,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
@@ -35,15 +43,14 @@ import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Description: Class to create and edit notes. This class also sets reminders and storage location.
@@ -178,23 +185,23 @@ public class NoteDetailActivity extends BaseActivity
 
     //This method is called when the user taps the reminder notification to display the contents of the note.
     //Grab the data from the note object instead of the content provider.
-    private void setValues(Note note){
+    private void setValues(Note note) {
         getSupportActionBar().setTitle(AppConstant.REMINDERS);
         String title = note.getTitle();
         String description = note.getDescription();
         String date = note.getDate();
         String time = note.getTime();
         String image = note.getImagePath();
-        if(note.getType().equals(AppConstant.LIST)){
+        if (note.getType().equals(AppConstant.LIST)) {
             mIsList = true;
         }
         mTitleEditText.setText(title);
-        if(mIsList){
+        if (mIsList) {
             intializeComponents(LIST);
             CardView cardView = (CardView) findViewById(R.id.card_view);
             cardView.setVisibility(View.GONE);
             setUpList(description);
-        } else{
+        } else {
             mDescriptionEditText.setText(description);
         }
         sTimeTextView.setText(time);
@@ -209,7 +216,7 @@ public class NoteDetailActivity extends BaseActivity
 
             case AppConstant.DEVICE_SELECTION:
             case AppConstant.NONE_SELECTION:
-                if(!mImagePath.equals(AppConstant.NO_IMAGE)) {
+                if (!mImagePath.equals(AppConstant.NO_IMAGE)) {
                     updateStorageSelection(null, R.drawable.ic_local, AppConstant.DEVICE_SELECTION);
                 }
                 break;
@@ -223,8 +230,8 @@ public class NoteDetailActivity extends BaseActivity
         }
     }
 
-    private void updateStorageSelection(Bitmap bitmap, int storageSelectionResource, int selection){
-        if(bitmap != null){
+    private void updateStorageSelection(Bitmap bitmap, int storageSelectionResource, int selection) {
+        if (bitmap != null) {
             mNoteImage.setImageBitmap(bitmap);
         }
         mStorageSelection.setBackgroundResource(storageSelectionResource);
@@ -232,11 +239,11 @@ public class NoteDetailActivity extends BaseActivity
 
     }
 
-    private void setUpList(String description){
+    private void setUpList(String description) {
         mDescription = description;
-        if(!mIsNotificationMode){
+        if (!mIsNotificationMode) {
             mNoteCustomList.setUpForEditMode(description);
-        } else{
+        } else {
             LinearLayout newItemLayout = (LinearLayout) findViewById(R.id.add_check_list_layout);
             newItemLayout.setVisibility(View.GONE);
             mNoteCustomList.setUpForListNotification(description);
@@ -251,23 +258,23 @@ public class NoteDetailActivity extends BaseActivity
         });
     }
 
-    private void intializeComponents(int choice){
-        if(choice == LIST){
+    private void intializeComponents(int choice) {
+        if (choice == LIST) {
             CardView cardView = (CardView) findViewById(R.id.card_view);
             cardView.setVisibility(View.GONE);
             cardView = (CardView) findViewById(R.id.card_view_list);
             cardView.setVisibility(View.VISIBLE);
             mIsList = true;
-        } else if (choice == NORMAL){
+        } else if (choice == NORMAL) {
             CardView cardView = (CardView) findViewById(R.id.card_view_list);
             cardView.setVisibility(View.GONE);
             mIsList = false;
         }
 
         mStorageSelection = (ImageView) findViewById(R.id.image_storage);
-        if(AppSharedPreferences.getUploadPreference(getApplicationContext()) == AppConstant.GOOGLE_DRIVE_SELECTION ){
+        if (AppSharedPreferences.getUploadPreference(getApplicationContext()) == AppConstant.GOOGLE_DRIVE_SELECTION) {
             mStorageSelection.setBackgroundResource(R.drawable.ic_google_drive);
-        } else if(AppSharedPreferences.getUploadPreference(getApplicationContext()) == AppConstant.DROP_BOX_SELECTION){
+        } else if (AppSharedPreferences.getUploadPreference(getApplicationContext()) == AppConstant.DROP_BOX_SELECTION) {
             mStorageSelection.setBackgroundResource(R.drawable.ic_dropbox);
         } else {
             mStorageSelection.setBackgroundResource(R.drawable.ic_local);
@@ -355,7 +362,7 @@ public class NoteDetailActivity extends BaseActivity
         });
     }
 
-    private Calendar getTargetTime(){
+    private Calendar getTargetTime() {
         Calendar calNow = Calendar.getInstance();
         Calendar calSet = (Calendar) calNow.clone();
         calSet.set(Calendar.MONTH, sMonth);
@@ -366,13 +373,13 @@ public class NoteDetailActivity extends BaseActivity
         calSet.set(Calendar.SECOND, sSecond);
         calSet.set(Calendar.MILLISECOND, 0);
 
-        if(calSet.compareTo(calNow) <= 0){
+        if (calSet.compareTo(calNow) <= 0) {
             calSet.add(Calendar.DATE, 1);
         }
         return calSet;
     }
 
-    private void setAlarm(Calendar targetCal, Note note){
+    private void setAlarm(Calendar targetCal, Note note) {
         Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.putExtra(AppConstant.REMINDER, note.convertToString());
@@ -383,15 +390,15 @@ public class NoteDetailActivity extends BaseActivity
         alarmManager.set(AlarmManager.RTC, targetCal.getTimeInMillis(), pendingIntent);
     }
 
-    private void saveInDropbox(){
+    private void saveInDropbox() {
         AndroidAuthSession session = DropboxActions.buildSession(getApplicationContext());
         mApi = new DropboxAPI<AndroidAuthSession>(session);
         session = mApi.getSession();
-        if(session.authenticationSuccessful()){
-            try{
+        if (session.authenticationSuccessful()) {
+            try {
                 session.finishAuthentication();
                 DropboxActions.storeAuth(session, getApplicationContext());
-            } catch (IllegalStateException e){
+            } catch (IllegalStateException e) {
                 showToast(AppConstant.AUTH_ERROR_DROPBOX + e.getLocalizedMessage());
             }
 
@@ -405,14 +412,14 @@ public class NoteDetailActivity extends BaseActivity
         createAlarm(values, insertNote(values));
     }
 
-    private void saveInGoogleDrive(){
+    private void saveInGoogleDrive() {
         GDUT.init(this);
-        if(checkPlayServices() && checkUserAccount()){
+        if (checkPlayServices() && checkUserAccount()) {
             GDActions.init(this, GDUT.AM.getActiveEmil());
             GDActions.connect(true);
         }
 
-        if(mBundle != null){
+        if (mBundle != null) {
             sTmpFlNm = mBundle.getString(AppConstant.TMP_FILE_NAME);
         }
         final String resourceId = AppConstant.NOTE_PREFIX + GDUT.time2Titl(null) + AppConstant.JPG;
@@ -420,15 +427,15 @@ public class NoteDetailActivity extends BaseActivity
         new Thread(new Runnable() {
             @Override
             public void run() {
-               try{
-                   Thread.sleep(1000);
-                   File tmpFile = new File(mImagePath);
-                   GDActions.create(AppSharedPreferences.getGoogleDriveResourceId(getApplicationContext()),
-                           resourceId, GDUT.MIME_JPEG, GDUT.file2Bytes(tmpFile));
-               }catch (InterruptedException e){
-                   e.printStackTrace();
-                   //Add more error handling here
-               }
+                try {
+                    Thread.sleep(1000);
+                    File tmpFile = new File(mImagePath);
+                    GDActions.create(AppSharedPreferences.getGoogleDriveResourceId(getApplicationContext()),
+                            resourceId, GDUT.MIME_JPEG, GDUT.file2Bytes(tmpFile));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    //Add more error handling here
+                }
             }
         }).start();
 
@@ -437,10 +444,10 @@ public class NoteDetailActivity extends BaseActivity
         createAlarm(values, insertNote(values));
     }
 
-    private void saveInDevice(){
+    private void saveInDevice() {
         ContentValues values = createContentValues(AppConstant.NOTE_PREFIX, AppConstant.DEVICE_SELECTION, true);
         int id = insertNote(values);
-        mId  = id + "";
+        mId = id + "";
         createAlarm(values, id);
     }
 
@@ -465,7 +472,7 @@ public class NoteDetailActivity extends BaseActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_camera:
                 mGoingToCameraOrGallery = true;
                 callCamera();
@@ -477,12 +484,12 @@ public class NoteDetailActivity extends BaseActivity
                 break;
 
             case android.R.id.home:
-                if(!mIsNotificationMode){
+                if (!mIsNotificationMode) {
                     saveNote();
-                }else{
-                    if(!sTimeTextView.getText().equals(AppConstant.NO_TIME)){
+                } else {
+                    if (!sTimeTextView.getText().equals(AppConstant.NO_TIME)) {
                         actAsReminder();
-                    }else{
+                    } else {
                         actAsNote();
                     }
                     moveToArchive(mIsList);
@@ -497,14 +504,14 @@ public class NoteDetailActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void removeFromReminder(Note reminder){
+    private void removeFromReminder(Note reminder) {
         ContentResolver contentResolver = getContentResolver();
         Uri uri = Uri.parse(NotesContract.BASE_CONTENT_URI + "/notes" + reminder.getId());
         contentResolver.delete(uri, null, null);
 
     }
 
-    private void moveToArchive(boolean isList){
+    private void moveToArchive(boolean isList) {
         String type;
         ContentValues values = new ContentValues();
         TextView title = (TextView) findViewById(R.id.make_note_title);
@@ -513,10 +520,10 @@ public class NoteDetailActivity extends BaseActivity
 
         values.put(ArchivesContract.ArchivesColumns.ARCHIVES_TITLE, title.getText().toString());
         values.put(ArchivesContract.ArchivesColumns.ARCHIVES_DATE_TIME, dateTime.getText().toString());
-        if(isList){
+        if (isList) {
             type = AppConstant.LIST;
             values.put(ArchivesContract.ArchivesColumns.ARCHIVES_DESCRIPTION, mDescription);
-        } else{
+        } else {
             type = AppConstant.NORMAL;
             values.put(ArchivesContract.ArchivesColumns.ARCHIVES_DESCRIPTION, description.getText().toString());
         }
@@ -529,25 +536,25 @@ public class NoteDetailActivity extends BaseActivity
 
     }
 
-    private void callGallery(){
+    private void callGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(intent, TAKE_GALLERY_CODE);
     }
 
-    protected void saveNote(){
-        if(mIsEditing){
-            switch (AppSharedPreferences.getUploadPreference(getApplicationContext())){
+    protected void saveNote() {
+        if (mIsEditing) {
+            switch (AppSharedPreferences.getUploadPreference(getApplicationContext())) {
                 case AppConstant.DROP_BOX_SELECTION:
-                    if(!mImagePath.equals(AppConstant.NO_IMAGE)){
+                    if (!mImagePath.equals(AppConstant.NO_IMAGE)) {
                         editForSaveInDropbox();
-                    } else{
+                    } else {
                         editForSaveInDevice();
                     }
                     break;
                 case AppConstant.GOOGLE_DRIVE_SELECTION:
-                    if(!mImagePath.equals(AppConstant.NO_IMAGE) && mIsImageSet){
+                    if (!mImagePath.equals(AppConstant.NO_IMAGE) && mIsImageSet) {
                         editForSaveInGoogleDrive();
-                    } else{
+                    } else {
                         editForSaveInDevice();
                     }
                     break;
@@ -557,20 +564,20 @@ public class NoteDetailActivity extends BaseActivity
                     editForSaveInDevice();
                     break;
             }
-        } else if (mTitleEditText.getText().toString().length() > 0 && !mGoingToCameraOrGallery){
-            switch (AppSharedPreferences.getUploadPreference(getApplicationContext())){
+        } else if (mTitleEditText.getText().toString().length() > 0 && !mGoingToCameraOrGallery) {
+            switch (AppSharedPreferences.getUploadPreference(getApplicationContext())) {
                 case AppConstant.DROP_BOX_SELECTION:
-                    if(!mImagePath.equals(AppConstant.NO_IMAGE)){
+                    if (!mImagePath.equals(AppConstant.NO_IMAGE)) {
                         saveInDropbox();
-                    } else{
+                    } else {
                         saveInDevice();
                     }
                     break;
 
                 case AppConstant.GOOGLE_DRIVE_SELECTION:
-                    if(!mImagePath.equals(AppConstant.NO_IMAGE)){
+                    if (!mImagePath.equals(AppConstant.NO_IMAGE)) {
                         saveInGoogleDrive();
-                    } else{
+                    } else {
                         saveInDevice();
                     }
                     break;
@@ -585,8 +592,8 @@ public class NoteDetailActivity extends BaseActivity
         finish();
     }
 
-    private void editForSaveInDropbox(){
-        if(AppSharedPreferences.isDropBoxAuthenticated(getApplicationContext())) {
+    private void editForSaveInDropbox() {
+        if (AppSharedPreferences.isDropBoxAuthenticated(getApplicationContext())) {
             AndroidAuthSession session = DropboxActions.buildSession(getApplicationContext());
             mApi = new DropboxAPI<AndroidAuthSession>(session);
             session = mApi.getSession();
@@ -600,83 +607,83 @@ public class NoteDetailActivity extends BaseActivity
                 }
             }
         }
-            ContentValues values = createContentValues("", AppConstant.DROP_BOX_SELECTION, false);
-            if(mIsImageSet){
-                String filename = AppConstant.NOTE_PREFIX + GDUT.time2Titl(null) + AppConstant.JPG;
-                values.put(NotesContract.NotesColumns.NOTES_IMAGE, filename);
-                mDropBoxFile = new File(getApplicationContext().getCacheDir(), filename);
-                try{
-                    mDropBoxFile.createNewFile();
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                Bitmap newImage =((BitmapDrawable) mNoteImage.getDrawable()).getBitmap();
-                newImage.compress(Bitmap.CompressFormat.PNG, 0, bos);
-                byte[] bitmapData = bos.toByteArray();
-                try{
-                    FileOutputStream fos = new FileOutputStream(filename);
-                    fos.write(bitmapData);
-                    fos.flush();
-                    fos.close();
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
-                DropboxImageUploadAsync uploadAsync = new DropboxImageUploadAsync(this, mApi, mDropBoxFile, filename);
-                uploadAsync.execute();
+        ContentValues values = createContentValues("", AppConstant.DROP_BOX_SELECTION, false);
+        if (mIsImageSet) {
+            String filename = AppConstant.NOTE_PREFIX + GDUT.time2Titl(null) + AppConstant.JPG;
+            values.put(NotesContract.NotesColumns.NOTES_IMAGE, filename);
+            mDropBoxFile = new File(getApplicationContext().getCacheDir(), filename);
+            try {
+                mDropBoxFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            updateNote(values);
-            createNoteAlarm(values, (int) System.currentTimeMillis());
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            Bitmap newImage = ((BitmapDrawable) mNoteImage.getDrawable()).getBitmap();
+            newImage.compress(Bitmap.CompressFormat.PNG, 0, bos);
+            byte[] bitmapData = bos.toByteArray();
+            try {
+                FileOutputStream fos = new FileOutputStream(filename);
+                fos.write(bitmapData);
+                fos.flush();
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            DropboxImageUploadAsync uploadAsync = new DropboxImageUploadAsync(this, mApi, mDropBoxFile, filename);
+            uploadAsync.execute();
+        }
+        updateNote(values);
+        createAlarm(values, (int) System.currentTimeMillis());
     }
 
-    private void editForSaveInGoogleDrive(){
+    private void editForSaveInGoogleDrive() {
         GDUT.init(this);
         final String resourceId = AppConstant.NOTE_PREFIX + GDUT.time2Titl(null) + AppConstant.JPG;
-        if(checkPlayServices() && checkUserAccount()){
+        if (checkPlayServices() && checkUserAccount()) {
             GDActions.init(this, GDUT.AM.getActiveEmil());
             GDActions.connect(true);
         }
 
-        if(mBundle != null){
+        if (mBundle != null) {
             sTmpFlNm = mBundle.getString(AppConstant.TMP_FILE_NAME);
         }
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-               try{
-                   Thread.sleep(1000);
-                   if(mIsImageSet){
-                       File tmpFile = null;
-                       try{
-                           tmpFile = new File(mImagePath);
-                           GDActions.create(AppSharedPreferences.getGoogleDriveResourceId(getApplicationContext()),
-                                   resourceId, GDUT.MIME_JPEG, GDUT.file2Bytes(tmpFile));
-                       } finally {
+                try {
+                    Thread.sleep(1000);
+                    if (mIsImageSet) {
+                        File tmpFile = null;
+                        try {
+                            tmpFile = new File(mImagePath);
+                            GDActions.create(AppSharedPreferences.getGoogleDriveResourceId(getApplicationContext()),
+                                    resourceId, GDUT.MIME_JPEG, GDUT.file2Bytes(tmpFile));
+                        } finally {
                            /*if(tmpFile != null){
                                tmpFile.delete();
                            }*/
-                       }
-                   }
-               }catch (InterruptedException e){
-                   e.printStackTrace();
-               }
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
 
         ContentValues values = createContentValues(resourceId, AppConstant.GOOGLE_DRIVE_SELECTION, false);
         updateNote(values);
-        createNoteAlarm(values, (int) System.currentTimeMillis());
+        createAlarm(values, (int) System.currentTimeMillis());
 
     }
 
-    private void editForSaveInDevice(){
+    private void editForSaveInDevice() {
         ContentValues values = createContentValues(mImagePath, AppConstant.DEVICE_SELECTION, false);
         updateNote(values);
-        createNoteAlarm(values, Integer.parseInt(mId));
+        createAlarm(values, Integer.parseInt(mId));
     }
 
-    private void callCamera(){
+    private void callCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
     }
@@ -727,7 +734,7 @@ public class NoteDetailActivity extends BaseActivity
         }
 
         //If we are able to take a photo
-        if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK){
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             mGoingToCameraOrGallery = false;
             photo = (Bitmap) data.getExtras().get("data");
             mNoteImage.setImageBitmap(photo);
@@ -736,8 +743,8 @@ public class NoteDetailActivity extends BaseActivity
             File finalFile = new File(getRealPathFromURI(tempUri));
             mImagePath = finalFile.toString();
             mIsImageSet = true;
-        } else if(requestCode == TAKE_GALLERY_CODE){
-            if(resultCode == RESULT_OK){
+        } else if (requestCode == TAKE_GALLERY_CODE) {
+            if (resultCode == RESULT_OK) {
                 mGoingToCameraOrGallery = false;
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -752,16 +759,16 @@ public class NoteDetailActivity extends BaseActivity
                 mNoteImage.setVisibility(View.VISIBLE);
                 mNoteImage.setImageBitmap(photo);
                 mIsImageSet = true;
-            } else{
+            } else {
                 mIsImageSet = false;
             }
         }
-        if(mIsImageSet){
+        if (mIsImageSet) {
             mDropBoxFile = new File(mImagePath);
         }
     }
 
-    private Uri getImageUri(Context inContext, Bitmap inImage){
+    private Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bos);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(),
@@ -769,7 +776,7 @@ public class NoteDetailActivity extends BaseActivity
         return Uri.parse(path);
     }
 
-    private String getRealPathFromURI(Uri uri){
+    private String getRealPathFromURI(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         int idx = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
@@ -783,17 +790,17 @@ public class NoteDetailActivity extends BaseActivity
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        if(!sIsInAuth){
+        if (!sIsInAuth) {
             connectionResult.hasResolution();
-            try{
+            try {
                 sIsInAuth = true;
                 connectionResult.startResolutionForResult(this, AppConstant.REQ_AUTH);
-            }catch (IntentSender.SendIntentException e){
+            } catch (IntentSender.SendIntentException e) {
                 e.printStackTrace();
                 //Add other error handling here
                 finish();
             }
-        } else{
+        } else {
             finish();
         }
     }
@@ -803,14 +810,14 @@ public class NoteDetailActivity extends BaseActivity
 
     }
 
-    private boolean checkUserAccount(){
+    private boolean checkUserAccount() {
         String email = GDUT.AM.getActiveEmil();
         Account account = GDUT.AM.getPrimaryAccnt(true);
-        if(email == null){
-            if (account == null){
+        if (email == null) {
+            if (account == null) {
                 account = showAccountPicker();
                 return false;
-            } else{
+            } else {
                 //Only one account registered
                 GDUT.AM.setEmil(account.name);
             }
@@ -818,19 +825,19 @@ public class NoteDetailActivity extends BaseActivity
         }
 
         account = GDUT.AM.getActiveAccnt();
-        if(account == null){
+        if (account == null) {
             account = showAccountPicker();
             return false;
         }
         return true;
     }
 
-    private boolean checkPlayServices(){
+    private boolean checkPlayServices() {
         int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getApplicationContext());
-        if(status != ConnectionResult.SUCCESS){
-            if(GoogleApiAvailability.getInstance().isUserResolvableError(status)){
+        if (status != ConnectionResult.SUCCESS) {
+            if (GoogleApiAvailability.getInstance().isUserResolvableError(status)) {
                 errorDialog(status, AppConstant.REQ_RECOVER);
-            } else{
+            } else {
                 finish();
             }
             return false;
@@ -838,7 +845,7 @@ public class NoteDetailActivity extends BaseActivity
         return true;
     }
 
-    private void errorDialog(int errorCode, int requestCode){
+    private void errorDialog(int errorCode, int requestCode) {
         Bundle args = new Bundle();
         args.putInt(AppConstant.DIALOG_ERROR, errorCode);
         args.putInt(AppConstant.REQUEST_CODE, requestCode);
@@ -847,8 +854,8 @@ public class NoteDetailActivity extends BaseActivity
         dialogFragment.show(getFragmentManager(), AppConstant.DIALOG_ERROR);
     }
 
-    private ContentValues createContentValues(String noteImage, int storageSelection, boolean isSave){
-        if(noteImage == null || noteImage.equals("")){
+    private ContentValues createContentValues(String noteImage, int storageSelection, boolean isSave) {
+        if (noteImage == null || noteImage.equals("")) {
             noteImage = AppConstant.NO_IMAGE;
         }
         ContentValues values = new ContentValues();
@@ -856,13 +863,13 @@ public class NoteDetailActivity extends BaseActivity
         values.put(NotesContract.NotesColumns.NOTES_DATE, sDateTextView.getText().toString());
         values.put(NotesContract.NotesColumns.NOTES_TIME, sTimeTextView.getText().toString());
 
-        if(mIsImageSet || isSave){
+        if (mIsImageSet || isSave) {
             values.put(NotesContract.NotesColumns.NOTES_IMAGE, noteImage);
         }
         values.put(NotesContract.NotesColumns.NOTES_IMAGE_STORAGE_SELECTION, storageSelection);
-        String type  = AppConstant.NORMAL;
+        String type = AppConstant.NORMAL;
         String description = mDescriptionEditText.getText().toString();
-        if(mIsList){
+        if (mIsList) {
             description = mNoteCustomList.getLists();
             type = AppConstant.LIST;
         }
@@ -871,7 +878,7 @@ public class NoteDetailActivity extends BaseActivity
         return values;
     }
 
-    private int insertNote(ContentValues values){
+    private int insertNote(ContentValues values) {
         ContentResolver contentResolver = getContentResolver();
         Uri uri = Uri.parse(NotesContract.BASE_CONTENT_URI + "/notes");
         Uri returned = contentResolver.insert(uri, values);
@@ -879,15 +886,15 @@ public class NoteDetailActivity extends BaseActivity
         return Integer.parseInt(temp[temp.length - 1]);
     }
 
-    private void updateNote(ContentValues values){
+    private void updateNote(ContentValues values) {
         ContentResolver contentResolver = getContentResolver();
         Uri uri = Uri.parse(NotesContract.BASE_CONTENT_URI + "/notes");
         String selection = NotesContract.NotesColumns.NOTES_ID + "=" + mId;
         contentResolver.update(uri, values, selection, null);
     }
 
-    private void createNoteAlarm(ContentValues values, int id){
-        if(!sTimeTextView.getText().toString().equals(AppConstant.NO_TIME)){
+    private void createAlarm(ContentValues values, int id) {
+        if (!sTimeTextView.getText().toString().equals(AppConstant.NO_TIME)) {
             Note note = new Note(
                     values.getAsString(NotesContract.NotesColumns.NOTES_TITLE),
                     values.getAsString(NotesContract.NotesColumns.NOTES_DESCRIPTION),
@@ -901,12 +908,82 @@ public class NoteDetailActivity extends BaseActivity
         }
     }
 
-    private Account showAccountPicker(){
+    private Account showAccountPicker() {
         Account account = GDUT.AM.getPrimaryAccnt(false);
         Intent intent = AccountPicker.newChooseAccountIntent(account, null,
-                new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true, null, null,null, null);
+                new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true, null, null, null, null);
 
         startActivityForResult(intent, AppConstant.REQ_ACCPICK);
         return account;
     }
+
+    public static class AppDatePickerDialog extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        private int mYear, mMonth, mDay;
+        private String tempMonth;
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar calendar = Calendar.getInstance();
+            mYear = calendar.get(Calendar.YEAR);
+            mMonth = calendar.get(Calendar.MONTH);
+            mDay = calendar.get(Calendar.DAY_OF_MONTH);
+            tempMonth = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US);
+            return new DatePickerDialog(getActivity(), this, mYear, mMonth, mDay);
+        }
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            if (year == mYear) {
+                if (monthOfYear == mMonth) {
+                    if (dayOfMonth == mDay) {
+                        sDateTextView.setText(AppConstant.TODAY);
+                    } else {
+                        sDateTextView.setText(dayOfMonth + " " + sMonth);
+                    }
+                } else {
+                    sDateTextView.setText(dayOfMonth + " " + sMonth);
+                }
+            } else {
+                sDateTextView.setText(dayOfMonth + " " + sMonth + " " + year);
+            }
+            sYear = year;
+            sMonth = monthOfYear;
+            sDay = dayOfMonth;
+
+            AppTimePickerDialog timePickerDialog = new AppTimePickerDialog();
+            timePickerDialog.show(getFragmentManager(), AppConstant.DATE_PICKER);
+        }
+    }
+
+    public static class AppTimePickerDialog extends DialogFragment
+        implements TimePickerDialog.OnTimeSetListener{
+
+        private int mHour, mMinute;
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar calendar = Calendar.getInstance();
+            mHour = calendar.get(calendar.HOUR_OF_DAY);
+            mMinute = calendar.get(calendar.MINUTE);
+            return new TimePickerDialog(getActivity(), this, mHour, mMinute, DateFormat.is24HourFormat(getActivity()));
+        }
+
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            if(minute < 10){
+                sTimeTextView.setText(hourOfDay + ":0" + minute);
+            } else{
+                sTimeTextView.setText(hourOfDay + ":" + minute);
+            }
+            sHour = hourOfDay;
+            sMinute = minute;
+            sSecond = 0;
+        }
+    }
+
+
 }
