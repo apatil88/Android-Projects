@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,9 +127,5 @@ public class TrashActivity extends BaseActivity implements LoaderManager.LoaderC
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private void showToast(String msg) {
-        Toast error = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG);
-        error.show();
-    }
+    
 }
