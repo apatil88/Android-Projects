@@ -107,7 +107,7 @@ public class NoteDetailActivity extends BaseActivity
         if (getIntent().getStringExtra(AppConstant.ID) != null) {
             mId = getIntent().getStringExtra(AppConstant.ID);
             mIsEditing = true;
-            if (getIntent().getStringExtra(AppConstant.LIST_NOTES) != null) {
+            if (getIntent().getStringExtra(AppConstant.LIST) != null) {
                 intializeComponents(LIST);
             }
             setValues(mId);
