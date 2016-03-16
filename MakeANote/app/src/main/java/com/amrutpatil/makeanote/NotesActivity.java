@@ -21,7 +21,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -59,7 +58,7 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notes);
+        setContentView(R.layout.activity_all_layout);
         activateToolbar();
         setUpForDropbox();
         setUpNavigationDrawer();
@@ -69,7 +68,7 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
 
     private void setUpForDropbox(){
         //create a session
-        AndroidAuthSession  session = DropboxActions.buildsession(getApplicationContext());
+        AndroidAuthSession  session = DropboxActions.buildSession(getApplicationContext());
         mDropboxAPI = new DropboxAPI<AndroidAuthSession>(session);
     }
 
@@ -94,7 +93,7 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
             public void OnItemLongClick(View view, int position) {
                 android.support.v7.widget.PopupMenu popupMenu = new android.support.v7.widget.PopupMenu(NotesActivity.this, view);
                 MenuInflater menuInflater = popupMenu.getMenuInflater();
-                menuInflater.inflate(R.menu_action_notes, popupMenu.getMenu());
+                menuInflater.inflate(R.menu.action_notes, popupMenu.getMenu());
                 popupMenu.show();
                 final View v = view;
                 final int pos = position;
@@ -175,6 +174,8 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
                         }while(mIsImageNotFound);
                     }
                 });
+                threads[threadCounter].start();
+                threadCounter++;
             } else if (AppConstant.DROP_BOX_SELECTION == aNote.getStorageSelection()){
                 threads[threadCounter] = new Thread(new Runnable() {
                     @Override
@@ -409,12 +410,13 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
         if(isList == View.VISIBLE){
             //If a note contains list of items
             NoteCustomList noteCustomList = (NoteCustomList) linearLayout.getChildAt(0);
-            for(int i = 0 ; i < noteCustomList.getChildCount(); i++){
-                LinearLayout first = (LinearLayout) linearLayout.getChildAt(i);
-                CheckBox checkBox = (CheckBox) first.getChildAt(0);
-                TextView textView = (TextView) first.getChildAt(1);
-                listDescription = description + textView.toString() + checkBox.isChecked() + "%";
-            }
+            listDescription = noteCustomList.getLists();
+//            for(int i = 0 ; i < noteCustomList.getChildCount(); i++){
+//                LinearLayout first = (LinearLayout) linearLayout.getChildAt(i);
+//                CheckBox checkBox = (CheckBox) first.getChildAt(0);
+//                TextView textView = (TextView) first.getChildAt(1);
+//                listDescription = description + textView.toString() + checkBox.isChecked() + "%";
+//            }
             contentValues.put(ArchivesContract.ArchivesColumns.ARCHIVES_TYPE, AppConstant.LIST);
         } else{
             listDescription = description.getText().toString();
