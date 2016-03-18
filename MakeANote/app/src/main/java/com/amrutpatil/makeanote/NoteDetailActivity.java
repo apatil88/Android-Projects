@@ -1,5 +1,6 @@
 package com.amrutpatil.makeanote;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
@@ -13,6 +14,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +29,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -57,6 +61,7 @@ import java.util.Locale;
  */
 public class NoteDetailActivity extends BaseActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    private static final String TAG = "MakeANote";
     private static int sMonth, sYear, sHour, sDay, sMinute, sSecond;
     private DropboxAPI<AndroidAuthSession> mApi;
     private File mDropBoxFile;
@@ -186,7 +191,11 @@ public class NoteDetailActivity extends BaseActivity
     //This method is called when the user taps the reminder notification to display the contents of the note.
     //Grab the data from the note object instead of the content provider.
     private void setValues(Note note) {
-        getSupportActionBar().setTitle(AppConstant.REMINDERS);
+        try{
+            getSupportActionBar().setTitle(AppConstant.REMINDERS);
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
         String title = note.getTitle();
         String description = note.getDescription();
         String date = note.getDate();
@@ -445,7 +454,7 @@ public class NoteDetailActivity extends BaseActivity
     }
 
     private void saveInDevice() {
-        ContentValues values = createContentValues(AppConstant.NOTE_PREFIX, AppConstant.DEVICE_SELECTION, true);
+        ContentValues values = createContentValues(mImagePath, AppConstant.DEVICE_SELECTION, true);
         int id = insertNote(values);
         mId = id + "";
         createAlarm(values, id);
@@ -487,7 +496,7 @@ public class NoteDetailActivity extends BaseActivity
                 if (!mIsNotificationMode) {
                     saveNote();
                 } else {
-                    if (!sTimeTextView.getText().equals(AppConstant.NO_TIME)) {
+                    if (!sTimeTextView.getText().toString().equals(AppConstant.NO_TIME)) {
                         actAsReminder();
                     } else {
                         actAsNote();
@@ -506,7 +515,7 @@ public class NoteDetailActivity extends BaseActivity
 
     private void removeFromReminder(Note reminder) {
         ContentResolver contentResolver = getContentResolver();
-        Uri uri = Uri.parse(NotesContract.BASE_CONTENT_URI + "/notes" + reminder.getId());
+        Uri uri = Uri.parse(NotesContract.BASE_CONTENT_URI + "/notes/" + reminder.getId());
         contentResolver.delete(uri, null, null);
 
     }
@@ -622,7 +631,7 @@ public class NoteDetailActivity extends BaseActivity
             newImage.compress(Bitmap.CompressFormat.PNG, 0, bos);
             byte[] bitmapData = bos.toByteArray();
             try {
-                FileOutputStream fos = new FileOutputStream(filename);
+                FileOutputStream fos = new FileOutputStream(mDropBoxFile);
                 fos.write(bitmapData);
                 fos.flush();
                 fos.close();
@@ -683,9 +692,32 @@ public class NoteDetailActivity extends BaseActivity
         createAlarm(values, Integer.parseInt(mId));
     }
 
+    public boolean hasPermissionInManifest(Context context, String permissionName) {
+        final String packageName = context.getPackageName();
+        try {
+            final PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(packageName, PackageManager.GET_PERMISSIONS);
+            final String[] declaredPermisisons = packageInfo.requestedPermissions;
+            if (declaredPermisisons != null && declaredPermisisons.length > 0) {
+                for (String p : declaredPermisisons) {
+                    if (p.equals(permissionName)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     private void callCamera() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        if(hasPermissionInManifest(getApplicationContext(), Manifest.permission.CAMERA)){
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        }else{
+            Log.v(TAG, "Permission Denied: Opening Camera");
+        }
+
     }
 
     @Override
@@ -719,13 +751,13 @@ public class NoteDetailActivity extends BaseActivity
 
             case AppConstant.REQ_SCAN:
                 if (resultCode == Activity.RESULT_OK) {
-                    final String title = GDUT.time2Titl(null);
-                    if (title != null && sTmpFlNm != null) {
+                    final String titl = GDUT.time2Titl(null);
+                    if (titl != null && sTmpFlNm != null) {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 File tmpFile = null;
-                                GDActions.createTreeGDAA(GDUT.MYROOT, title, GDUT.file2Bytes(tmpFile));
+                                GDActions.createTreeGDAA(GDUT.MYROOT, titl, GDUT.file2Bytes(tmpFile));
                             }
                         }).start();
                     }
@@ -779,7 +811,7 @@ public class NoteDetailActivity extends BaseActivity
     private String getRealPathFromURI(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);
     }
 
@@ -967,8 +999,8 @@ public class NoteDetailActivity extends BaseActivity
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final Calendar calendar = Calendar.getInstance();
-            mHour = calendar.get(calendar.HOUR_OF_DAY);
-            mMinute = calendar.get(calendar.MINUTE);
+            mHour = calendar.get(Calendar.HOUR_OF_DAY);
+            mMinute = calendar.get(Calendar.MINUTE);
             return new TimePickerDialog(getActivity(), this, mHour, mMinute, DateFormat.is24HourFormat(getActivity()));
         }
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.amrutpatil.makeanote"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest package="com.amrutpatil.makeanote"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -13,12 +12,21 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
+    <uses-feature android:name="android.hardware.camera.any"
+                  android:required="true"/>
+
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name_1"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MakeANote">
+        android:theme="@style/Theme.MakeANote"
+        android:name="android.support.multidex.MultiDexApplication">
+
         <activity
             android:name=".NotesActivity"
             android:label="@string/notes">
@@ -36,37 +44,31 @@
             android:name=".TrashActivity"
             android:label="@string/trash">
         </activity>
-
         <activity
             android:name=".ArchivesActivity"
             android:label="@string/archives">
         </activity>
-
         <activity
             android:name=".HelpFeedActivity"
             android:label="@string/helpandfeedback"
             android:noHistory="true">
         </activity>
-
         <activity
             android:name=".GoogleDriveSelectionActivity"
             android:label="@string/title_activity_list_files">
         </activity>
-
         <activity
             android:name=".AppAuthenticationActivity"
             android:label="@string/title_activity_online_photo_selection"
             android:noHistory="true"
             android:parentActivityName=".NotesActivity">
         </activity>
-
         <activity
             android:name=".GoogleDriveDirectoryNameGetterActivity"
             android:label="@string/title_activity_online_photo_selection"
             android:noHistory="true"
             android:parentActivityName=".NotesActivity">
         </activity>
-
         <activity
             android:name=".DropboxPickerActivity"
             android:label="@string/title_activity_selection_drop_box"
@@ -74,33 +76,34 @@
             android:parentActivityName=".NotesActivity">
         </activity>
 
-        <!-- Call built-in Dropbox Activity-->
+        <!-- Call built-in Dropbox Activity -->
         <activity
             android:name="com.dropbox.client2.android.AuthActivity"
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask">
-
             <intent-filter>
-                <data android:scheme="TBA"/>
+                <data android:scheme="db-m3r6s6n413h77ea"/>
+
                 <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        
+
         <receiver
             android:name=".AlarmReceiver"
             android:process=":remote"/>
-        
+
         <provider
-            android:authorities="com.amrutpatil.makeanote.provider"
             android:name=".AppProvider"
+            android:authorities="com.amrutpatil.makeanote.provider"
             android:exported="true"
             android:readPermission="com.amrutpatil.makeanote.provider.READWRITE"
             android:writePermission="com.amrutpatil.makeanote.provider.READWRITE"/>
 
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
     </application>
 
