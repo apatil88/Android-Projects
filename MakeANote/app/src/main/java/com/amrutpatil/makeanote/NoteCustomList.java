@@ -38,13 +38,8 @@ public class NoteCustomList extends LinearLayout {
 
     //Processing notes with list of items
     public void setUpForHomeAdapter(String listEntries){
-        // Eggs$false%Ham$false%Bread$false%Vegemite$false
         setOrientation(VERTICAL);
         String[] listEntryTokens = listEntries.split("%");
-        // [0] Eggs$false
-        // [1] Ham$false
-        // ...
-
         boolean isStrikeOut = false;
         String listItem = "";
 
@@ -52,9 +47,6 @@ public class NoteCustomList extends LinearLayout {
             mListItem = new LinearLayout(mContext);
             mListItem.setOrientation(HORIZONTAL);
             String[] listEntry = entryDetails.split("\\$");
-            //[0] Eggs
-            //[1] false
-            //...
             for(int i = 0; i < listEntry.length; i++){
                 if( i%2 == 0){
                     listItem = listEntry[i];
@@ -65,8 +57,8 @@ public class NoteCustomList extends LinearLayout {
 
             //Draw the checkbox
             CheckBox checkBox = new CheckBox(mContext);
-            checkBox.setEnabled(false);
             checkBox.setChecked(isStrikeOut);
+            checkBox.setEnabled(false);
 
             //Draw the textview
             TextView textView = new TextView(mContext);
