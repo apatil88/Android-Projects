@@ -18,6 +18,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,7 +75,7 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
 
     private void setUpForRecyclerView(){
         mContentResolver = getContentResolver();
-        mNotesAdapter = new NotesAdapter(new ArrayList<Note>(), NotesActivity.this);
+        mNotesAdapter = new NotesAdapter(NotesActivity.this, new ArrayList<Note>());
         int LOADER_ID = 1;
         getSupportLoaderManager().initLoader(LOADER_ID, null, NotesActivity.this);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_home);
@@ -375,6 +376,13 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_notes, menu);
+        return true;
+    }
+
+    @Override
     public void onBackPressed() {
 
         Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -498,5 +506,20 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
             }
             break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
