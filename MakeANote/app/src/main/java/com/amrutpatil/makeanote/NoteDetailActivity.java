@@ -40,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
@@ -362,7 +363,7 @@ public class NoteDetailActivity extends BaseActivity
             }
         });
 
-        LinearLayout layout = (LinearLayout) findViewById(R.id.check_list_layout);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.add_check_list_layout);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -716,6 +717,7 @@ public class NoteDetailActivity extends BaseActivity
             startActivityForResult(cameraIntent, CAMERA_REQUEST);
         }else{
             Log.v(TAG, "Permission Denied: Opening Camera");
+            Toast.makeText(NoteDetailActivity.this, "Please check permissions at Settings->Apps and try again", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -921,7 +923,7 @@ public class NoteDetailActivity extends BaseActivity
     private void updateNote(ContentValues values) {
         ContentResolver contentResolver = getContentResolver();
         Uri uri = Uri.parse(NotesContract.BASE_CONTENT_URI + "/notes");
-        String selection = NotesContract.NotesColumns.NOTES_ID + "=" + mId;
+        String selection = NotesContract.NotesColumns.NOTES_ID + " = " + mId;
         contentResolver.update(uri, values, selection, null);
     }
 
