@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:flickr="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_device"
+        android:orderInCategory="1"
+        android:icon="@android:drawable/ic_menu_delete"
+        flickr:showAsAction="always"
+        android:title="@string/action_device" />
+    <item
+        android:id="@+id/action_google_drive"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:title="@string/action_google_drive"
+        android:orderInCategory="10"
+        flickr:showAsAction="always" />
+    <item
+        android:id="@+id/action_dropbox"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/action_dropbox"
+        android:orderInCategory="100"
+        flickr:showAsAction="always" />
+</menu>
