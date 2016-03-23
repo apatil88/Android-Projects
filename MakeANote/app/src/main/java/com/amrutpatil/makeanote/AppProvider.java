@@ -106,7 +106,7 @@ public class AppProvider extends ContentProvider {
             case NOTES_ID:
                 queryBuilder.setTables(AppDatabase.Tables.NOTES);
                 String noteId = NotesContract.Notes.getNoteId(uri);
-                queryBuilder.appendWhere(BaseColumns._ID + " = "+ noteId);
+                queryBuilder.appendWhere(BaseColumns._ID + "="+ noteId);
                 break;
 
             case ARCHIVES:
@@ -116,7 +116,7 @@ public class AppProvider extends ContentProvider {
             case ARCHIVES_ID:
                 queryBuilder.setTables(AppDatabase.Tables.ARCHIVES);
                 String archiveId = ArchivesContract.Archives.getArchiveId(uri);
-                queryBuilder.appendWhere(BaseColumns._ID + " = " + archiveId);
+                queryBuilder.appendWhere(BaseColumns._ID + "=" + archiveId);
                 break;
 
             case TRASH:
@@ -126,7 +126,7 @@ public class AppProvider extends ContentProvider {
             case TRASH_ID:
                 queryBuilder.setTables(AppDatabase.Tables.TRASH);
                 String trashId = TrashContract.Trash.getTrashId(uri);
-                queryBuilder.appendWhere(BaseColumns._ID + " = " + trashId);
+                queryBuilder.appendWhere(BaseColumns._ID + "=" + trashId);
                 break;
 
             default:
@@ -173,8 +173,8 @@ public class AppProvider extends ContentProvider {
 
             case NOTES_ID:
                 String noteId = NotesContract.Notes.getNoteId(uri);
-                selectionCriteria = BaseColumns._ID + " = " + noteId +
-                        (!TextUtils.isEmpty(selection) ? "AND ( " + selection + " ) " : "" );
+                selectionCriteria = BaseColumns._ID + "=" + noteId +
+                        (!TextUtils.isEmpty(selection) ? " AND ( " + selection + ")" : "" );
                 return database.update(AppDatabase.Tables.NOTES, values, selectionCriteria, selectionArgs);
 
             case ARCHIVES:
@@ -182,8 +182,8 @@ public class AppProvider extends ContentProvider {
 
             case ARCHIVES_ID:
                 String archiveId = ArchivesContract.Archives.getArchiveId(uri);
-                selectionCriteria = BaseColumns._ID + " = " + archiveId +
-                        (!TextUtils.isEmpty(selection) ? "AND ( " + selection + " ) ": "");
+                selectionCriteria = BaseColumns._ID + "=" + archiveId +
+                        (!TextUtils.isEmpty(selection) ? " AND ( " + selection + ")": "");
                 return database.update(AppDatabase.Tables.ARCHIVES, values, selectionCriteria, selectionArgs);
 
             case TRASH:
@@ -191,8 +191,8 @@ public class AppProvider extends ContentProvider {
 
             case TRASH_ID:
                 String trashId = TrashContract.Trash.getTrashId(uri);
-                selectionCriteria = BaseColumns._ID + " = " + trashId +
-                        (!TextUtils.isEmpty(selection) ? "AND ( " + selection + " ) ": "");
+                selectionCriteria = BaseColumns._ID + "=" + trashId +
+                        (!TextUtils.isEmpty(selection) ? " AND ( " + selection + ")": "");
                 return database.update(AppDatabase.Tables.TRASH, values, selectionCriteria, selectionArgs);
 
             default:
@@ -213,22 +213,22 @@ public class AppProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
 
         switch (match){
-            case NOTES:
+            case NOTES_ID:
                 String noteId = NotesContract.Notes.getNoteId(uri);
-                String notesSelectionCriteria = BaseColumns._ID + " = " + noteId +
-                        (!TextUtils.isEmpty(selection) ? "AND ( " + selection + " ) ": "");
+                String notesSelectionCriteria = BaseColumns._ID + "=" + noteId +
+                        (!TextUtils.isEmpty(selection) ? " AND ( " + selection + ")": "");
                 return database.delete(AppDatabase.Tables.NOTES, notesSelectionCriteria, selectionArgs);
 
-            case ARCHIVES:
+            case ARCHIVES_ID:
                 String archiveId = ArchivesContract.Archives.getArchiveId(uri);
-                String archiveSelectionCriteria = BaseColumns._ID + " = " + archiveId +
-                        (!TextUtils.isEmpty(selection) ? "AND ( " + selection + " ) ": "");
+                String archiveSelectionCriteria = BaseColumns._ID + "=" + archiveId +
+                        (!TextUtils.isEmpty(selection) ? " AND ( " + selection + ")": "");
                 return database.delete(AppDatabase.Tables.ARCHIVES, archiveSelectionCriteria, selectionArgs);
 
-            case TRASH:
+            case TRASH_ID:
                 String trashId = TrashContract.Trash.getTrashId(uri);
-                String trashSelectionCriteria = BaseColumns._ID + " = " + trashId +
-                        (!TextUtils.isEmpty(selection) ? "AND ( " + selection + " ) ": "");
+                String trashSelectionCriteria = BaseColumns._ID + "=" + trashId +
+                        (!TextUtils.isEmpty(selection) ? " AND ( " + selection + ")": "");
                 return database.delete(AppDatabase.Tables.TRASH, trashSelectionCriteria, selectionArgs);
 
             default:
