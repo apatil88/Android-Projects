@@ -107,7 +107,7 @@ final class GDActions {
                         gfs.add(new GF(md.getTitle(), md.getDriveId().encodeToString()));
                     }
                 } finally {
-                    if (mdb != null) mdb.close();
+                    if (mdb != null) mdb.release();
                 }
             }
         }
@@ -117,7 +117,8 @@ final class GDActions {
         if (titl == null || !isConnected()) return null;
         DriveId dId = null;
         DriveFolder pFldr = (prId == null) ?
-                Drive.DriveApi.getRootFolder(mGAC) : Drive.DriveApi.getFolder(mGAC, prId);
+                Drive.DriveApi.getRootFolder(mGAC) :
+                dId.asDriveFolder();
         if (pFldr == null) return null;
 
         MetadataChangeSet meta;
