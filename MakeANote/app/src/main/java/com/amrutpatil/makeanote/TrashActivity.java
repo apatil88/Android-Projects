@@ -86,7 +86,7 @@ public class TrashActivity extends BaseActivity implements LoaderManager.LoaderC
             mRecyclerView.setVisibility(View.VISIBLE);
         } else {
             TextView noItemTV = (TextView) findViewById(R.id.no_item_textview);
-            noItemTV.setText(AppConstant.NO_ARCHIVES);
+            noItemTV.setText(AppConstant.NO_TRASH);
             noItemTV.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
         }
@@ -127,5 +127,5 @@ public class TrashActivity extends BaseActivity implements LoaderManager.LoaderC
         }
         return super.onOptionsItemSelected(item);
     }
-    
+
 }
