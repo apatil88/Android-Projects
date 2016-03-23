@@ -297,20 +297,19 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        if(!mIsInAuth){
-            try{
-                mIsInAuth = true;
-                if(connectionResult.hasResolution()){
+        if(!mIsInAuth) {
+            if(connectionResult.hasResolution()) {
+                try {
+                    mIsInAuth = true;
                     connectionResult.startResolutionForResult(this, AppConstant.REQ_AUTH);
+                } catch(IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                    finish();
                 }
-            } catch (IntentSender.SendIntentException e){
-                e.printStackTrace();
+            } else {
                 finish();
             }
-        } else{
-            finish();
         }
-
     }
 
     @Override
