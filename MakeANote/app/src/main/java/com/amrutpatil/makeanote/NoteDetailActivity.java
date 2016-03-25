@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
@@ -62,7 +63,7 @@ import java.util.Locale;
  */
 public class NoteDetailActivity extends BaseActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-    private static final String TAG = "MakeANote";
+    private static final String TAG = NoteDetailActivity.class.getCanonicalName();
     private static int sMonth, sYear, sHour, sDay, sMinute, sSecond;
     private DropboxAPI<AndroidAuthSession> mApi;
     private File mDropBoxFile;
@@ -312,18 +313,20 @@ public class NoteDetailActivity extends BaseActivity
                             if (!AppSharedPreferences.isGoogleDriveAuthenticated(getApplicationContext())) {
                                 startActivity(new Intent(NoteDetailActivity.this, GoogleDriveSelectionActivity.class));
                                 finish();
-                            } else if (menuItem.getItemId() == R.id.action_dropbox) {
+                            } else{
+                                updateStorageSelection(null, R.drawable.ic_google_drive, AppConstant.GOOGLE_DRIVE_SELECTION);
+                            }
+                        }
+                            else if (menuItem.getItemId() == R.id.action_dropbox) {
                                 AppSharedPreferences.setPersonalNotesPreference(getApplicationContext(), AppConstant.DROP_BOX_SELECTION);
                                 if (!AppSharedPreferences.isDropBoxAuthenticated(getApplicationContext())) {
                                     startActivity(new Intent(NoteDetailActivity.this, DropboxPickerActivity.class));
                                     finish();
                                 }
-                            } else {
-                                updateStorageSelection(null, R.drawable.ic_google_drive, AppConstant.GOOGLE_DRIVE_SELECTION);
+                                else {
+                                    updateStorageSelection(null, R.drawable.ic_dropbox, AppConstant.DROP_BOX_SELECTION);
+                                }
                             }
-                        } else {
-                            updateStorageSelection(null, R.drawable.ic_dropbox, AppConstant.DROP_BOX_SELECTION);
-                        }
 
                         if (mBundle != null) {
                             mCameraFileName = mBundle.getString("mCameraFileName");
@@ -397,7 +400,7 @@ public class NoteDetailActivity extends BaseActivity
                 getApplicationContext(), note.getId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC, targetCal.getTimeInMillis(), pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, targetCal.getTimeInMillis(), pendingIntent);
     }
 
     private void saveInDropbox() {
@@ -715,7 +718,9 @@ public class NoteDetailActivity extends BaseActivity
         if(hasPermissionInManifest(getApplicationContext(), Manifest.permission.CAMERA)){
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(cameraIntent, CAMERA_REQUEST);
-        }else{
+        } else if (Build.VERSION_CODES.M >= 23){
+            Toast.makeText(NoteDetailActivity.this, "Please check permissions at Settings->Apps and try again", Toast.LENGTH_LONG).show();
+        } else{
             Log.v(TAG, "Permission Denied: Opening Camera");
             Toast.makeText(NoteDetailActivity.this, "Please check permissions at Settings->Apps and try again", Toast.LENGTH_LONG).show();
         }
