@@ -11,18 +11,19 @@ import com.dropbox.client2.exception.DropboxException;
  * Description: Class to create a directory on Dropbox.
  */
 public class DropboxDirectoryCreatorAsyncTask extends AsyncTask<Void, Long, Boolean>{
-    private DropboxAPI mApi;
+    private DropboxAPI<?> mApi;
     private Context mContext;
     private String mPath;
     private OnDirectoryCreateFinished mListener;
     private String mName;
     private String mMessage;
 
-    public DropboxDirectoryCreatorAsyncTask(DropboxAPI api, Context context, String path, OnDirectoryCreateFinished listener) {
+    public DropboxDirectoryCreatorAsyncTask(DropboxAPI api, Context context, String name, String path, OnDirectoryCreateFinished listener) {
         mApi = api;
         mContext = context;
         mPath = path;
         mListener = listener;
+        this.mName = name;
     }
 
     @Override
