@@ -15,7 +15,7 @@ public class AppConstant {
     public static final String LIST_NOTES = "LIST_NOTES";
     public static final String DATE_PICKER = "DATE_PICKER";
     public static final String NO_IMAGE = "no_image";
-    public static final String No_TIME = "No Time";
+    public static final String NO_TIME = "No Time";
     public static final String NO_ARCHIVES = "NO ARCHIVES";
     public static final String NO_TRASH = "TRASH IS EMPTY";
     public static final String EMPTY = "EMPTY";
@@ -77,8 +77,8 @@ public class AppConstant {
     public static final String GOOGLE_DRIVE_UPLOAD_DIR = "google_drive_upload_dir";
 
     //drop box
-    public static final String APP_KEY = "m6pwpihjf6dtami";//change this with drop box key
-    public static final String APP_SECRET = "4tr6onit6uf2cla";//change this with drop box secret key
+    public static final String APP_KEY = "2k9jzotoew79t17";//change this with Dropbox app key
+    public static final String APP_SECRET = "n2vum2amu66vfq6";//change this with Dropbox secret key
     public static final String ACCOUNT_PREFS_NAME = "prefs";
     public static final String ACCESS_KEY_NAME = "ACCESS_KEY";
     public static final String ACCESS_SECRET_NAME = "ACCESS_SECRET";
