@@ -44,9 +44,11 @@ final class GDActions {
     private static com.google.api.services.drive.Drive mGOOSvc;
 
     static void init(NoteDetailActivity ctx, String email) {
-        if (ctx != null && email != null) {
-            mGAC = new GoogleApiClient.Builder(ctx).addApi(Drive.API)
-                    .addScope(Drive.SCOPE_FILE).setAccountName(email)
+        if (ctx != null && email != null && mGAC == null) {
+            mGAC = new GoogleApiClient.Builder(ctx)
+                    .addApi(Drive.API)
+                    .addScope(Drive.SCOPE_FILE)
+                    .setAccountName(email)
                     .addConnectionCallbacks(ctx).addOnConnectionFailedListener(ctx).build();
 
             mGOOSvc = new com.google.api.services.drive.Drive.Builder(
@@ -117,8 +119,7 @@ final class GDActions {
         if (titl == null || !isConnected()) return null;
         DriveId dId = null;
         DriveFolder pFldr = (prId == null) ?
-                Drive.DriveApi.getRootFolder(mGAC) :
-                dId.asDriveFolder();
+                Drive.DriveApi.getRootFolder(mGAC) : Drive.DriveApi.getFolder(mGAC, prId);
         if (pFldr == null) return null;
 
         MetadataChangeSet meta;
