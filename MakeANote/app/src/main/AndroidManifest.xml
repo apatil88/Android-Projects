@@ -3,6 +3,9 @@
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS_PRIVILEGED"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -12,21 +15,20 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
-    <uses-feature android:name="android.hardware.camera.any"
-                  android:required="true"/>
-
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="true"/>
     <uses-feature
         android:name="android.hardware.camera.autofocus"
-        android:required="false" />
+        android:required="false"/>
 
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name_1"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MakeANote"
-        android:name="android.support.multidex.MultiDexApplication">
-
+        android:theme="@style/Theme.MakeANote">
         <activity
             android:name=".NotesActivity"
             android:label="@string/notes">
@@ -82,7 +84,7 @@
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask">
             <intent-filter>
-                <data android:scheme="db-m3r6s6n413h77ea"/>
+                <data android:scheme="db-2k9jzotoew79t17"/>
 
                 <action android:name="android.intent.action.VIEW"/>
 
