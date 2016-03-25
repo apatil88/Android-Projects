@@ -70,7 +70,7 @@ public class DropboxPickerActivity extends BaseActivity
                     createDir.setImageResource(R.drawable.ic_add_folder);
                     newDirectory.setVisibility(View.GONE);
                     if (directoryName.length() > 0) {
-                        new DropboxDirectoryCreatorAsyncTask(mApi, getApplicationContext(),
+                        new DropboxDirectoryCreatorAsyncTask(mApi, getApplicationContext(), directoryName,
                                 getCurrentPath() + "/" + directoryName, DropboxPickerActivity.this).execute();
                     }
                 }
