@@ -1,8 +1,12 @@
 package com.amrutpatil.makeanote;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
@@ -14,6 +18,9 @@ import com.google.android.gms.drive.Metadata;
  * Description: Class to get the name of the Google Drive directory to which the image storage is set to.
  */
 public class GoogleDriveDirectoryNameGetterActivity extends BaseGoogleDriveActivity {
+
+    private static final String TAG = GoogleDriveDirectoryNameGetterActivity.class.getCanonicalName();
+    private static final int REQUEST_CODE = 101;
 
     private final ResultCallback<DriveResource.MetadataResult> mMetadataCallback =
             new ResultCallback<DriveResource.MetadataResult>() {
@@ -66,8 +73,35 @@ public class GoogleDriveDirectoryNameGetterActivity extends BaseGoogleDriveActiv
     }
 
 
+    /*callback when there there's an error connecting the client to the service.*/
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        Log.i(TAG, "Connection failed");
+        if (!result.hasResolution()) {
+            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this, 0).show();
+            return;
+        }
+        try {
+            Log.i(TAG, "trying to resolve the Connection failed error...");
+            result.startResolutionForResult(this, REQUEST_CODE);
+        } catch (IntentSender.SendIntentException e) {
+            Log.e(TAG, "Exception while starting resolution activity", e);
+        }
+    }
+
     @Override
     public void onConnectionSuspended(int i) {
 
+        switch (i) {
+            case 1:
+                Log.i(TAG, "Connection suspended - Cause: " + "Service disconnected");
+                break;
+            case 2:
+                Log.i(TAG, "Connection suspended - Cause: " + "Connection lost");
+                break;
+            default:
+                Log.i(TAG, "Connection suspended - Cause: " + "Unknown");
+                break;
+        }
     }
 }
