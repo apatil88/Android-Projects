@@ -18,6 +18,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
@@ -33,6 +35,7 @@ import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.File;
@@ -45,6 +48,7 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String TAG = "upload_file";
     private List<Note> mNotes;
     private RecyclerView mRecyclerView;
     private NotesAdapter mNotesAdapter;
@@ -59,6 +63,8 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "Legal requirements if you use Google Drive in your app: "
+                + GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(this));
         setContentView(R.layout.activity_all_layout);
         activateToolbar();
         setUpForDropbox();
@@ -66,6 +72,7 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
         setUpForRecyclerView();
         setUpActions();
     }
+
 
     private void setUpForDropbox(){
         //create a session
@@ -325,8 +332,7 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
             if(account == null){
                 //If no account is found, pop up an account picker
                 account = GDUT.AM.getPrimaryAccnt(false);
-                String[] allowableAccountType = {GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE};
-                Intent accountIntent = AccountPicker.newChooseAccountIntent(account, null, allowableAccountType, true,
+                Intent accountIntent = AccountPicker.newChooseAccountIntent(account, null, new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true,
                         null, null, null, null);
                 startActivityForResult(accountIntent, AppConstant.REQ_ACCPICK);
                 return false;
@@ -337,8 +343,7 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
         }
         account = GDUT.AM.getActiveAccnt();
         if(account == null) {
-            String[] allowableAccountType = {GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE};
-            Intent accountIntent = AccountPicker.newChooseAccountIntent(account, null, allowableAccountType, true,
+            Intent accountIntent = AccountPicker.newChooseAccountIntent(account, null, new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true,
                     null, null, null, null);
             startActivityForResult(accountIntent, AppConstant.REQ_ACCPICK);
         }
@@ -487,6 +492,7 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
                     }
                 } else if (GDUT.AM.getActiveEmil() == null) { // if we do not have a valid email from the account picker
                     GDUT.AM.removeActiveAccnt();
+                    Toast.makeText(this, AppConstant.PICK_ACCOUNT, Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 break;
