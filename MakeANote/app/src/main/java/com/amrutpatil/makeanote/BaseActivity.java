@@ -1,7 +1,6 @@
 package com.amrutpatil.makeanote;
 
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -163,32 +162,26 @@ public abstract class BaseActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         mNextActivity = NotesActivity.class;
-                        Snackbar.make(view, "Notes", Snackbar.LENGTH_SHORT).show();
                         actAsNote();
                         break;
                     case 1:
                         mNextActivity = NotesActivity.class;
-                        Snackbar.make(view, "Notes", Snackbar.LENGTH_SHORT).show();
                         actAsReminder();
                         break;
                     case 2:
                         mNextActivity = ArchivesActivity.class;
                         mType = ARCHIVES;
-                        Snackbar.make(view, "Archives", Snackbar.LENGTH_SHORT).show();
                         break;
                     case 3:
                         mNextActivity = TrashActivity.class;
                         mType = TRASH;
-                        Snackbar.make(view, "Trash", Snackbar.LENGTH_SHORT).show();
                         break;
                     case 4:
                         mNextActivity = AppAuthenticationActivity.class;
                         mType = SETTINGS;
-                        Snackbar.make(view, "Settings", Snackbar.LENGTH_SHORT).show();
                         break;
                     case 5:
                         mNextActivity = HelpFeedActivity.class;
-                        Snackbar.make(view, "HelpFeed", Snackbar.LENGTH_SHORT).show();
                         break;
                     default:
                         mNextActivity = HelpFeedActivity.class;
