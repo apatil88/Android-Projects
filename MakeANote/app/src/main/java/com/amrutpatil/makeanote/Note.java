@@ -18,13 +18,13 @@ public class Note {
     private Bitmap mBitmap;
 
     public Note(String title, String description, String date, String time, String type, int id, int storageSelection) {
-        mTitle = title;
-        mDescription = description;
-        mDate = date;
-        mTime = time;
-        mType = type;
-        mId = id;
-        mStorageSelection = storageSelection;
+        this.mTitle = title;
+        this.mDescription = description;
+        this.mDate = date;
+        this.mTime = time;
+        this.mType = type;
+        this.mId = id;
+        this.mStorageSelection = storageSelection;
     }
 
     // Create note from a reminderString (contains contents in a single string
