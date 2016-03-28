@@ -28,7 +28,7 @@ public class GoogleDriveSelectionActivity extends BaseGoogleDriveActivity {
                 .build(getGoogleApiClient());
 
         try{
-            startIntentSenderForResult(intentSender, REQUEST_CODE_RESOLUTION, null, 0, 0, 0);
+            startIntentSenderForResult(intentSender, REQUEST_CODE_OPENER, null, 0, 0, 0);
         } catch (IntentSender.SendIntentException e){
             //Error processing
         }
@@ -36,28 +36,29 @@ public class GoogleDriveSelectionActivity extends BaseGoogleDriveActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
+        switch(requestCode) {
             case REQUEST_CODE_OPENER:
-                if (data != null && resultCode == RESULT_OK) {
-                    //Check to see if the data that is come back is what we expected
+                if(data != null && resultCode == RESULT_OK) {
                     mDriveId = (DriveId) data.getParcelableExtra(
                             OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
-                    if (mDriveId != null) {
+                    if(mDriveId != null) {
                         AppSharedPreferences.storeGoogleDriveResourceId(getApplicationContext(), mDriveId.getResourceId());
                         BaseActivity.actAsNote();
                         startActivity(new Intent(GoogleDriveSelectionActivity.this, GoogleDriveDirectoryNameGetterActivity.class));
                         finish();
                         return;
+                    } else {
+                        startActivity(new Intent(GoogleDriveSelectionActivity.this, GoogleDriveSelectionActivity.class));
+                        finish();
+                        return;
                     }
-                } else {
-                    startActivity(new Intent(GoogleDriveSelectionActivity.this, GoogleDriveSelectionActivity.class));
-                    return;
                 }
                 break;
-            
+
             default:
                 super.onActivityResult(requestCode, resultCode, data);
                 break;
+
         }
     }
 
