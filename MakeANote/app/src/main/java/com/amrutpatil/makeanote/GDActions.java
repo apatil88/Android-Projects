@@ -44,11 +44,9 @@ final class GDActions {
     private static com.google.api.services.drive.Drive mGOOSvc;
 
     static void init(NoteDetailActivity ctx, String email) {
-        if (ctx != null && email != null && mGAC == null) {
-            mGAC = new GoogleApiClient.Builder(ctx)
-                    .addApi(Drive.API)
-                    .addScope(Drive.SCOPE_FILE)
-                    .setAccountName(email)
+        if (ctx != null && email != null) {
+            mGAC = new GoogleApiClient.Builder(ctx).addApi(Drive.API)
+                    .addScope(Drive.SCOPE_FILE).setAccountName(email)
                     .addConnectionCallbacks(ctx).addOnConnectionFailedListener(ctx).build();
 
             mGOOSvc = new com.google.api.services.drive.Drive.Builder(
@@ -109,7 +107,7 @@ final class GDActions {
                         gfs.add(new GF(md.getTitle(), md.getDriveId().encodeToString()));
                     }
                 } finally {
-                    if (mdb != null) mdb.release();
+                    if (mdb != null) mdb.close();
                 }
             }
         }
@@ -207,8 +205,10 @@ final class GDActions {
         qryClause = qryClause.substring(0, qryClause.length() - " and ".length());
         com.google.api.services.drive.Drive.Files.List qry = null;
         try {
-            qry = mGOOSvc.files().list().setQ(qryClause)
-                    .setFields("items(id, labels/trashed, title), nextPageToken");
+            if(mGOOSvc != null) {
+                qry = mGOOSvc.files().list().setQ(qryClause)
+                        .setFields("items(id, labels/trashed, title), nextPageToken");
+            }
             gfs = search(gfs, qry);
         } catch (GoogleAuthIOException gaiEx) {
             try {
