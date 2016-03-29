@@ -756,7 +756,7 @@ public class NoteDetailActivity extends BaseActivity
                 }
                 break;
 
-            case AppConstant.REQ_SCAN:
+            case AppConstant.REQ_SCAN: {
                 if (resultCode == Activity.RESULT_OK) {
                     final String titl = GDUT.time2Titl(null);
                     if (titl != null && sTmpFlNm != null) {
@@ -770,6 +770,7 @@ public class NoteDetailActivity extends BaseActivity
                     }
                 }
                 break;
+            }
         }
 
         //If we are able to take a photo
@@ -829,18 +830,19 @@ public class NoteDetailActivity extends BaseActivity
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (!sIsInAuth) {
-            connectionResult.hasResolution();
-            try {
-                sIsInAuth = true;
-                connectionResult.startResolutionForResult(this, AppConstant.REQ_AUTH);
-            } catch (IntentSender.SendIntentException e) {
-                e.printStackTrace();
-                //Add other error handling here
+        if(!sIsInAuth) {
+            if(connectionResult.hasResolution()) {
+                try {
+                    sIsInAuth = true;
+                    connectionResult.startResolutionForResult(this, AppConstant.REQ_AUTH);
+                } catch(IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                    // Add other error handling here
+                    finish();
+                }
+            } else {
                 finish();
             }
-        } else {
-            finish();
         }
     }
 
@@ -872,7 +874,7 @@ public class NoteDetailActivity extends BaseActivity
     }
 
     private boolean checkPlayServices() {
-        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getApplicationContext());
+        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
         if (status != ConnectionResult.SUCCESS) {
             if (GoogleApiAvailability.getInstance().isUserResolvableError(status)) {
                 errorDialog(status, AppConstant.REQ_RECOVER);

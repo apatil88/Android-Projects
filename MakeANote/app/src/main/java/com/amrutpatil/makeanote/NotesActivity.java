@@ -17,6 +17,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
@@ -26,7 +27,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
@@ -99,7 +99,7 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
 
             @Override
             public void OnItemLongClick(View view, int position) {
-                android.support.v7.widget.PopupMenu popupMenu = new android.support.v7.widget.PopupMenu(NotesActivity.this, view);
+                PopupMenu popupMenu = new PopupMenu(NotesActivity.this, view);
                 MenuInflater menuInflater = popupMenu.getMenuInflater();
                 menuInflater.inflate(R.menu.action_notes, popupMenu.getMenu());
                 popupMenu.show();
@@ -139,12 +139,12 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
         for(final Note aNote : mNotes){
             //If the note is coming from Google Drive
             if(AppConstant.GOOGLE_DRIVE_SELECTION == aNote.getStorageSelection()){
-                GDUT.init(this);
+                GDUT.init(getApplicationContext());
                 //Check if Google Drive is accessible and if the user account has been logged in successfully
                 if(checkPlayServices() && checkUserAccount()){
-                    GDActions.init(this, GDUT.AM.getActiveEmil());
-                    GDActions.connect(true);
-                }
+                        GDActions.init(this, GDUT.AM.getActiveEmil());
+                        GDActions.connect(true);
+                    }
 
                 threads[threadCounter] = new Thread(new Runnable() {
                     @Override
@@ -346,6 +346,7 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
             Intent accountIntent = AccountPicker.newChooseAccountIntent(account, null, new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true,
                     null, null, null, null);
             startActivityForResult(accountIntent, AppConstant.REQ_ACCPICK);
+            return false;
         }
         return true;
     }
@@ -492,7 +493,6 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
                     }
                 } else if (GDUT.AM.getActiveEmil() == null) { // if we do not have a valid email from the account picker
                     GDUT.AM.removeActiveAccnt();
-                    Toast.makeText(this, AppConstant.PICK_ACCOUNT, Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 break;

@@ -44,7 +44,7 @@ public class NotesLoader extends AsyncTaskLoader<List<Note>>{
         };
 
         Uri uri = NotesContract.URI_TABLE;
-        mCursor = mContentResolver.query(uri, projection, null, null, BaseColumns._ID + "DESC");
+        mCursor = mContentResolver.query(uri, projection, null, null, BaseColumns._ID + " DESC");
 
         if(mCursor != null){
             if(mCursor.moveToFirst()){

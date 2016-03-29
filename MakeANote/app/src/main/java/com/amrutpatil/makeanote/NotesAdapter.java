@@ -20,9 +20,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteHolder> 
     private List<Note> mNotes = Collections.emptyList();
     private Context mContext;
 
-    public NotesAdapter(List<Note> notes, Context context) {
-        mNotes = notes;
-        mContext = context;
+    public NotesAdapter(Context mContext, List<Note> mNotes) {
+        mInflater = LayoutInflater.from(mContext);
+        this.mNotes = mNotes;
+        this.mContext = mContext;
     }
 
     // Called when the RecyclerView needs a new RecyclerView.ViewHolder (NoteHolder)

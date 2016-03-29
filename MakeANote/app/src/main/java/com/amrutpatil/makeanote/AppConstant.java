@@ -22,7 +22,6 @@ public class AppConstant {
     public static final String EMPTY_TRASH = "Trash Empty";
     public static final String NOTE_PREFIX = "note_";
     public static final String NOTE_OR_REMINDER = "NoteorReminder";
-    public static final String PICK_ACCOUNT = "Pick Account";
 
     //Image storage selection
     public static final int NONE_SELECTION = 0;

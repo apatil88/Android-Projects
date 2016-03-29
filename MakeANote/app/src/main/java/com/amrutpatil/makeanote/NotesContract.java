@@ -31,7 +31,7 @@ public class NotesContract {
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + CONTENT_AUTHORITY + ".notes";
 
         //Method which enables content provider to return an individual note
-        public static Uri buildNote(String noteId){
+        public static Uri buildNoteUri(String noteId){
           return URI_TABLE.buildUpon().appendEncodedPath(noteId).build();
         }
 

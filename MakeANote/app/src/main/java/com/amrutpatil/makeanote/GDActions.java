@@ -59,9 +59,14 @@ final class GDActions {
 
     static void init(NotesActivity ctx, String email) {
         if (ctx != null && email != null) {
-            mGAC = new GoogleApiClient.Builder(ctx).addApi(Drive.API)
-                    .addScope(Drive.SCOPE_FILE).setAccountName(email)
-                    .addConnectionCallbacks(ctx).addOnConnectionFailedListener(ctx).build();
+            mGAC = new GoogleApiClient.Builder(ctx)
+                    .addApi(Drive.API)
+                    .addScope(Drive.SCOPE_FILE)
+                    .addScope(Drive.SCOPE_APPFOLDER)
+                    .addConnectionCallbacks(ctx)
+                    .addOnConnectionFailedListener(ctx)
+                    .setAccountName(email)
+                    .build();
 
             mGOOSvc = new com.google.api.services.drive.Drive.Builder(
                     AndroidHttp.newCompatibleTransport(), new GsonFactory(), GoogleAccountCredential
@@ -91,7 +96,7 @@ final class GDActions {
     static ArrayList<GF> search(DriveId prId, String titl, String mime) {
         ArrayList<GF> gfs = new ArrayList<>();
 
-        if (isConnected()) {
+        if (mGAC != null && mGAC.isConnected()) {
             ArrayList<Filter> fltrs = new ArrayList<>();
             if (prId != null) fltrs.add(Filters.in(SearchableField.PARENTS, prId));
             if (titl != null) fltrs.add(Filters.eq(SearchableField.TITLE, titl));

@@ -26,7 +26,7 @@ public class TrashContract {
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + CONTENT_AUTHORITY + ".trash";
 
         //Method which enables content provider to return an individual trashed note
-        public static Uri buildDeletedUri(String trashId) {
+        public static Uri buildTrashUri(String trashId) {
             return URI_TABLE.buildUpon().appendEncodedPath(trashId).build();
         }
 

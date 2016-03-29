@@ -26,9 +26,9 @@ public class DropboxImageUploadAsync extends AsyncTask<Void, Long, Boolean> {
     private String mFileName;
 
     public DropboxImageUploadAsync(Context context, DropboxAPI<?> api, File file, String fileName) {
-        mApi = api;
-        mFile = file;
-        mFileName = fileName;
+        this.mApi = api;
+        this.mFile = file;
+        this.mFileName = fileName;
         this.mPath = AppSharedPreferences.getDropBoxUploadPath(context);
     }
 
@@ -38,7 +38,7 @@ public class DropboxImageUploadAsync extends AsyncTask<Void, Long, Boolean> {
         try{
             FileInputStream fis = new FileInputStream(mFile);
             String path = mPath + "/" + mFileName;
-            DropboxAPI.UploadRequest request = mApi.putFileOverwriteRequest(path, fis, mFileName.length(),
+            DropboxAPI.UploadRequest request = mApi.putFileOverwriteRequest(path, fis, mFile.length(),
                     new ProgressListener() {
 
                         //Get an update about where we have progressed every 500 milliseconds

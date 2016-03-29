@@ -20,6 +20,8 @@ public class ArchivesAdapter extends RecyclerView.Adapter<ArchivesAdapter.NoteHo
     private Context mContext;
 
     public ArchivesAdapter(Context context,List<Archive> data) {
+        mInflater = (LayoutInflater)context.getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
         mData = data;
         mContext = context;
     }
@@ -41,6 +43,7 @@ public class ArchivesAdapter extends RecyclerView.Adapter<ArchivesAdapter.NoteHo
 
     @Override
     public NoteHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View view = mInflater.inflate(R.layout.custom_trash_archive_adapter_layout, parent, false);
         return new NoteHolder(view);
     }
