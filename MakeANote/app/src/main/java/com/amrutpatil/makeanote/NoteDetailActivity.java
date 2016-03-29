@@ -23,6 +23,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -794,11 +795,22 @@ public class NoteDetailActivity extends BaseActivity
                 mImagePath = cursor.getString(columnIndex);
                 cursor.close();
 
-                File tempFile = new File(mImagePath);
-                photo = BitmapFactory.decodeFile(tempFile.getAbsolutePath());
-                mNoteImage.setVisibility(View.VISIBLE);
-                mNoteImage.setImageBitmap(photo);
-                mIsImageSet = true;
+                if(Environment.isExternalStorageEmulated()){
+                    File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+                    photo = BitmapFactory.decodeFile(f.getAbsolutePath());
+                    mNoteImage.setVisibility(View.VISIBLE);
+                    mNoteImage.setImageBitmap(photo);
+                    mIsImageSet = true;
+                }
+                else {
+                    File tempFile = new File(mImagePath);
+                    Log.e(TAG, tempFile.getAbsolutePath());
+                    photo = BitmapFactory.decodeFile(tempFile.getAbsolutePath());
+                    mNoteImage.setVisibility(View.VISIBLE);
+                    mNoteImage.setImageBitmap(photo);
+                    mIsImageSet = true;
+                }
+
             } else {
                 mIsImageSet = false;
             }
@@ -874,7 +886,7 @@ public class NoteDetailActivity extends BaseActivity
     }
 
     private boolean checkPlayServices() {
-        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
+        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getApplicationContext());
         if (status != ConnectionResult.SUCCESS) {
             if (GoogleApiAvailability.getInstance().isUserResolvableError(status)) {
                 errorDialog(status, AppConstant.REQ_RECOVER);
