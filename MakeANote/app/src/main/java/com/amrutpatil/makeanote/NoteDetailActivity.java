@@ -715,7 +715,7 @@ public class NoteDetailActivity extends BaseActivity
         }
         return false;
     }
-    private void callCamera() {
+    public void callCamera() {
         if(hasPermissionInManifest(getApplicationContext(), Manifest.permission.CAMERA)){
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(cameraIntent, CAMERA_REQUEST);
