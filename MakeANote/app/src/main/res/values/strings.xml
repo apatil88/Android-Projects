@@ -41,6 +41,9 @@
     <string name="folder_name">Folder Name</string>
     <string name="is_default">Currently selected default</string>
 
+    <!-- Widget -->
+    <string name="appwidget_prefix_default">Make A Note Widget</string>
+
     <!-- to be deleted later -->
     <string name="hello_world">DELETE THIS</string>
     <string name="action_settings">DELETE THIS</string>
