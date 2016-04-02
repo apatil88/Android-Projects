@@ -31,6 +31,7 @@ public class MakeANoteAppWidgetProvider extends AppWidgetProvider {
             // Get the layout for the App Widget and attach an on-click listener
             // to the button
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.makeanote_appwidget);
+
             views.setOnClickFillInIntent(R.id.action_camera_widget, new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
             views.setOnClickPendingIntent(R.id.action_note_widget, pendingIntent);
             views.setOnClickPendingIntent(R.id.action_list_note_widget, pendingIntent);
