@@ -54,24 +54,6 @@ public class MakeANoteAppWidgetConfigure extends Activity {
             finish();
         }
     }
-    /*View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            final Context context = MakeANoteAppWidgetConfigure.this;
-            // When the button is clicked, save the string in our prefs and return that they
-            // clicked OK.
-            String titlePrefix = mAppWidgetPrefix.getText().toString();
-            saveTitlePref(context, mAppWidgetId, titlePrefix);
-            // Push widget update to surface with newly set prefix
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            MakeANoteAppWidgetProvider.updateAppWidget(context, appWidgetManager,
-                    mAppWidgetId, titlePrefix);
-            // Make sure we pass back the original appWidgetId
-            Intent resultValue = new Intent();
-            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-            setResult(RESULT_OK, resultValue);
-            finish();
-        }
-    };*/
 
     View.OnClickListener mOnClickCameraListener = new View.OnClickListener() {
         @Override
