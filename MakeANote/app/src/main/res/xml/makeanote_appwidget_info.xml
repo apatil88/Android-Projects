@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:minWidth="168dp"
-                    android:minHeight="56dp"
-                    android:updatePeriodMillis="21600"
+                    android:minWidth="204dp"
+                    android:minHeight="48dp"
+                    android:updatePeriodMillis="86400000"
                     android:previewImage="@drawable/ic_launcher"
                     android:initialLayout="@layout/makeanote_appwidget"
                     android:configure="com.amrutpatil.makeanote.MakeANoteAppWidgetConfigure"
-                    android:resizeMode="horizontal|vertical"
-                    android:minResizeWidth="88dp"
-                    android:minResizeHeight="30dp"
-                    android:widgetCategory="home_screen|keyguard">>
+                    android:widgetCategory="home_screen">
 
 </appwidget-provider>
