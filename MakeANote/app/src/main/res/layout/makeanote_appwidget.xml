@@ -20,18 +20,24 @@
             android:layout_width="68dp"
             android:layout_height="48dp"
             android:padding="2dp"
-            android:src="@android:drawable/ic_menu_add"/>
+            android:src="@android:drawable/ic_menu_add"
+            android:layout_gravity="center"
+            android:contentDescription="@string/add_a_note"/>
 
         <ImageView
             android:id="@+id/action_list_note_widget"
             android:layout_width="68dp"
             android:layout_height="48dp"
-            android:src="@android:drawable/ic_menu_sort_by_size"/>
+            android:src="@android:drawable/ic_menu_sort_by_size"
+            android:layout_gravity="center"
+            android:contentDescription="@string/add_a_list_note"/>
 
         <ImageView
             android:id="@+id/action_camera_widget"
             android:layout_width="68dp"
             android:layout_height="48dp"
-            android:src="@android:drawable/ic_menu_camera"/>
+            android:src="@android:drawable/ic_menu_camera"
+            android:layout_gravity="center"
+            android:contentDescription="@string/open_camera"/>
     </LinearLayout>
 </FrameLayout>

@@ -23,7 +23,8 @@
             android:layout_marginEnd="@dimen/menu_padding"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/go_back"/>
 
         <TextView
             android:id="@+id/path_display"
@@ -54,7 +55,8 @@
             android:layout_marginRight="@dimen/card_view_margin"
             android:src="@android:drawable/ic_menu_save"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/save_to_dropbox"/>
 
         <ImageView
             android:id="@+id/new_directory"
@@ -65,7 +67,8 @@
             android:layout_marginRight="@dimen/card_view_margin"
             android:src="@drawable/ic_add_folder"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/create_dropbox_folder"/>
 
         <EditText
             android:id="@+id/new_directory_edit_text"

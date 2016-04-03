@@ -48,21 +48,24 @@
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:src="@android:drawable/ic_menu_add"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/add_a_note"/>
 
                         <ImageView
                             android:id="@+id/new_list"
                             android:src="@android:drawable/ic_menu_sort_by_size"
                             android:layout_weight="1"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/add_a_list_note"/>
 
                         <ImageView
                             android:id="@+id/new_image"
                             android:src="@android:drawable/ic_menu_camera"
                             android:layout_weight="1"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/open_camera"/>
                     </LinearLayout>
                 </RelativeLayout>
             </android.support.v7.widget.CardView>

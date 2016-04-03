@@ -48,4 +48,24 @@
     <string name="hello_world">DELETE THIS</string>
     <string name="action_settings">DELETE THIS</string>
     <string name="title_activity_notes">NotesActivity</string>
+
+    <!-- Content Descriptions -->
+    <string name="add_a_note"> Add a Note</string>
+    <string name="add_a_list_note">Add a List Note</string>
+    <string name="open_camera">Open Camera</string>
+    <string name="auth_google_drive">Choose and Authenticate with Google Drive</string>
+    <string name="set_google_drive">Currently storing note images in Google Drive</string>
+    <string name="auth_dropbox">Choose and Authenticate with Dropbox</string>
+    <string name="set_dropbox">Currently storing notes in Dropbox</string>
+    <string name="go_back">Go back to list of notes</string>
+    <string name="save_to_dropbox">Save to Dropbox</string>
+    <string name="create_dropbox_folder">Create Folder in Dropbox</string>
+    <string name="make_a_note">Make A Checklist Note</string>
+    <string name="check_list_item">Add a check list item to the note</string>
+    <string name="image_storage_location">Choose location for image storage - Device or Google Drive or Dropbox</string>
+    <string name="calendar_picker">Open Calendar</string>
+    <string name="delete_reminder">Delete Calendar Reminder</string>
+    <string name="dropbox_folders">List of Dropbox folders</string>
+    <string name="navigation_drawer">Navigation Drawer</string>
+    <string name="image_note">Image stored with note</string>
 </resources>
