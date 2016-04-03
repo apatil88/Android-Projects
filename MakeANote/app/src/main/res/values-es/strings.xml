@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Haz una nota</string>
+    <string name="app_name_1" translatable="false">Haz una nota</string>
+    <string name="title_activity_make_note">Tome nota</string>
+    <string name="title">Título</string>
+    <string name="NO_TIME">No hay tiempo</string>
+    <string name="NO_DATE">Sin fecha</string>
+    <string name="trash">Basura</string>
+    <string name="archives">Archivo</string>
+    <string name="helpandfeedback"><![CDATA[Ayuda y Feedback]]></string>
+    <string name="reminders">recordatorios</string>
+    <string name="notes">notas</string>
+    <string name="action_edit">Editar</string>
+    <string name="action_delete">Borrar</string>
+    <string name="action_archive">archivo</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, tempus ante arcu autem, wisi porta lectus sed feugiat, pede nullam nec commodo non tincidunt dui. Dictumst ante ultricies integer, duis nec, perspiciatis autem molestie ullamcorper magna sit nec, egestas tincidunt non ac tincidunt. Interdum maecenas aliquet id lacus, aenean ut mattis, consequat fusce turpis bibendum. Suspendisse semper sit.</string>
+    <string name="title_activity_google_drive_uploader">Enviar a Drive</string>
+    <string name="action_device">Almacenar en dispositivos</string>
+    <string name="action_google_drive" translatable="false">Google Drive</string>
+    <string name="action_dropbox" translatable="false">Dropbox</string>
+    <string name="list_item">Nuevo artículo</string>
+    <string name="description">descripción</string>
+    <string name="action_gallery">Elegir de la galería</string>
+    <string name="action_camera">Captura de imagen</string>
+    <string name="settings">Drive ubicaciones de su preferencia</string>
+    <string name="title_activity_list_files">archivos de la lista</string>
+    <string name="title_activity_base_demo">Base de demostración</string>
+    <string name="title_activity_create_file">crear archivo</string>
+    <string name="title_activity_online_photo_selection">selección de fotografías</string>
+    <string name="title_activity_selection_drop_box" translatable="false">DropBox</string>
+    <string name="select">Seleccionar</string>
+    <string name="log_out">Cerrar sesión</string>
+    <string name="save_location">Seleccionar</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_empty">Vaciar papelera</string>
+    <string name="new_directory">Crear</string>
+    <string name="folder_name">Nombre foldr</string>
+    <string name="is_default">por defecto seleccionado en ese momento</string>
+
+    <!-- Widget -->
+    <string name="appwidget_prefix_default">Make A Note Widget</string>
+</resources>
