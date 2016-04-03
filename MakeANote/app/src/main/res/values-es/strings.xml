@@ -40,4 +40,24 @@
 
     <!-- Widget -->
     <string name="appwidget_prefix_default">Make A Note Widget</string>
+
+    <!-- Content Descriptions -->
+    <string name="add_a_note"> Agrega una nota</string>
+    <string name="add_a_list_note">Agregar una nota de la lista</string>
+    <string name="open_camera">Cámara abierta</string>
+    <string name="auth_google_drive">Elegir y autenticar con Google Drive</string>
+    <string name="set_google_drive">En la actualidad el almacenamiento de imágenes de notas en Google Drive</string>
+    <string name="auth_dropbox">Elija y autenticar con Dropbox</string>
+    <string name="set_dropbox">Actualmente almacenar notas en Dropbox</string>
+    <string name="go_back">Volver a la lista de notas</string>
+    <string name="save_to_dropbox">Guardar en Dropbox</string>
+    <string name="create_dropbox_folder">Crear carpeta en Dropbox</string>
+    <string name="make_a_note">Haga una lista Nota</string>
+    <string name="check_list_item">Añadir un elemento de la lista de verificación para la nota</string>
+    <string name="image_storage_location">Elija la ubicación para almacenamiento de imágenes - Dispositivo o Google Drive o Dropbox</string>
+    <string name="calendar_picker">Calendario abierto</string>
+    <string name="delete_reminder">Eliminar Calendario Recordatorio</string>
+    <string name="dropbox_folders">Lista de carpetas de Dropbox</string>
+    <string name="navigation_drawer">cajón de navegación</string>
+    <string name="image_note">Imagen almacenada con la nota</string>
 </resources>
