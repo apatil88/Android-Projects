@@ -71,6 +71,7 @@ public class NotesActivity extends BaseActivity implements LoaderManager.LoaderC
         setUpNavigationDrawer();
         setUpForRecyclerView();
         setUpActions();
+
     }
 
 

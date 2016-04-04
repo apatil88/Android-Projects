@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 /**
  * Description: Class to invoke Google Drive or Dropbox Activity class depending on selection.
  */
@@ -38,6 +41,11 @@ public class AppAuthenticationActivity extends BaseActivity {
         });
 
         setLabel();
+
+        AdView adView = (AdView) findViewById(R.id.ad_view);
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        adView.loadAd(adRequest);
     }
 
     //Method to display the authentication state in the text view and based on what has been obtained from Shared Preferences,

@@ -3,7 +3,10 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="com.amrutpatil.makeanote.AppAuthenticationActivity">
+                tools:context="com.amrutpatil.makeanote.AppAuthenticationActivity"
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:layout_gravity="center"
+                android:padding="16dp">
 
     <include
         android:id="@+id/app_bar"
@@ -124,4 +127,16 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
+
+    <com.google.android.gms.ads.AdView
+            android:id="@+id/ad_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize = "BANNER"
+            ads:adUnitId = "@string/banner_ad_unit_id"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true">
+    </com.google.android.gms.ads.AdView>
+
 </RelativeLayout>
+
