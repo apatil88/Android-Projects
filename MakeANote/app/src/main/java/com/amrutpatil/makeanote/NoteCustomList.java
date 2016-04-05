@@ -232,7 +232,8 @@ public class NoteCustomList extends LinearLayout {
             else
                 isStrikeThrough = false;
             if (editText.getText().toString().length() > 0)
-                stringToReturn = stringToReturn + editText.getText().toString() + "$" + isStrikeThrough + "%";
+                //stringToReturn = stringToReturn + editText.getText().toString() + "$" + isStrikeThrough + "%";
+                stringToReturn = stringToReturn + editText.getText().toString();
         }
 
         return stringToReturn;
