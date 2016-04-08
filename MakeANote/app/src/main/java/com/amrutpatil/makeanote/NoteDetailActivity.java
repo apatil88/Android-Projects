@@ -785,7 +785,7 @@ public class NoteDetailActivity extends BaseActivity
             mImagePath = finalFile.toString();
             mIsImageSet = true;
         } else if (requestCode == TAKE_GALLERY_CODE) {
-            if (resultCode == RESULT_OK) {
+            if(resultCode == RESULT_OK) {
                 mGoingToCameraOrGallery = false;
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -794,24 +794,27 @@ public class NoteDetailActivity extends BaseActivity
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 mImagePath = cursor.getString(columnIndex);
                 cursor.close();
-
-                if(Environment.isExternalStorageEmulated()){
-                    File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
-                    photo = BitmapFactory.decodeFile(f.getAbsolutePath());
-                    mNoteImage.setVisibility(View.VISIBLE);
-                    mNoteImage.setImageBitmap(photo);
-                    mIsImageSet = true;
-                }
-                else {
-                    File tempFile = new File(mImagePath);
-                    Log.e(TAG, tempFile.getAbsolutePath());
-                    photo = BitmapFactory.decodeFile(tempFile.getAbsolutePath());
-                    mNoteImage.setVisibility(View.VISIBLE);
-                    mNoteImage.setImageBitmap(photo);
-                    mIsImageSet = true;
-                }
-
+                File tempFile = new File(mImagePath);
+                photo = BitmapFactory.decodeFile(tempFile.getAbsolutePath());
+                mNoteImage.setVisibility(View.VISIBLE);
+                mNoteImage.setImageBitmap(photo);
+                mIsImageSet = true;
             } else {
+                mIsImageSet = false;
+            }
+        } else if (requestCode == TAKE_GALLERY_CODE){
+            if(resultCode == RESULT_OK){
+                if(Environment.isExternalStorageEmulated()){
+                    mGoingToCameraOrGallery = false;
+                    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+                    Log.e(TAG, " getAbsolutePath() : " + Environment.getExternalStorageDirectory().getAbsolutePath());
+                    Log.e(TAG, "getAbsolutePath() 2 : " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath());
+                    photo = BitmapFactory.decodeFile(file.getAbsolutePath());
+                    mNoteImage.setVisibility(View.VISIBLE);
+                    mNoteImage.setImageBitmap(photo);
+                    mIsImageSet = true;
+                }
+            } else{
                 mIsImageSet = false;
             }
         }
@@ -828,11 +831,18 @@ public class NoteDetailActivity extends BaseActivity
         return Uri.parse(path);
     }
 
-    private String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
+    public String getRealPathFromURI(Uri uri) {
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(idx);
+        } catch (Exception e){
+            Log.e(TAG, "getRealPathFromURI returned : " + uri.getPath());
+            e.printStackTrace();
+            return uri.getPath();
+        }
     }
 
     @Override
