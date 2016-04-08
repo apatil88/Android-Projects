@@ -16,6 +16,8 @@ import com.google.android.gms.drive.Metadata;
 
 /**
  * Description: Class to get the name of the Google Drive directory to which the image storage is set to.
+ * Reference :https://developers.google.com/drive/android/folders#get_the_root_folder
+ *            https://developers.google.com/drive/android/metadata#custom_properties
  */
 public class GoogleDriveDirectoryNameGetterActivity extends BaseGoogleDriveActivity {
 

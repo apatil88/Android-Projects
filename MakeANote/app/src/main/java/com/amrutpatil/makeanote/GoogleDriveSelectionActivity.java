@@ -13,6 +13,7 @@ import com.google.android.gms.drive.OpenFileActivityBuilder;
 
 /**
  * Description: Class to select directories from Google Drive
+ * https://developers.google.com/drive/android/auth#generate_the_signing_certificate_fingerprint_and_register_your_application
  */
 public class GoogleDriveSelectionActivity extends BaseGoogleDriveActivity {
     private static final int REQUEST_CODE_OPENER = 1;
